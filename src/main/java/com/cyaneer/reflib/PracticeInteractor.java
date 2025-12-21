@@ -29,6 +29,10 @@ public class PracticeInteractor {
         File nextPose = model.getPoseList().get(getRandomPoseNumber());
         model.currentPoseProperty().set(nextPose);
         model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
+        model.getDrawnPosesList().add(nextPose);
+        if (!model.getDuplicatesAllowed()) {
+            model.getPoseList().remove(nextPose);
+        }
     }
 
     private int getRandomPoseNumber() {

@@ -19,6 +19,7 @@ import javafx.util.Duration;
 public class PracticeModel {
 
     private final ListProperty<File> poseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
+    private final ListProperty<File> drawnPosesList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
     private final IntegerProperty numberOfPoses = new SimpleIntegerProperty(15);
     private final IntegerProperty secondsPerPose = new SimpleIntegerProperty(60);
@@ -37,6 +38,18 @@ public class PracticeModel {
 
     public void setPoseList(List<File> poseList) {
         this.poseList.set(FXCollections.observableArrayList(poseList));
+    }
+
+    public ObservableList<File> getDrawnPosesList() {
+        return drawnPosesList.get();
+    }
+
+    public ListProperty<File> drawnPosesListProperty() {
+        return drawnPosesList;
+    }
+
+    public void setDrawnPosesList(List<File> drawnPosesList) {
+        this.drawnPosesList.set(FXCollections.observableArrayList(drawnPosesList));
     }
 
     public boolean getDuplicatesAllowed() {
