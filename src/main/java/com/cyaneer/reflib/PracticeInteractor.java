@@ -17,26 +17,34 @@ public class PracticeInteractor {
     public PracticeInteractor(PracticeModel model) {
         this.model = model;
         model.timerStatusProperty().bind(timer.statusProperty());
+        timer.setOnFinished(e -> model.setSessionFinished(true));
         model.currentElapsedSecondsProperty().bind(timer.currentTimeProperty());
     }
 
     public void loadImages() {
-        List<File> poseList = service.loadImages();
-        model.setPoseList(poseList);
+        List<File> fullPoseList = service.loadImages();
+        model.setFullPoseList(fullPoseList);
+        resetPractice(); //TODO: In the future, do this when practice screen is chosen from main menu
     }
 
     public void setNextImage() {
-        File nextPose = model.getPoseList().get(getRandomPoseNumber());
+        File nextPose = model.getSessionPoseList().get(getRandomPoseNumber());
         model.currentPoseProperty().set(nextPose);
         model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
         model.getDrawnPosesList().add(nextPose);
         if (!model.getDuplicatesAllowed()) {
-            model.getPoseList().remove(nextPose);
+            model.getSessionPoseList().remove(nextPose);
         }
     }
 
     private int getRandomPoseNumber() {
-        return (int) (Math.random() * model.getPoseList().size());
+        return (int) (Math.random() * model.getSessionPoseList().size());
+    }
+
+    public void startSession() {
+        createTimer();
+        setNextImage();
+        startTimer();
     }
 
     private void createTimer() {
@@ -54,26 +62,23 @@ public class PracticeInteractor {
         timer.setCycleCount(model.getNumberOfPoses());
     }
 
-    public void startTimer() {
-        System.out.println("Timer started??");
-        if (timer == null || timer.getStatus() == Status.STOPPED) {
-            createTimer();
-            model.currentPoseNumberProperty().set(0);
-            setNextImage();
+    public void startTimer() { 
+        if (timer == null) {
+            System.out.println("No timer exists");
         } else if (timer.getStatus() == Status.RUNNING) {
             System.out.println("Timer is already running");
-            return;
+        } else {
+            timer.play();
         }
-        timer.play();
     }
 
     public void pauseTimer() {
         if (timer == null) {
             System.out.println("No timer exists");
-        } else if (timer.getStatus() == Status.RUNNING) {
-            timer.pause();
-        } else {
+        } else if (timer.getStatus() != Status.RUNNING) {
             System.out.println("The timer isn't running");
+        } else {
+            timer.pause();
         }
     }
 
@@ -85,5 +90,15 @@ public class PracticeInteractor {
         } else {
             timer.stop();
         }
+    }
+
+    public void resetPractice() {
+        stopTimer();
+        model.getDrawnPosesList().clear();
+        model.getSessionPoseList().clear();
+        model.getSessionPoseList().addAll(model.getFullPoseList());
+        model.setCurrentPose(null);
+        model.setCurrentPoseNumber(0);
+        model.setSessionFinished(false);
     }
 }

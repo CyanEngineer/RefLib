@@ -18,7 +18,8 @@ import javafx.util.Duration;
 
 public class PracticeModel {
 
-    private final ListProperty<File> poseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
+    private final ListProperty<File> fullPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
+    private final ListProperty<File> sessionPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final ListProperty<File> drawnPosesList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
     private final IntegerProperty numberOfPoses = new SimpleIntegerProperty(15);
@@ -27,17 +28,30 @@ public class PracticeModel {
     private final IntegerProperty currentPoseNumber = new SimpleIntegerProperty(0);
     private final ObjectProperty<Duration> elapsedSeconds = new SimpleObjectProperty<Duration>(Duration.ZERO);
     private final ObjectProperty<Status> timerStatus = new SimpleObjectProperty<Status>(Status.STOPPED);
+    private final BooleanProperty isSessionFinished = new SimpleBooleanProperty(false);
 
-    public ObservableList<File> getPoseList() {
-        return poseList.get();
+    public ObservableList<File> getFullPoseList() {
+        return fullPoseList.get();
     }
 
-    public ListProperty<File> poseListProperty() {
-        return poseList;
+    public ListProperty<File> fullPoseListProperty() {
+        return fullPoseList;
     }
 
-    public void setPoseList(List<File> poseList) {
-        this.poseList.set(FXCollections.observableArrayList(poseList));
+    public void setFullPoseList(List<File> fullPoseList) {
+        this.fullPoseList.set(FXCollections.observableArrayList(fullPoseList));
+    }
+
+    public ObservableList<File> getSessionPoseList() {
+        return sessionPoseList.get();
+    }
+
+    public ListProperty<File> sessionPoseListProperty() {
+        return sessionPoseList;
+    }
+
+    public void setSessionPoseList(List<File> sessionPoseList) {
+        this.sessionPoseList.set(FXCollections.observableArrayList(sessionPoseList));
     }
 
     public ObservableList<File> getDrawnPosesList() {
@@ -126,5 +140,21 @@ public class PracticeModel {
 
     public ObjectProperty<Status> timerStatusProperty() {
         return timerStatus;
+    }
+
+    public boolean getSessionFinished() {
+        return isSessionFinished.get();
+    }
+
+    public BooleanProperty isSessionFinishedProperty() {
+        return isSessionFinished;
+    }
+
+    public void setSessionFinished(boolean isSessionFinished) {
+        this.isSessionFinished.set(isSessionFinished);
+    }
+
+    public void enterDebug() {
+        System.out.println("Debug");
     }
 }

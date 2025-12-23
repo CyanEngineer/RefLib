@@ -24,12 +24,12 @@ import javafx.util.Builder;
 public class PracticePlanViewBuilder implements Builder<Region> {
 
     private final PracticeModel model;
-    private final Runnable startButtonAction;
+    private final Runnable startAction;
     private final ArrayList<ObjectProperty> weakListenerList = new ArrayList<>(); //There has to be a nicer way to save weak listeners...
 
-    public PracticePlanViewBuilder(PracticeModel model, Runnable startButtonAction) {
+    public PracticePlanViewBuilder(PracticeModel model, Runnable startAction) {
         this.model = model;
-        this.startButtonAction = startButtonAction;
+        this.startAction = startAction;
     }
 
     @Override
@@ -98,10 +98,10 @@ public class PracticePlanViewBuilder implements Builder<Region> {
     private Node createButtons() {
         Button startButton = new Button("Start");
         startButton.disableProperty().bind(Bindings.createBooleanBinding(
-                () -> model.getPoseList().size() == 0,
-                model.poseListProperty()));
+                () -> model.getSessionPoseList().size() == 0,
+                model.sessionPoseListProperty()));
 
-        startButton.setOnAction(e -> startButtonAction.run());
+        startButton.setOnAction(e -> startAction.run());
         HBox content = new HBox(8,
                 new Button("Back"),
                 new Label("Practice time: "),

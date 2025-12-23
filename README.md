@@ -4,12 +4,13 @@
 
 ## Roadmap
 ### Bugs
--
+- 
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
 - Idk it's just the home page
 ### Practice page
+- Ensure that terminology is consistent (e.g. practice vs session)
 - ~~Display ref images at random~~
 - ~~Show pose #~~
 - Practice settings
@@ -19,10 +20,15 @@
     - Decide interval from total available time
     - No timer
     - (maybe) favorite for each of the above
-  - Allow or disallow duplicates
+  - ~~Allow or disallow duplicates~~
+    - ~~Restore list after each session~~
   - Filter on tags
   - Exclude NSFW
-- Option to review images from session
+- ~~Page to review images from session~~
+  - ~~Option to copy image~~
+  - Option to bulk delete
+  - Option to bulk tag
+  - Option to display image information
   - (Maybe) Remember previous sessions (delayed review)
 - ~~Pause session~~
 - Skip image
@@ -32,7 +38,7 @@
   - One handed transformations (zoom, rotation, panning)
 - In case an image has disappeared, warn user
   - Option to remind next time RefLib is opened
-- (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting?
+- (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting? If so, add this in both review and browse
 ### Upload page
 - Check new images against images in library to avoid duplicates
   - SIFT

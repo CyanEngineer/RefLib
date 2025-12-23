@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import com.cyaneer.reflib.PracticeModel;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
@@ -26,13 +27,22 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
 
     private final PracticeModel model;
     private final Runnable backButtonAction;
+    private final Runnable reviewButtonAction;
     private final Runnable startTimerAction;
     private final Runnable pauseTimerAction;
     private final Runnable stopTimerAction;
 
-    public PracticeSessionViewBuilder(PracticeModel model, Runnable backRunnable, Runnable startTimerAction, Runnable pauseTimerAction, Runnable stopTimerAction) {
+    public PracticeSessionViewBuilder(
+        PracticeModel model,
+        Runnable backAction,
+        Runnable reviewAction,
+        Runnable startTimerAction,
+        Runnable pauseTimerAction,
+        Runnable stopTimerAction
+    ) {
         this.model = model;
-        this.backButtonAction = backRunnable;
+        this.backButtonAction = backAction;
+        this.reviewButtonAction = reviewAction;
         this.startTimerAction = startTimerAction;
         this.pauseTimerAction = pauseTimerAction;
         this.stopTimerAction = stopTimerAction;
@@ -81,7 +91,9 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         HBox hBox = new HBox(64,
             createActionButton("Back", backButtonAction),
             createProgressElement(),
-            createTimerControls());
+            createTimerControls(),
+            createConditionalActionButton("Review", reviewButtonAction, model.isSessionFinishedProperty().not())
+        );
         hBox.setAlignment(Pos.CENTER);
         return hBox;
     }
@@ -89,6 +101,13 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private Node createActionButton(String text, Runnable action) {
         Button button = new Button(text);
         button.setOnAction(e -> action.run());
+        return button;
+    }
+
+    private Node createConditionalActionButton(String text, Runnable action, BooleanBinding disablingBinding) {
+        Button button = new Button(text);
+        button.setOnAction(e -> action.run());
+        button.disableProperty().bind(disablingBinding);
         return button;
     }
 
@@ -119,10 +138,14 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     }
     
     private Node createTimerControls() {
+        BooleanBinding disablingBinding = Bindings.createBooleanBinding(
+            () -> model.getSessionFinished(),
+            model.isSessionFinishedProperty()
+        );
+
         return new HBox(8,
-            createActionButton("Start", startTimerAction),
-            createActionButton("Pause", pauseTimerAction),
-            createActionButton("Stop", stopTimerAction)
+            createConditionalActionButton("Start", startTimerAction, disablingBinding),
+            createConditionalActionButton("Pause", pauseTimerAction, disablingBinding)
         );
     }
 }

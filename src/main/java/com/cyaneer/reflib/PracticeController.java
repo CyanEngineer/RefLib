@@ -18,9 +18,11 @@ public class PracticeController {
         loadImages();
         viewBuilder = new PracticeViewBuilder(
             model,
+            () -> startPractice(),
             () -> startPracticeTimer(),
             () -> pausePracticeTimer(),
-            () -> stopPracticeTimer()
+            () -> stopPracticeTimer(),
+            () -> resetPractice()
         );
     }
 
@@ -37,10 +39,14 @@ public class PracticeController {
             }
         };
         loadImagesTask.setOnSucceeded(e -> {
-            System.out.println(model.getPoseList().size() + " poses loaded"); //TODO: delete
+            System.out.println(model.getSessionPoseList().size() + " poses loaded"); //TODO: delete
         });
         Thread loadImagesThread = new Thread(loadImagesTask);
         loadImagesThread.start();
+    }
+
+    private void startPractice() {
+        interactor.startSession();
     }
 
     private void startPracticeTimer() {
@@ -53,5 +59,9 @@ public class PracticeController {
 
     private void stopPracticeTimer() {
         interactor.stopTimer();
+    }
+
+    private void resetPractice() {
+        interactor.resetPractice();
     }
 }
