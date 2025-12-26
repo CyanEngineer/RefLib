@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import com.cyaneer.reflib.PracticeModel;
 
+import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.DoubleBinding;
@@ -21,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.util.Builder;
 
 public class PracticeSessionViewBuilder implements Builder<Region>{
@@ -91,8 +93,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         HBox hBox = new HBox(64,
             createActionButton("Back", backButtonAction),
             createProgressElement(),
-            createTimerControls(),
-            createConditionalActionButton("Review", reviewButtonAction, model.isSessionFinishedProperty().not())
+            createTimerControls()
         );
         hBox.setAlignment(Pos.CENTER);
         return hBox;
@@ -129,6 +130,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
 
     private Node createPoseProgressElement() {
         ProgressBar progressBar = new ProgressBar();
+        progressBar.setPrefWidth(200);
         DoubleBinding progress = Bindings.createDoubleBinding(() -> {
             double elapsedSeconds = Math.floor(model.getElapsedSeconds().toSeconds());
             return elapsedSeconds / (model.getSecondsPerPose() - 1);
@@ -138,14 +140,28 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     }
     
     private Node createTimerControls() {
-        BooleanBinding disablingBinding = Bindings.createBooleanBinding(
-            () -> model.getSessionFinished(),
-            model.isSessionFinishedProperty()
-        );
 
-        return new HBox(8,
-            createConditionalActionButton("Start", startTimerAction, disablingBinding),
-            createConditionalActionButton("Pause", pauseTimerAction, disablingBinding)
+        Button startButton = new Button("Start");
+        startButton.visibleProperty().bind(
+            model.timerStatusProperty().isNotEqualTo(Status.RUNNING)
+            .and(model.isSessionFinishedProperty().not())
         );
+        startButton.managedProperty().bind(startButton.visibleProperty());
+        startButton.setOnAction(e -> startTimerAction.run());
+
+        Button pauseButton = new Button("Pause");
+        pauseButton.visibleProperty().bind(
+            model.timerStatusProperty().isEqualTo(Status.RUNNING)
+            .and(model.isSessionFinishedProperty().not())
+        );
+        pauseButton.managedProperty().bind(pauseButton.visibleProperty());
+        pauseButton.setOnAction(e -> pauseTimerAction.run());
+
+        Button reviewButton = new Button("Go to review");
+        reviewButton.visibleProperty().bind(model.isSessionFinishedProperty());
+        reviewButton.managedProperty().bind(reviewButton.visibleProperty());
+        reviewButton.setOnAction(e -> reviewButtonAction.run());
+
+        return new StackPane(startButton, pauseButton, reviewButton);
     }
 }
