@@ -30,7 +30,6 @@ public class practiceReviewViewBuilder implements Builder<Region> {
     private int gridNodeCount = 0;
     private final Clipboard clipboard = Clipboard.getSystemClipboard();
     private final ClipboardContent clipboardContent = new ClipboardContent();
-    private Runnable clearAction;
 
     public practiceReviewViewBuilder(PracticeModel model, Runnable backAction) {
         this.model = model;
@@ -49,13 +48,16 @@ public class practiceReviewViewBuilder implements Builder<Region> {
     private Node createCenter() {
         GridPane gridPane = new GridPane(32, 32);
 
-        clearAction = () -> {
-            gridPane.getChildren().clear();
-            gridNodeCount = 0;
-        };
-
         model.currentPoseProperty().addListener((ob, oldValue, newValue) -> {
-            if (newValue != null) {
+            if (newValue == null) {
+                // TODO: Not sure if these two if-statements might be a race condition?
+                if (model.getDrawnPosesList().size() == 0) {
+                    System.out.println("Get cleared!");
+                    gridPane.getChildren().clear();
+                    gridNodeCount = 0;
+                }
+            }
+            else {
                 Node node = createGridNode(newValue);
                 gridPane.add(node, gridNodeCount % columnCount, gridNodeCount / columnCount);
                 gridNodeCount++;
@@ -115,9 +117,6 @@ public class practiceReviewViewBuilder implements Builder<Region> {
         Button button = new Button("Back");
         button.setOnAction(e -> {
             backButtonAction.run();
-            if (clearAction != null) {
-                clearAction.run();
-            }
         });
         HBox hBox = new HBox(8,
             button

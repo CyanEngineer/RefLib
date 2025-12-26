@@ -38,7 +38,7 @@
   - One handed transformations (zoom, rotation, panning)
 - In case an image has disappeared, warn user
   - Option to remind next time RefLib is opened
-- (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting? If so, add this in both review and browse
+- (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting? If so, add this in practice, review and browse
 ### Upload page
 - Check new images against images in library to avoid duplicates
   - SIFT
