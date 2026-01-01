@@ -1,6 +1,7 @@
 package com.cyaneer.reflib.viewBuilder;
 
 import java.util.ArrayList;
+import java.util.function.UnaryOperator;
 
 import com.cyaneer.reflib.PracticeModel;
 
@@ -15,11 +16,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Builder;
+import javafx.util.converter.IntegerStringConverter;
 
 public class PracticePlanViewBuilder implements Builder<Region> {
 
@@ -79,12 +83,18 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
     private Node boundTextField(IntegerProperty property) {
         Spinner<Integer> spinner = new Spinner<Integer>(1, 1000000, 1);
-        //spinner.setEditable(true); //TODO: Enable and also restrict input
+        TextFormatter<Integer> positiveIntegerTextFormatter = new TextFormatter<Integer>(
+            new PositiveIntegerStringConverter(), 
+            1, 
+            new PositiveIntegerFilter()
+        );
+        spinner.getEditor().setTextFormatter(positiveIntegerTextFormatter);
+        spinner.setEditable(true);
         
         ObjectProperty<Integer> obProperty = property.asObject();
         weakListenerList.add(obProperty);
         
-        spinner.getValueFactory().valueProperty().bindBidirectional(obProperty);
+        positiveIntegerTextFormatter.valueProperty().bindBidirectional(obProperty);
         return spinner;
     }
 
@@ -122,5 +132,39 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
         content.textProperty().bind(totalTimeProperty);
         return content;
+    }
+
+    private class PositiveIntegerStringConverter extends IntegerStringConverter {
+
+        @Override
+        public Integer fromString(String value) {
+            Integer result = super.fromString(value);
+            if (result == null) {
+                throw new RuntimeException("Empty value");
+            } else if (result < 1) {
+                throw new RuntimeException("Non-positive value");
+            }
+            return result.intValue();
+        }
+
+        @Override
+        public String toString(Integer value) {
+            if (value < 1) {
+                return "1";
+            }
+            return super.toString(value);
+        }
+    }
+
+    private class PositiveIntegerFilter implements UnaryOperator<TextFormatter.Change> {
+
+        @Override
+        public Change apply(Change change) {
+            if (change.getControlNewText().matches("[0-9]*")) {
+                return change;
+            }
+            return null;
+        }
+
     }
 }
