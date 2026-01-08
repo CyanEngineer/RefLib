@@ -4,7 +4,9 @@
 
 ## Roadmap
 ### Bugs
-- 
+- Figure out the "requires transitive" warning
+- Where are all the tests, you lazy bum??
+- Only show debug button when run in debug mode
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
@@ -54,6 +56,7 @@
 ### Storage
 - Let user define location of images
 - Appdata with info about images
+  - Location
   - Tags
   - SIFT descriptors
 - Export data
