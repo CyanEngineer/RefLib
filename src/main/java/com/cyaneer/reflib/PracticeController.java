@@ -1,5 +1,6 @@
 package com.cyaneer.reflib;
 
+import com.cyaneer.reflib.model.PracticeModel;
 import com.cyaneer.reflib.viewBuilder.PracticeViewBuilder;
 
 import javafx.concurrent.Task;
@@ -16,6 +17,7 @@ public class PracticeController {
         model = new PracticeModel();
         interactor = new PracticeInteractor(model);
         loadImages();
+        loadSequence();
         viewBuilder = new PracticeViewBuilder(
             model,
             () -> startPractice(),
@@ -38,15 +40,25 @@ public class PracticeController {
                 return null;
             }
         };
-        loadImagesTask.setOnSucceeded(e -> {
-            System.out.println(model.getSessionPoseList().size() + " poses loaded"); //TODO: delete
-        });
         Thread loadImagesThread = new Thread(loadImagesTask);
         loadImagesThread.start();
     }
 
+    private void loadSequence() {
+        Task<Void> loadSequenceTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                interactor.loadSequence();
+                return null;
+            }
+        };
+        loadSequenceTask.setOnSucceeded(e -> System.out.println("Sequence loaded")); // TODO: Delete
+        Thread loadSequenceThread = new Thread(loadSequenceTask);
+        loadSequenceThread.start();
+    }
+
     private void startPractice() {
-        interactor.startSession();
+        interactor.startPractice();
     }
 
     private void startPracticeTimer() {

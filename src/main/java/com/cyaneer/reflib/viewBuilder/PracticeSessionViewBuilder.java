@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import com.cyaneer.reflib.PracticeModel;
+import com.cyaneer.reflib.model.PracticeModel;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;

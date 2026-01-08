@@ -3,6 +3,10 @@ package com.cyaneer.reflib;
 import java.io.File;
 import java.util.List;
 
+import com.cyaneer.reflib.model.PracticeModel;
+import com.cyaneer.reflib.model.SequenceStep;
+import com.cyaneer.reflib.model.SequenceStepType;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
@@ -17,7 +21,6 @@ public class PracticeInteractor {
     public PracticeInteractor(PracticeModel model) {
         this.model = model;
         model.timerStatusProperty().bind(timer.statusProperty());
-        timer.setOnFinished(e -> model.setSessionFinished(true));
         model.currentElapsedSecondsProperty().bind(timer.currentTimeProperty());
     }
 
@@ -27,39 +30,75 @@ public class PracticeInteractor {
         resetPractice(); //TODO: In the future, do this when practice screen is chosen from main menu
     }
 
-    public void setNextImage() {
-        File nextPose = model.getSessionPoseList().get(getRandomPoseNumber());
-        model.currentPoseProperty().set(nextPose);
-        model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
-        model.getDrawnPosesList().add(nextPose);
-        if (!model.getDuplicatesAllowed()) {
-            model.getSessionPoseList().remove(nextPose);
+    public void loadSequence() {
+        List<SequenceStep> sequenceStepList = service.loadSequence();
+        model.setSequenceStepList(sequenceStepList);
+    }
+
+    public void startPractice() {
+        model.setRemainingSequenceStepsList(model.getSequenceStepList());
+        advanceToNextStep();
+    }
+
+    private void advanceToNextStep() {
+        if (model.getRemainingSequenceStepsList().isEmpty()) {
+            //TODO: End practice
+        } else {
+            SequenceStep practiceStep = model.getRemainingSequenceStepsList().getFirst();
+            
+            //TODO: updateModel(practiceStep);
+            // Create the appropriate kind of timer
+            // Set whatever should be shown on the practice screen
+            // Start the timer
+            // Pop the list somewhere
         }
+
+        createTimer();
+        advanceInCurrentStep();
+    }
+
+    private void advanceInCurrentStep() {
+        if (model.getCurrentPoseNumber() < model.getNumberOfPoses()) {
+            File nextPose = getRandomPose();
+            model.currentPoseProperty().set(nextPose);
+            model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
+            model.getDrawnPosesList().add(nextPose);
+            if (!model.getDuplicatesAllowed()) {
+                model.getSessionPoseList().remove(nextPose);
+            }
+            timer.playFromStart();
+        } else {
+            model.setSessionFinished(true);
+            stopTimer();
+            //TODO: advanceToNextStep();
+        }
+    }
+
+    private File getRandomPose() {
+        return model.getSessionPoseList().get(getRandomPoseNumber());
     }
 
     private int getRandomPoseNumber() {
         return (int) (Math.random() * model.getSessionPoseList().size());
     }
 
-    public void startSession() {
-        createTimer();
-        setNextImage();
-        startTimer();
+    private void updateModel(SequenceStep step) {
+        if (step.getType() != SequenceStepType.PAUSE) {
+            model.setNumberOfPoses(step.getRepetitions());
+            model.setSecondsPerPose((int) step.getDuration().toSeconds());
+            model.setCurrentPoseNumber(0);
+        }
     }
 
     private void createTimer() {
         ObservableList<KeyFrame> keyFrames = timer.getKeyFrames();
         keyFrames.clear();
-        keyFrames.add(new KeyFrame(
+        keyFrames.add(
+            new KeyFrame(
                 Duration.seconds(model.getSecondsPerPose()),
-                e -> {
-                    if (model.getCurrentPoseNumber() < model.getNumberOfPoses()) {
-                        setNextImage();
-                    }
-                }
+                e -> advanceInCurrentStep()
             )
         );
-        timer.setCycleCount(model.getNumberOfPoses());
     }
 
     public void startTimer() { 

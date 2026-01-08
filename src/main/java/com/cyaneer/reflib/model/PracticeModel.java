@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.model;
 
 import java.io.File;
 import java.util.List;
@@ -21,6 +21,8 @@ public class PracticeModel {
     private final ListProperty<File> fullPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final ListProperty<File> sessionPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final ListProperty<File> drawnPosesList = new SimpleListProperty<File>(FXCollections.observableArrayList());
+    private final ListProperty<SequenceStep> sequenceStepList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
+    private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
     private final IntegerProperty numberOfPoses = new SimpleIntegerProperty(15);
     private final IntegerProperty secondsPerPose = new SimpleIntegerProperty(60);
@@ -64,6 +66,30 @@ public class PracticeModel {
 
     public void setDrawnPosesList(List<File> drawnPosesList) {
         this.drawnPosesList.set(FXCollections.observableArrayList(drawnPosesList));
+    }
+
+    public ObservableList<SequenceStep> getSequenceStepList() {
+        return sequenceStepList.get();
+    }
+
+    public ListProperty<SequenceStep> sequenceStepListProperty() {
+        return sequenceStepList;
+    }
+
+    public void setSequenceStepList(List<SequenceStep> sequenceStepList) {
+        this.sequenceStepList.set(FXCollections.observableArrayList(sequenceStepList));
+    }
+
+    public ObservableList<SequenceStep> getRemainingSequenceStepsList() {
+        return remainingSequenceStepsList.get();
+    }
+
+    public ListProperty<SequenceStep> remainingSequenceStepsListProperty() {
+        return remainingSequenceStepsList;
+    }
+
+    public void setRemainingSequenceStepsList(List<SequenceStep> remainingSequenceStepsList) {
+        this.remainingSequenceStepsList.set(FXCollections.observableArrayList(remainingSequenceStepsList));
     }
 
     public boolean getDuplicatesAllowed() {

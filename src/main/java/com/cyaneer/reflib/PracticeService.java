@@ -7,9 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import com.cyaneer.reflib.model.SequenceStep;
+import com.cyaneer.reflib.model.SequenceStepType;
+
+import javafx.util.Duration;
+
 public class PracticeService {
     
-    public List<File> loadImages() {
+    public List<File> loadImages() { // TODO: Use a proper config file
         try {
             Scanner sc = new Scanner(new File("imagesPath.txt"));
             String imagePath = sc.nextLine();
@@ -27,5 +32,13 @@ public class PracticeService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<SequenceStep> loadSequence() { // TODO: Use a proper config file and maybe a DTO
+        return Arrays.asList(
+            new SequenceStep(15, Duration.seconds(60), SequenceStepType.TIMED_POSES),
+            new SequenceStep(1, Duration.seconds(60), SequenceStepType.PAUSE),
+            new SequenceStep(15, Duration.seconds(60), SequenceStepType.TIMED_POSES)
+        );
     }
 }

@@ -1,6 +1,6 @@
 package com.cyaneer.reflib.viewBuilder;
 
-import com.cyaneer.reflib.PracticeModel;
+import com.cyaneer.reflib.model.PracticeModel;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
