@@ -15,6 +15,7 @@ public class PracticeViewBuilder implements Builder<Region>{
     private final Runnable startTimerAction;
     private final Runnable pauseTimerAction;
     private final Runnable stopTimerAction;
+    private final Runnable jumpToNextAction;
     private final Runnable resetPracticeAction;
     BorderPane practiceView;
     Region practicePlanView;
@@ -27,6 +28,7 @@ public class PracticeViewBuilder implements Builder<Region>{
         Runnable startTimerAction,
         Runnable pauseTimerAction,
         Runnable stopTimerAction,
+        Runnable jumpToNextAction,
         Runnable resetPracticeAction
     ) {
         this.model = model;
@@ -34,6 +36,7 @@ public class PracticeViewBuilder implements Builder<Region>{
         this.startTimerAction = startTimerAction;
         this.pauseTimerAction = pauseTimerAction;
         this.stopTimerAction = stopTimerAction;
+        this.jumpToNextAction = jumpToNextAction;
         this.resetPracticeAction = resetPracticeAction;
     }
 
@@ -52,7 +55,7 @@ public class PracticeViewBuilder implements Builder<Region>{
             sessionViewReviewAction(),
             startTimerAction,
             pauseTimerAction,
-            stopTimerAction
+            jumpToNextAction
         ).build();
 
         practiceReviewView = new practiceReviewViewBuilder(

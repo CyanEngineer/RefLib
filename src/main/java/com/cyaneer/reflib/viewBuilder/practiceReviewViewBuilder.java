@@ -52,7 +52,6 @@ public class practiceReviewViewBuilder implements Builder<Region> {
             if (newValue == null) {
                 // TODO: Not sure if these two if-statements might be a race condition?
                 if (model.getDrawnPosesList().size() == 0) {
-                    System.out.println("Get cleared!");
                     gridPane.getChildren().clear();
                     gridNodeCount = 0;
                 }

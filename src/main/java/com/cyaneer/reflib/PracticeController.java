@@ -24,6 +24,7 @@ public class PracticeController {
             () -> startPracticeTimer(),
             () -> pausePracticeTimer(),
             () -> stopPracticeTimer(),
+            () -> jumpToNext(),
             () -> resetPractice()
         );
     }
@@ -52,7 +53,6 @@ public class PracticeController {
                 return null;
             }
         };
-        loadSequenceTask.setOnSucceeded(e -> System.out.println("Sequence loaded")); // TODO: Delete
         Thread loadSequenceThread = new Thread(loadSequenceTask);
         loadSequenceThread.start();
     }
@@ -71,6 +71,10 @@ public class PracticeController {
 
     private void stopPracticeTimer() {
         interactor.stopTimer();
+    }
+
+    private void jumpToNext() {
+        interactor.advanceInCurrentStep();
     }
 
     private void resetPractice() {

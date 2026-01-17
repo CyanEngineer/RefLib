@@ -24,8 +24,9 @@ public class PracticeModel {
     private final ListProperty<SequenceStep> sequenceStepList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
-    private final IntegerProperty numberOfPoses = new SimpleIntegerProperty(15);
-    private final IntegerProperty secondsPerPose = new SimpleIntegerProperty(60);
+    private final IntegerProperty currentSequenceStepRepetitions = new SimpleIntegerProperty(1);
+    private final ObjectProperty<Duration> currentSequenceStepDuration = new SimpleObjectProperty<Duration>(Duration.INDEFINITE);
+    private final ObjectProperty<SequenceStepType> currentSequenceStepType = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.UNTIMED_POSES);
     private final ObjectProperty<File> currentPose = new SimpleObjectProperty<File>(null);
     private final IntegerProperty currentPoseNumber = new SimpleIntegerProperty(0);
     private final ObjectProperty<Duration> elapsedSeconds = new SimpleObjectProperty<Duration>(Duration.ZERO);
@@ -92,6 +93,42 @@ public class PracticeModel {
         this.remainingSequenceStepsList.set(FXCollections.observableArrayList(remainingSequenceStepsList));
     }
 
+    public int getCurrentSequenceStepRepetitions() {
+        return currentSequenceStepRepetitions.get();
+    }
+
+    public IntegerProperty currentSequenceStepRepetitionsProperty() {
+        return currentSequenceStepRepetitions;
+    }
+
+    public void setCurrentSequenceStepRepetitions(int repetitions) {
+        currentSequenceStepRepetitions.set(repetitions);
+    }
+
+    public Duration getCurrentSequenceStepDuration() {
+        return currentSequenceStepDuration.get();
+    }
+
+    public ObjectProperty<Duration> currentSequenceStepDurationProperty() {
+        return currentSequenceStepDuration;
+    }
+
+    public void setCurrentSequenceStepDuration(Duration duration) {
+        currentSequenceStepDuration.set(duration);
+    }
+
+    public SequenceStepType getCurrentSequenceStepType() {
+        return currentSequenceStepType.get();
+    }
+
+    public ObjectProperty<SequenceStepType> currentSequenceStepTypeProperty() {
+        return currentSequenceStepType;
+    }
+
+    public void setCurrentSequenceStepType(SequenceStepType sequenceStepType) {
+        currentSequenceStepType.set(sequenceStepType);
+    }
+
     public boolean getDuplicatesAllowed() {
         return isDuplicatesAllowed.get();
     }
@@ -102,30 +139,6 @@ public class PracticeModel {
 
     public void setDuplicatesAllowed(boolean isDuplicatesAllowed) {
         this.isDuplicatesAllowed.set(isDuplicatesAllowed);
-    }
-
-    public int getNumberOfPoses() {
-        return numberOfPoses.get();
-    }
-
-    public IntegerProperty numberOfPosesProperty() {
-        return numberOfPoses;
-    }
-
-    public void setNumberOfPoses(int numberOfPoses) {
-        this.numberOfPoses.set(numberOfPoses);
-    }
-
-    public int getSecondsPerPose() {
-        return secondsPerPose.get();
-    }
-
-    public IntegerProperty secondsPerPoseProperty() {
-        return secondsPerPose;
-    }
-
-    public void setSecondsPerPose(int secondsPerPose) {
-        this.secondsPerPose.set(secondsPerPose);
     }
 
     public File getcurrentPose() {

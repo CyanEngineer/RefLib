@@ -7,21 +7,27 @@
 - Figure out the "requires transitive" warning
 - Where are all the tests, you lazy bum??
 - Only show debug button when run in debug mode
+### Improvements
+- Is it bad that `elapsedSeconds` in the model is updated by the timer every ms?
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
 - Idk it's just the home page
 ### Practice page
 - Ensure that terminology is consistent (e.g. practice vs session)
+- Provide helpful filtering options when planning practice
+- Display the total amount of practice time when planning practice
 - ~~Display ref images at random~~
 - ~~Show pose #~~
 - Practice settings
-  - Timing modes
-    - Custom interval
-    - Increasing intervals
-    - Decide interval from total available time
-    - No timer
-    - (maybe) favorite for each of the above
+  - Practice sequences
+    - ~~Step types~~
+      - ~~timed images~~
+      - ~~untimed images~~
+      - ~~breaks~~
+    - Edit practice sequence
+    - Save multiple different practice sequences
+    - Delete a practice sequence
   - ~~Allow or disallow duplicates~~
     - ~~Restore list after each session~~
   - Filter on tags
@@ -33,7 +39,7 @@
   - Option to display image information
   - (Maybe) Remember previous sessions (delayed review)
 - ~~Pause session~~
-- Skip image
+- ~~Skip image~~
 - Mark image (for later deleting / editing / etc.)
 - (Maybe) One-handed viewing tools (for the traditional people to hold the paper against the screen)
   - Quick access to filters like edge detection and threshold (easier to see ref through paper)

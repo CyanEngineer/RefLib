@@ -20,13 +20,13 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         timedPoseCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.TIMED_POSES));
         Node untimedPoseCell = createUntimedPoseCell();
         untimedPoseCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.UNTIMED_POSES));
-        Node pauseCell = createPauseCell();
-        pauseCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.PAUSE));
+        Node breakCell = createBreakCell();
+        breakCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.BREAK));
         
         layout = new StackPane(
             timedPoseCell,
             untimedPoseCell,
-            pauseCell
+            breakCell
         );
     }
 
@@ -48,10 +48,10 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         return label;
     }
 
-    private Node createPauseCell() {
+    private Node createBreakCell() {
         Label label = new Label();
         label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getDuration().toSeconds() + " seconds pause",
+            () -> model.getDuration().toSeconds() + " seconds break",
             model.durationProperty())
         );
         return label;

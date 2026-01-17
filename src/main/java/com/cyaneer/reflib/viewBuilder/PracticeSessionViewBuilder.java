@@ -1,14 +1,12 @@
 package com.cyaneer.reflib.viewBuilder;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import com.cyaneer.reflib.model.PracticeModel;
+import com.cyaneer.reflib.model.SequenceStepType;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
@@ -32,7 +30,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private final Runnable reviewButtonAction;
     private final Runnable startTimerAction;
     private final Runnable pauseTimerAction;
-    private final Runnable stopTimerAction;
+    private final Runnable jumpToNextAction;
 
     public PracticeSessionViewBuilder(
         PracticeModel model,
@@ -40,14 +38,14 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         Runnable reviewAction,
         Runnable startTimerAction,
         Runnable pauseTimerAction,
-        Runnable stopTimerAction
+        Runnable jumpToNextAction
     ) {
         this.model = model;
         this.backButtonAction = backAction;
         this.reviewButtonAction = reviewAction;
         this.startTimerAction = startTimerAction;
         this.pauseTimerAction = pauseTimerAction;
-        this.stopTimerAction = stopTimerAction;
+        this.jumpToNextAction = jumpToNextAction;
     }
 
     @Override
@@ -59,7 +57,11 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     }
 
     private Node createCenter() {
-        return createImageContainer();
+        Node imageContainer = createImageContainer();
+        imageContainer.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.BREAK));
+        Node breakElement = createBreakElement();
+        breakElement.visibleProperty().bind(model.currentSequenceStepTypeProperty().isEqualTo(SequenceStepType.BREAK));
+        return new StackPane(imageContainer, breakElement);
     }
     
     private Node createImageContainer() {
@@ -76,16 +78,20 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
 
     private ObjectBinding<Image> createImageBinding() {
         return Bindings.createObjectBinding(() -> {
-            try {
-                File file = model.getcurrentPose() != null ? 
-                    model.getcurrentPose() : 
-                    new File("src/main/resources/com/cyaneer/reflib/noimage.png");
-                return new Image(new FileInputStream(file));
-            } catch (FileNotFoundException e) {
-                System.out.println("Couldn't load image");
-                return null; //TODO: Decide behaviour if we fail
-            }
+            return new Image(model.getcurrentPose() != null ? 
+                new FileInputStream(model.getcurrentPose()) :
+                getClass().getResourceAsStream("/com/cyaneer/reflib/noimage.png"));
         }, model.currentPoseProperty());
+    }
+
+    private Node createBreakElement() {
+        ImageView imageView = new ImageView();
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(900);
+        imageView.setFitWidth(1600);
+
+        imageView.setImage(new Image(getClass().getResourceAsStream("/com/cyaneer/reflib/break.png")));
+        return imageView;
     }
 
     private Node createBottom() {
@@ -93,7 +99,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         HBox hBox = new HBox(64,
             createActionButton("Back", backButtonAction),
             createProgressElement(),
-            createTimerControls()
+            createControls()
         );
         hBox.setAlignment(Pos.CENTER);
         return hBox;
@@ -105,63 +111,79 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         return button;
     }
 
-    private Node createConditionalActionButton(String text, Runnable action, BooleanBinding disablingBinding) {
-        Button button = new Button(text);
-        button.setOnAction(e -> action.run());
-        button.disableProperty().bind(disablingBinding);
-        return button;
-    }
-
-    private Node createSessionProgressElement() {
+    private Node createStepProgressElement() {
         Label label = new Label("");
         StringBinding stringBinding = Bindings.createStringBinding(() -> {
-            return model.getCurrentPoseNumber() + "/" + model.getNumberOfPoses();
-        }, model.currentPoseNumberProperty(), model.numberOfPosesProperty());
+            return model.getCurrentPoseNumber() + "/" + model.getCurrentSequenceStepRepetitions();
+        }, model.currentPoseNumberProperty(), model.currentSequenceStepRepetitionsProperty());
         label.textProperty().bind(stringBinding);
         return label;
     }
 
     private Node createProgressElement() {
         return new HBox(8, 
-            createSessionProgressElement(),
+            createStepProgressElement(),
             createPoseProgressElement()
         );
     }
 
     private Node createPoseProgressElement() {
+        Label untimedLabel = new Label("Untimed poses");
+        untimedLabel.visibleProperty().bind(model.currentSequenceStepTypeProperty().isEqualTo(SequenceStepType.UNTIMED_POSES));
+        Node timedProgressBar = createTimedProgressBar();
+        timedProgressBar.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+        return new StackPane(untimedLabel, timedProgressBar);
+    }
+
+    private Node createTimedProgressBar() {
         ProgressBar progressBar = new ProgressBar();
         progressBar.setPrefWidth(200);
         DoubleBinding progress = Bindings.createDoubleBinding(() -> {
             double elapsedSeconds = Math.floor(model.getElapsedSeconds().toSeconds());
-            return elapsedSeconds / (model.getSecondsPerPose() - 1);
+            double totalSeconds = model.getCurrentSequenceStepDuration().toSeconds();
+            return elapsedSeconds / (totalSeconds - 1);
         }, model.currentElapsedSecondsProperty());
         progressBar.progressProperty().bind(progress);
         return progressBar;
     }
     
-    private Node createTimerControls() {
+    private Node createControls() {
 
-        Button startButton = new Button("Start");
-        startButton.visibleProperty().bind(
-            model.timerStatusProperty().isNotEqualTo(Status.RUNNING)
-            .and(model.isSessionFinishedProperty().not())
-        );
-        startButton.managedProperty().bind(startButton.visibleProperty());
-        startButton.setOnAction(e -> startTimerAction.run());
-
-        Button pauseButton = new Button("Pause");
-        pauseButton.visibleProperty().bind(
-            model.timerStatusProperty().isEqualTo(Status.RUNNING)
-            .and(model.isSessionFinishedProperty().not())
-        );
-        pauseButton.managedProperty().bind(pauseButton.visibleProperty());
-        pauseButton.setOnAction(e -> pauseTimerAction.run());
+        Node progressControls = createProgressControls();
+        progressControls.visibleProperty().bind(model.isSessionFinishedProperty().not());
+        progressControls.managedProperty().bind(progressControls.visibleProperty());
 
         Button reviewButton = new Button("Go to review");
         reviewButton.visibleProperty().bind(model.isSessionFinishedProperty());
         reviewButton.managedProperty().bind(reviewButton.visibleProperty());
         reviewButton.setOnAction(e -> reviewButtonAction.run());
 
-        return new StackPane(startButton, pauseButton, reviewButton);
+        return new StackPane(progressControls, reviewButton);
+    }
+
+    private Node createProgressControls() {
+
+        Node timerControls = createTimerControls();
+        timerControls.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+
+        Button nextButton = new Button("Next");
+        nextButton.setOnAction(e -> jumpToNextAction.run());
+
+        return new HBox(8, timerControls, nextButton);
+    }
+
+    private Node createTimerControls() {
+
+        Button startButton = new Button("Start");
+        startButton.visibleProperty().bind(model.timerStatusProperty().isNotEqualTo(Status.RUNNING));
+        startButton.managedProperty().bind(startButton.visibleProperty());
+        startButton.setOnAction(e -> startTimerAction.run());
+
+        Button pauseButton = new Button("Pause");
+        pauseButton.visibleProperty().bind(model.timerStatusProperty().isEqualTo(Status.RUNNING));
+        pauseButton.managedProperty().bind(pauseButton.visibleProperty());
+        pauseButton.setOnAction(e -> pauseTimerAction.run());
+
+        return new StackPane(startButton, pauseButton);
     }
 }

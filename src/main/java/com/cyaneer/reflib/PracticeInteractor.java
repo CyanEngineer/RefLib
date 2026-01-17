@@ -11,7 +11,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.collections.ObservableList;
-import javafx.util.Duration;
 
 public class PracticeInteractor {
     private PracticeModel model;
@@ -42,35 +41,37 @@ public class PracticeInteractor {
 
     private void advanceToNextStep() {
         if (model.getRemainingSequenceStepsList().isEmpty()) {
-            //TODO: End practice
+            timer.jumpTo("end"); //TODO: Verify that this doesn't break anything
+            model.setSessionFinished(true);
         } else {
-            SequenceStep practiceStep = model.getRemainingSequenceStepsList().getFirst();
-            
-            //TODO: updateModel(practiceStep);
-            // Create the appropriate kind of timer
-            // Set whatever should be shown on the practice screen
-            // Start the timer
-            // Pop the list somewhere
-        }
+            SequenceStep nextStep = model.remainingSequenceStepsListProperty().removeFirst();
+            updateModel(nextStep);
 
-        createTimer();
-        advanceInCurrentStep();
+            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_POSES) {
+                createTimer();
+            }
+            
+            advanceInCurrentStep();
+        }
     }
 
-    private void advanceInCurrentStep() {
-        if (model.getCurrentPoseNumber() < model.getNumberOfPoses()) {
-            File nextPose = getRandomPose();
-            model.currentPoseProperty().set(nextPose);
-            model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
-            model.getDrawnPosesList().add(nextPose);
-            if (!model.getDuplicatesAllowed()) {
-                model.getSessionPoseList().remove(nextPose);
+    public void advanceInCurrentStep() {
+        //TODO: I need to ensure that numberOfPoses is always 1 for BREAK or do something else
+        if (model.getCurrentPoseNumber() < model.getCurrentSequenceStepRepetitions()) {
+            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_POSES) {
+                timer.playFromStart();
             }
-            timer.playFromStart();
+            if (model.getCurrentSequenceStepType() != SequenceStepType.BREAK) {
+                File nextPose = getRandomPose();
+                model.currentPoseProperty().set(nextPose);
+                model.getDrawnPosesList().add(nextPose);
+                if (!model.getDuplicatesAllowed()) {
+                    model.getSessionPoseList().remove(nextPose);
+                }
+            }
+            model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
         } else {
-            model.setSessionFinished(true);
-            stopTimer();
-            //TODO: advanceToNextStep();
+            advanceToNextStep();
         }
     }
 
@@ -82,12 +83,11 @@ public class PracticeInteractor {
         return (int) (Math.random() * model.getSessionPoseList().size());
     }
 
-    private void updateModel(SequenceStep step) {
-        if (step.getType() != SequenceStepType.PAUSE) {
-            model.setNumberOfPoses(step.getRepetitions());
-            model.setSecondsPerPose((int) step.getDuration().toSeconds());
-            model.setCurrentPoseNumber(0);
-        }
+    private void updateModel(SequenceStep nextStep) {
+        model.setCurrentSequenceStepRepetitions(nextStep.getRepetitions());
+        model.setCurrentSequenceStepDuration(nextStep.getDuration());
+        model.setCurrentSequenceStepType(nextStep.getType());
+        model.setCurrentPoseNumber(0);
     }
 
     private void createTimer() {
@@ -95,7 +95,7 @@ public class PracticeInteractor {
         keyFrames.clear();
         keyFrames.add(
             new KeyFrame(
-                Duration.seconds(model.getSecondsPerPose()),
+                model.getCurrentSequenceStepDuration(),
                 e -> advanceInCurrentStep()
             )
         );

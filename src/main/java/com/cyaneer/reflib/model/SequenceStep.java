@@ -56,7 +56,6 @@ public class SequenceStep {
         this.type.set(type);
     }
 
-    // TODO: Try to understand what all the unbindFrom/bindTo stuff is good for
     public void bindTo(SequenceStep other) {
         repetitions.bind(other.repetitions);
         duration.bind(other.duration);
