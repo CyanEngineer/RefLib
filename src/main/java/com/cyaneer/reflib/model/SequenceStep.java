@@ -57,14 +57,16 @@ public class SequenceStep {
     }
 
     public void bindTo(SequenceStep other) {
-        repetitions.bind(other.repetitions);
-        duration.bind(other.duration);
-        type.bind(other.type);
+        repetitions.bindBidirectional(other.repetitions);
+        duration.bindBidirectional(other.duration);
+        type.bindBidirectional(other.type);
     }
 
-    public void unbind() {
-        repetitions.unbind();
-        duration.unbind();
-        type.unbind();
+    public void unbindFrom(SequenceStep other) {
+        if (other != null) {
+            repetitions.unbindBidirectional(other.repetitions);
+            duration.unbindBidirectional(other.duration);
+            type.unbindBidirectional(other.type);
+        }
     }
 }
