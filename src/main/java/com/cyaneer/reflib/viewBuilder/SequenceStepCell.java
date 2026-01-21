@@ -6,7 +6,6 @@ import com.cyaneer.reflib.model.SequenceStep;
 import com.cyaneer.reflib.model.SequenceStepType;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -43,8 +42,8 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         Node repetitionsSpinner = boundSpinner(model.repetitionsProperty());
         Label label = new Label();
         label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getRepetitions() + " poses of " + model.getDuration().toSeconds() + " sec",
-            model.repetitionsProperty(), model.durationProperty())
+            () -> model.getRepetitions() + " poses of " + model.getSecPerRep() + " sec",
+            model.repetitionsProperty(), model.secPerRepProperty())
         );
         return new HBox(repetitionsSpinner, label);
     }
@@ -61,13 +60,13 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
     private Node createBreakCell() {
         Label label = new Label();
         label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getDuration().toSeconds() + " seconds break",
-            model.durationProperty())
+            () -> model.getSecPerRep() + " seconds break",
+            model.secPerRepProperty())
         );
         return label;
     }
 
-    private Node boundSpinner(IntegerProperty property) {
+    private Node boundSpinner(ObjectProperty<Integer> property) {
         Spinner<Integer> spinner = new Spinner<Integer>(1, 1000000, 1);
         TextFormatter<Integer> positiveIntegerTextFormatter = new TextFormatter<Integer>(
             new PositiveIntegerStringConverter(), 
@@ -77,9 +76,8 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         spinner.getEditor().setTextFormatter(positiveIntegerTextFormatter);
         spinner.setEditable(true);
         
-        ObjectProperty<Integer> obProperty = property.asObject();
+        positiveIntegerTextFormatter.valueProperty().bindBidirectional(property);
         
-        positiveIntegerTextFormatter.valueProperty().bindBidirectional(obProperty);
         return spinner;
     }
 
@@ -119,7 +117,6 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
     
     @Override
     public void updateItem(SequenceStep item, boolean isEmpty) {
-        System.out.println("UpdateItem called");
         model.unbindFrom(this.getItem());
         super.updateItem(item, isEmpty);
         if (!isEmpty && (item != null)) {

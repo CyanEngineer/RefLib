@@ -10,7 +10,10 @@ import com.cyaneer.reflib.model.SequenceStepType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.collections.ObservableList;
+import javafx.util.Duration;
 
 public class PracticeInteractor {
     private PracticeModel model;
@@ -20,7 +23,12 @@ public class PracticeInteractor {
     public PracticeInteractor(PracticeModel model) {
         this.model = model;
         model.timerStatusProperty().bind(timer.statusProperty());
-        model.currentElapsedSecondsProperty().bind(timer.currentTimeProperty());
+        //TODO: I can't imagine that it isn't hella inefficient to have a binding that's called every ms...
+        ObjectBinding<Integer> currentTimeBinding = Bindings.createObjectBinding(
+            () -> (int) timer.currentTimeProperty().get().toSeconds(),
+            timer.currentTimeProperty()
+        );
+        model.currentElapsedSecondsProperty().bind(currentTimeBinding);
     }
 
     public void loadImages() {
@@ -85,7 +93,7 @@ public class PracticeInteractor {
 
     private void updateModel(SequenceStep nextStep) {
         model.setCurrentSequenceStepRepetitions(nextStep.getRepetitions());
-        model.setCurrentSequenceStepDuration(nextStep.getDuration());
+        model.setCurrentSequenceStepSecPerRep(nextStep.getSecPerRep());
         model.setCurrentSequenceStepType(nextStep.getType());
         model.setCurrentPoseNumber(0);
     }
@@ -95,7 +103,7 @@ public class PracticeInteractor {
         keyFrames.clear();
         keyFrames.add(
             new KeyFrame(
-                model.getCurrentSequenceStepDuration(),
+                Duration.seconds(model.getCurrentSequenceStepSecPerRep()),
                 e -> advanceInCurrentStep()
             )
         );

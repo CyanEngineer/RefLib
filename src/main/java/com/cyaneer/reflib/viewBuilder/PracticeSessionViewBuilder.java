@@ -139,8 +139,8 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         ProgressBar progressBar = new ProgressBar();
         progressBar.setPrefWidth(200);
         DoubleBinding progress = Bindings.createDoubleBinding(() -> {
-            double elapsedSeconds = Math.floor(model.getElapsedSeconds().toSeconds());
-            double totalSeconds = model.getCurrentSequenceStepDuration().toSeconds();
+            double elapsedSeconds = Math.floor(model.getElapsedSeconds());
+            double totalSeconds = model.getCurrentSequenceStepSecPerRep();
             return elapsedSeconds / (totalSeconds - 1);
         }, model.currentElapsedSecondsProperty());
         progressBar.progressProperty().bind(progress);

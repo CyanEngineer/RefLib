@@ -1,22 +1,19 @@
 package com.cyaneer.reflib.model;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.util.Duration;
 
 public class SequenceStep {
     
-    private final IntegerProperty repetitions = new SimpleIntegerProperty(1); // Ignore if type is PAUSE
-    private final ObjectProperty<Duration> duration = new SimpleObjectProperty<Duration>(Duration.INDEFINITE); // Ignore if type is UNTIMED_POSES
-    private final ObjectProperty<SequenceStepType> type = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.UNTIMED_POSES);
+    private final ObjectProperty<Integer> repetitions = new SimpleObjectProperty<Integer>(0); // Ignore if type is PAUSE
+    private final ObjectProperty<Integer> secPerRep = new SimpleObjectProperty<Integer>(0); // Ignore if type is UNTIMED_POSES
+    private final ObjectProperty<SequenceStepType> type = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.TIMED_POSES);
 
     public SequenceStep() {};
 
-    public SequenceStep(int repetitions, Duration duration, SequenceStepType type) {
+    public SequenceStep(int repetitions, int secPerRep, SequenceStepType type) {
         this.repetitions.set(repetitions);
-        this.duration.set(duration);
+        this.secPerRep.set(secPerRep);
         this.type.set(type);
     }
 
@@ -24,7 +21,7 @@ public class SequenceStep {
         return repetitions.get();
     }
 
-    public IntegerProperty repetitionsProperty() {
+    public ObjectProperty<Integer> repetitionsProperty() {
         return repetitions;
     }
 
@@ -32,16 +29,16 @@ public class SequenceStep {
         this.repetitions.set(repetitions);
     }
 
-    public Duration getDuration() {
-        return duration.get();
+    public int getSecPerRep() {
+        return secPerRep.get();
     }
 
-    public ObjectProperty<Duration> durationProperty() {
-        return duration;
+    public ObjectProperty<Integer> secPerRepProperty() {
+        return secPerRep;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration.set(duration);
+    public void setSecPerRep(Integer secPerRep) {
+        this.secPerRep.set(secPerRep);
     }
 
     public SequenceStepType getType() {
@@ -58,14 +55,14 @@ public class SequenceStep {
 
     public void bindTo(SequenceStep other) {
         repetitions.bindBidirectional(other.repetitions);
-        duration.bindBidirectional(other.duration);
+        secPerRep.bindBidirectional(other.secPerRep);
         type.bindBidirectional(other.type);
     }
 
     public void unbindFrom(SequenceStep other) {
         if (other != null) {
             repetitions.unbindBidirectional(other.repetitions);
-            duration.unbindBidirectional(other.duration);
+            secPerRep.unbindBidirectional(other.secPerRep);
             type.unbindBidirectional(other.type);
         }
     }

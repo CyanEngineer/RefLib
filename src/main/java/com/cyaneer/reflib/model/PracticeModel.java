@@ -14,7 +14,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Duration;
 
 public class PracticeModel {
 
@@ -24,12 +23,12 @@ public class PracticeModel {
     private final ListProperty<SequenceStep> sequenceStepList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
-    private final IntegerProperty currentSequenceStepRepetitions = new SimpleIntegerProperty(1);
-    private final ObjectProperty<Duration> currentSequenceStepDuration = new SimpleObjectProperty<Duration>(Duration.INDEFINITE);
-    private final ObjectProperty<SequenceStepType> currentSequenceStepType = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.UNTIMED_POSES);
+    private final ObjectProperty<Integer> currentSequenceStepRepetitions = new SimpleObjectProperty<Integer>(0);
+    private final ObjectProperty<Integer> currentSequenceStepSecPerRep = new SimpleObjectProperty<Integer>(0);
+    private final ObjectProperty<SequenceStepType> currentSequenceStepType = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.TIMED_POSES);
     private final ObjectProperty<File> currentPose = new SimpleObjectProperty<File>(null);
     private final IntegerProperty currentPoseNumber = new SimpleIntegerProperty(0);
-    private final ObjectProperty<Duration> elapsedSeconds = new SimpleObjectProperty<Duration>(Duration.ZERO);
+    private final ObjectProperty<Integer> elapsedSeconds = new SimpleObjectProperty<Integer>(0);
     private final ObjectProperty<Status> timerStatus = new SimpleObjectProperty<Status>(Status.STOPPED);
     private final BooleanProperty isSessionFinished = new SimpleBooleanProperty(false);
 
@@ -97,7 +96,7 @@ public class PracticeModel {
         return currentSequenceStepRepetitions.get();
     }
 
-    public IntegerProperty currentSequenceStepRepetitionsProperty() {
+    public ObjectProperty<Integer> currentSequenceStepRepetitionsProperty() {
         return currentSequenceStepRepetitions;
     }
 
@@ -105,16 +104,16 @@ public class PracticeModel {
         currentSequenceStepRepetitions.set(repetitions);
     }
 
-    public Duration getCurrentSequenceStepDuration() {
-        return currentSequenceStepDuration.get();
+    public int getCurrentSequenceStepSecPerRep() {
+        return currentSequenceStepSecPerRep.get();
     }
 
-    public ObjectProperty<Duration> currentSequenceStepDurationProperty() {
-        return currentSequenceStepDuration;
+    public ObjectProperty<Integer> currentSequenceStepSecPerRepProperty() {
+        return currentSequenceStepSecPerRep;
     }
 
-    public void setCurrentSequenceStepDuration(Duration duration) {
-        currentSequenceStepDuration.set(duration);
+    public void setCurrentSequenceStepSecPerRep(int secPerRep) {
+        currentSequenceStepSecPerRep.set(secPerRep);
     }
 
     public SequenceStepType getCurrentSequenceStepType() {
@@ -165,11 +164,11 @@ public class PracticeModel {
         this.currentPoseNumber.set(currentPoseNumber);
     }
 
-    public Duration getElapsedSeconds() {
+    public int getElapsedSeconds() {
         return elapsedSeconds.get();
     }
 
-    public ObjectProperty<Duration> currentElapsedSecondsProperty() {
+    public ObjectProperty<Integer> currentElapsedSecondsProperty() {
         return elapsedSeconds;
     }
 
