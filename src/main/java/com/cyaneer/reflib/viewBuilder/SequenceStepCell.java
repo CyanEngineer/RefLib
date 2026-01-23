@@ -15,59 +15,69 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.util.converter.IntegerStringConverter;
 
 public class SequenceStepCell extends ListCell<SequenceStep> {
     
+    private final int MAX_SPINNER_VALUE = 1000;
     private SequenceStep model = new SequenceStep();
     private Region layout;
 
     public SequenceStepCell() {
-        Node timedPoseCell = createTimedPoseCell();
-        timedPoseCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.TIMED_POSES));
-        Node untimedPoseCell = createUntimedPoseCell();
-        untimedPoseCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.UNTIMED_POSES));
-        Node breakCell = createBreakCell();
-        breakCell.visibleProperty().bind(model.typeProperty().isEqualTo(SequenceStepType.BREAK));
-        
-        layout = new StackPane(
-            timedPoseCell,
-            untimedPoseCell,
-            breakCell
-        );
-    }
-
-    private Node createTimedPoseCell() {
         Node repetitionsSpinner = boundSpinner(model.repetitionsProperty());
-        Label label = new Label();
-        label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getRepetitions() + " poses of " + model.getSecPerRep() + " sec",
-            model.repetitionsProperty(), model.secPerRepProperty())
+        repetitionsSpinner.visibleProperty().bind(model.typeProperty().isNotEqualTo(SequenceStepType.BREAK));
+        repetitionsSpinner.managedProperty().bind(repetitionsSpinner.visibleProperty());
+        
+        Node durationSpinner = boundSpinner(model.secPerRepProperty());
+        durationSpinner.visibleProperty().bind(model.typeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+        durationSpinner.managedProperty().bind(durationSpinner.visibleProperty());
+
+        layout = new HBox(4,
+            repetitionsSpinner,
+            createContentLabel(),
+            durationSpinner,
+            createTimeUnitLabel()
         );
-        return new HBox(repetitionsSpinner, label);
     }
 
-    private Node createUntimedPoseCell() {
-        Label label = new Label();
+    private Node createContentLabel() {
+        Label label = new Label("");
+
         label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getRepetitions() + " untimed poses",
-            model.repetitionsProperty())
-        );
+            () -> {
+                if (model.getType() == SequenceStepType.TIMED_POSES) {
+                    return "poses of";
+                } else if (model.getType() == SequenceStepType.UNTIMED_POSES) {
+                    return "poses without timer";
+                } else {
+                    return "Break for";
+                }
+            },
+            model.typeProperty()
+        ));
+
         return label;
     }
 
-    private Node createBreakCell() {
-        Label label = new Label();
+    private Node createTimeUnitLabel() {
+        Label label = new Label("");
+
         label.textProperty().bind(Bindings.createStringBinding(
-            () -> model.getSecPerRep() + " seconds break",
-            model.secPerRepProperty())
-        );
+            () -> {
+                if (model.getType() == SequenceStepType.UNTIMED_POSES) {
+                    return "";
+                } else {
+                    return "seconds"; //TODO: Support minutes
+                }
+            },
+            model.typeProperty()
+        ));
+
         return label;
     }
 
     private Node boundSpinner(ObjectProperty<Integer> property) {
-        Spinner<Integer> spinner = new Spinner<Integer>(1, 1000000, 1);
+        Spinner<Integer> spinner = new Spinner<Integer>(1, MAX_SPINNER_VALUE, 1);
         TextFormatter<Integer> positiveIntegerTextFormatter = new TextFormatter<Integer>(
             new PositiveIntegerStringConverter(), 
             1, 
@@ -75,6 +85,7 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         );
         spinner.getEditor().setTextFormatter(positiveIntegerTextFormatter);
         spinner.setEditable(true);
+        spinner.setPrefWidth(75);
         
         positiveIntegerTextFormatter.valueProperty().bindBidirectional(property);
         
@@ -105,9 +116,12 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
 
     private class PositiveIntegerFilter implements UnaryOperator<TextFormatter.Change> {
 
+        private final int MAX_SPINNER_DIGITS = ("" + MAX_SPINNER_VALUE).length();
+        private final String regex = String.format("([0-9]{0,%d})?", MAX_SPINNER_DIGITS);
+
         @Override
         public Change apply(Change change) {
-            if (change.getControlNewText().matches("[0-9]*")) {
+            if (change.getControlNewText().matches(regex)) {
                 return change;
             }
             return null;
