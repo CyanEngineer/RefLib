@@ -8,7 +8,8 @@
 - Where are all the tests, you lazy bum??
 - Only show debug button when run in debug mode
 ### Improvements
-- Is it bad that `elapsedSeconds` in the model is updated by the timer every ms?
+- Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
+- Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
@@ -16,7 +17,7 @@
 ### Practice page
 - Ensure that terminology is consistent (e.g. practice vs session)
 - Provide helpful filtering options when planning practice
-- Display the total amount of practice time when planning practice
+- ~~Display the total amount of practice time when planning practice~~
 - ~~Display ref images at random~~
 - ~~Show pose #~~
 - Practice settings
@@ -33,7 +34,8 @@
     - ~~Restore list after each session~~
   - Filter on tags
   - Exclude NSFW
-- ~~Page to review images from session~~
+- Page to review images from session
+  - ~~Show drawn images~~
   - ~~Option to copy image~~
   - Option to bulk delete
   - Option to bulk tag

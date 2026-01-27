@@ -2,8 +2,11 @@ package com.cyaneer.reflib.viewBuilder;
 
 import com.cyaneer.reflib.model.PracticeModel;
 import com.cyaneer.reflib.model.SequenceStep;
+import com.cyaneer.reflib.model.SequenceStepType;
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -41,7 +44,6 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         ListView<SequenceStep> listView = new ListView<>();
         listView.setCellFactory(lv -> createCell());
         listView.setItems(model.getSequenceStepList());
-        System.out.println(listView.getItems().getFirst().getType().name());
         return listView;
     }
 
@@ -51,6 +53,14 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
     private Node createButtons() {
         Button startButton = new Button("Start");
+
+        Label timeLabel = new Label("");
+        updateTimeLabelDeps(timeLabel);
+
+        model.sequenceStepListProperty().addListener(
+            (ob, oldValue, newValue) -> updateTimeLabelDeps(timeLabel)
+        );
+
         startButton.disableProperty().bind(Bindings.createBooleanBinding(
                 () -> model.getSessionPoseList().size() == 0,
                 model.sessionPoseListProperty()));
@@ -58,10 +68,45 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         startButton.setOnAction(e -> startAction.run());
         HBox content = new HBox(8,
                 new Button("Back"),
-                new Label("Practice time: "),
-                new Label("???"), //TODO: Calculate this somehow
+                timeLabel,
                 startButton);
         content.setAlignment(Pos.CENTER);
         return content;
+    }
+
+    private void updateTimeLabelDeps(Label timeLabel) {
+
+        ObservableList<SequenceStep> sequenceStepList = model.getSequenceStepList();
+        Observable[] deps = new Observable[sequenceStepList.size()];
+        for (int i=0; i< sequenceStepList.size(); i++) {
+            deps[i] = sequenceStepList.get(i).totalSeconds();
+        }
+
+        timeLabel.textProperty().unbind();
+        timeLabel.textProperty().bind(Bindings.createStringBinding(
+            () -> createTimeLabelString(), 
+            deps
+        ));
+    }
+
+    private String createTimeLabelString() {
+        int drawingSeconds = 0;
+        int breakSeconds = 0;
+        for (SequenceStep ss : model.getSequenceStepList()) {
+            if (ss.getType() == SequenceStepType.TIMED_POSES) {
+                drawingSeconds += ss.totalSeconds().get();
+            } else if (ss.getType() == SequenceStepType.BREAK) {
+                breakSeconds += ss.totalSeconds().get();
+            }
+        }
+
+        String string = "";
+        if (drawingSeconds > 0) {
+            string += "Timed drawing: " + drawingSeconds + " seconds.";
+            if (breakSeconds > 0) string += " ";
+        }
+        if (breakSeconds > 0) string += "Breaks: " + breakSeconds + " seconds.";
+
+        return string;
     }
 }
