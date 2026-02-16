@@ -1,5 +1,7 @@
 package com.cyaneer.reflib.viewBuilder;
 
+import java.util.function.Consumer;
+
 import com.cyaneer.reflib.model.PracticeModel;
 import com.cyaneer.reflib.model.SequenceStep;
 import com.cyaneer.reflib.model.SequenceStepType;
@@ -20,10 +22,19 @@ import javafx.util.Builder;
 public class PracticePlanViewBuilder implements Builder<Region> {
 
     private final PracticeModel model;
+    private final Consumer<SequenceStepType> addStepAction;
+    private final Consumer<Integer> removeStepAction;
     private final Runnable startAction;
     
-    public PracticePlanViewBuilder(PracticeModel model, Runnable startAction) {
+    public PracticePlanViewBuilder(
+        PracticeModel model,
+        Consumer<SequenceStepType> addStepAction,
+        Consumer<Integer> removeStepAction,
+        Runnable startAction
+    ) {
         this.model = model;
+        this.addStepAction = addStepAction;
+        this.removeStepAction = removeStepAction;
         this.startAction = startAction;
     }
 
@@ -44,11 +55,41 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         ListView<SequenceStep> listView = new ListView<>();
         listView.setCellFactory(lv -> createCell());
         listView.setItems(model.getSequenceStepList());
-        return listView;
+
+        return new BorderPane(
+            listView,
+            null,
+            null,
+            createSequenceControls(listView),
+            null
+        );
     }
 
     private SequenceStepCell createCell() {
         return new SequenceStepCell();
+    }
+
+    private Node createSequenceControls(ListView<SequenceStep> listView) {
+        Button addTimedButton = new Button("Add timed poses");
+        addTimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.TIMED_POSES));
+
+        Button addUntimedButton = new Button("Add untimed poses");
+        addUntimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.UNTIMED_POSES));
+
+        Button addBreakButton = new Button("Add break");
+        addBreakButton.setOnAction(e -> addStepAction.accept(SequenceStepType.BREAK));
+
+        Button removeSelectedStepButton = new Button("Remove selected");
+        removeSelectedStepButton.setOnAction(e -> 
+            removeStepAction.accept(listView.getSelectionModel().getSelectedIndex())
+        );
+
+        return new HBox(8,
+            addTimedButton,
+            addUntimedButton,
+            addBreakButton,
+            removeSelectedStepButton
+        );
     }
 
     private Node createButtons() {

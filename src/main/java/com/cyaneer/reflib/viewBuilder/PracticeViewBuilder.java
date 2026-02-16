@@ -1,6 +1,9 @@
 package com.cyaneer.reflib.viewBuilder;
 
+import java.util.function.Consumer;
+
 import com.cyaneer.reflib.model.PracticeModel;
+import com.cyaneer.reflib.model.SequenceStepType;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -11,6 +14,8 @@ import javafx.util.Builder;
 public class PracticeViewBuilder implements Builder<Region>{
 
     private final PracticeModel model;
+    private final Consumer<SequenceStepType> addStepAction;
+    private final Consumer<Integer> removeStepAction;
     private final Runnable startPracticeAction;
     private final Runnable startTimerAction;
     private final Runnable pauseTimerAction;
@@ -24,6 +29,8 @@ public class PracticeViewBuilder implements Builder<Region>{
 
     public PracticeViewBuilder(
         PracticeModel model,
+        Consumer<SequenceStepType> addStepAction,
+        Consumer<Integer> removeStepAction,
         Runnable startPracticeAction,
         Runnable startTimerAction,
         Runnable pauseTimerAction,
@@ -32,6 +39,8 @@ public class PracticeViewBuilder implements Builder<Region>{
         Runnable resetPracticeAction
     ) {
         this.model = model;
+        this.addStepAction = addStepAction;
+        this.removeStepAction = removeStepAction;
         this.startPracticeAction = startPracticeAction;
         this.startTimerAction = startTimerAction;
         this.pauseTimerAction = pauseTimerAction;
@@ -45,7 +54,9 @@ public class PracticeViewBuilder implements Builder<Region>{
         practiceView = new BorderPane();
 
         practicePlanView = new PracticePlanViewBuilder(
-            model, 
+            model,
+            addStepAction,
+            removeStepAction,
             planViewStartAction()
         ).build();
 

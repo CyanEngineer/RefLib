@@ -1,6 +1,7 @@
 package com.cyaneer.reflib;
 
 import com.cyaneer.reflib.model.PracticeModel;
+import com.cyaneer.reflib.model.SequenceStepType;
 import com.cyaneer.reflib.viewBuilder.PracticeViewBuilder;
 
 import javafx.concurrent.Task;
@@ -20,6 +21,8 @@ public class PracticeController {
         loadSequence();
         viewBuilder = new PracticeViewBuilder(
             model,
+            type -> addStep(type),
+            idx -> removeStep(idx),
             () -> startPractice(),
             () -> startPracticeTimer(),
             () -> pausePracticeTimer(),
@@ -55,6 +58,14 @@ public class PracticeController {
         };
         Thread loadSequenceThread = new Thread(loadSequenceTask);
         loadSequenceThread.start();
+    }
+
+    private void addStep(SequenceStepType type) {
+        interactor.addStep(type);
+    }
+
+    private void removeStep(int idx) {
+        interactor.removeStep(idx);
     }
 
     private void startPractice() {

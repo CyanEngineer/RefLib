@@ -42,6 +42,19 @@ public class PracticeInteractor {
         model.setSequenceStepList(sequenceStepList);
     }
 
+    public void addStep(SequenceStepType type) {
+        int repetitions = type == SequenceStepType.BREAK ? 1 : 10;
+        int secPerRep = type == SequenceStepType.UNTIMED_POSES ? 1 : 60;
+
+        model.sequenceStepListProperty().add(new SequenceStep(repetitions, secPerRep, type));
+    }
+
+    public void removeStep(int idx) {
+        if (idx >= 0) {
+            model.sequenceStepListProperty().remove(idx);
+        }
+    }
+
     public void startPractice() {
         model.setRemainingSequenceStepsList(model.getSequenceStepList());
         advanceToNextStep();

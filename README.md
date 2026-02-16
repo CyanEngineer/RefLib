@@ -27,7 +27,7 @@
       - ~~untimed images~~
       - ~~breaks~~
     - Add a minutes field to duration
-    - Edit practice sequence
+    - ~~Edit practice sequence~~
     - Save multiple different practice sequences
     - Delete a practice sequence
   - ~~Allow or disallow duplicates~~
