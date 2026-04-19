@@ -59,6 +59,10 @@ public class SequenceStep {
         this.type.set(type);
     }
 
+    public int getTotalSeconds() {
+        return totalSeconds.get();
+    }
+
     public IntegerBinding totalSeconds() {
         return totalSeconds;
     }

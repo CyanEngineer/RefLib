@@ -50,9 +50,7 @@ public class PracticeInteractor {
     }
 
     public void removeStep(int idx) {
-        if (idx >= 0) {
-            model.sequenceStepListProperty().remove(idx);
-        }
+        model.sequenceStepListProperty().remove(idx);
     }
 
     public void startPractice() {
@@ -83,16 +81,20 @@ public class PracticeInteractor {
                 timer.playFromStart();
             }
             if (model.getCurrentSequenceStepType() != SequenceStepType.BREAK) {
-                File nextPose = getRandomPose();
-                model.currentPoseProperty().set(nextPose);
-                model.getDrawnPosesList().add(nextPose);
-                if (!model.getDuplicatesAllowed()) {
-                    model.getSessionPoseList().remove(nextPose);
-                }
+                setNextPose();
             }
             model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
         } else {
             advanceToNextStep();
+        }
+    }
+
+    private void setNextPose() {
+        File nextPose = getRandomPose();
+        model.currentPoseProperty().set(nextPose);
+        model.getDrawnPosesList().add(nextPose);
+        if (!model.getDuplicatesAllowed()) {
+            model.getSessionPoseList().remove(nextPose);
         }
     }
 
