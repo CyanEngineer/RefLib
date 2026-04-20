@@ -1,4 +1,6 @@
 module com.cyaneer.reflib {
+    requires java.management;
+    
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;

@@ -11,6 +11,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.List;
+
 public class PracticeViewBuilder implements Builder<Region>{
 
     private final PracticeModel model;
@@ -73,11 +77,14 @@ public class PracticeViewBuilder implements Builder<Region>{
             model,
             reviewViewBackAction()
         ).build();
-
-        
         
         practiceView.setCenter(practicePlanView);
-        practiceView.setBottom(createDebugButton());
+
+        List<String> runtimeArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+        boolean isDebugMode = runtimeArguments.stream().anyMatch(arg -> arg.contains("jdwp"));
+        if (isDebugMode) {
+            practiceView.setBottom(createDebugButton());
+        }
         return practiceView;
     }
     
