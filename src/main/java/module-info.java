@@ -6,4 +6,5 @@ module com.cyaneer.reflib {
 
     opens com.cyaneer.reflib to javafx.fxml;
     exports com.cyaneer.reflib;
+    exports com.cyaneer.reflib.model;
 }
