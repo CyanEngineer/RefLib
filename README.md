@@ -4,7 +4,6 @@
 
 ## Roadmap
 ### Bugs
-- Figure out the "requires transitive" warning
 - Where are all the tests, you lazy bum??
 - Only show debug button when run in debug mode
 ### Improvements
