@@ -4,7 +4,7 @@
 
 ## Roadmap
 ### Bugs
-- Where are all the tests, you lazy bum??
+- None! (that I know of)
 ### Improvements
 - Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time

@@ -174,16 +174,16 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
 
     private Node createTimerControls() {
 
-        Button startButton = new Button("Start");
-        startButton.visibleProperty().bind(model.timerStatusProperty().isNotEqualTo(Status.RUNNING));
-        startButton.managedProperty().bind(startButton.visibleProperty());
-        startButton.setOnAction(e -> startTimerAction.run());
+        Button resumeButton = new Button("Resume");
+        resumeButton.visibleProperty().bind(model.timerStatusProperty().isNotEqualTo(Status.RUNNING));
+        resumeButton.managedProperty().bind(resumeButton.visibleProperty());
+        resumeButton.setOnAction(e -> startTimerAction.run());
 
         Button pauseButton = new Button("Pause");
         pauseButton.visibleProperty().bind(model.timerStatusProperty().isEqualTo(Status.RUNNING));
         pauseButton.managedProperty().bind(pauseButton.visibleProperty());
         pauseButton.setOnAction(e -> pauseTimerAction.run());
 
-        return new StackPane(startButton, pauseButton);
+        return new StackPane(resumeButton, pauseButton);
     }
 }

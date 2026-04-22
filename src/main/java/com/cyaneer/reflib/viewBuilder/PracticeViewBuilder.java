@@ -12,7 +12,6 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.util.List;
 
 public class PracticeViewBuilder implements Builder<Region>{
