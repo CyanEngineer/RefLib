@@ -1,15 +1,11 @@
 package com.cyaneer.reflib;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import org.bytedeco.opencv.opencv_core.Size;
 import org.bytedeco.opencv.opencv_core.Mat;
-import org.bytedeco.opencv.opencv_core.MatVector;
 import org.bytedeco.opencv.opencv_core.DMatchVector;
 import org.bytedeco.opencv.opencv_core.DMatchVectorVector;
 import org.bytedeco.opencv.opencv_core.KeyPointVector;
@@ -21,7 +17,6 @@ import static org.bytedeco.opencv.global.opencv_imgcodecs.imread;
 import static org.bytedeco.opencv.global.opencv_imgcodecs.IMREAD_GRAYSCALE;
 import static org.bytedeco.opencv.global.opencv_imgproc.resize;
 import static org.bytedeco.opencv.global.opencv_imgproc.INTER_LINEAR;
-import static org.bytedeco.opencv.global.opencv_core.flip;
 
 import com.cyaneer.reflib.model.Ref;
 import com.cyaneer.reflib.model.UploadModel;

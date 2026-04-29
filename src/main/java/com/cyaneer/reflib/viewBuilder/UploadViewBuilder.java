@@ -1,22 +1,17 @@
 package com.cyaneer.reflib.viewBuilder;
 
 import java.io.FileInputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.function.Consumer;
 
 import com.cyaneer.reflib.model.UploadModel;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
