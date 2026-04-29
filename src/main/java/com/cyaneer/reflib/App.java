@@ -12,7 +12,7 @@ public class App extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Scene scene = new Scene(new PracticeController().getView(), 1600, 900);
+        Scene scene = new Scene(new HomeController().getView(), 1600, 900);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 
 public class PracticeModel {
 
+    //TODO: In the future, move the full poselist to the App model
     private final ListProperty<File> fullPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final ListProperty<File> sessionPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
     private final ListProperty<File> drawnPosesList = new SimpleListProperty<File>(FXCollections.observableArrayList());

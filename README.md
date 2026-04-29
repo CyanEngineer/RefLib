@@ -8,6 +8,8 @@
 ### Improvements
 - Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
+- Use the term "refs" instead of "images" and "poses"
+- Avoid the dependency on libgtk-x11-2.0.so
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
@@ -53,6 +55,9 @@
   - SIFT
     - Or a faster algorithm if I ever find one that works as well
   - Store SIFT descriptors of images in library (only needs to compute descriptors for new image)
+  - Handle the fact that SIFT is not flip-robust
+    - Can the descriptors be flipped so they only need to be computed once?
+    - Or is it necessary to compute descriptors for the image as well as the double-sided image?
   - Display 5? most similar images
   - Let user compare and keep the image they prefer (e.g. higer res)
 - Also check duplicate names I guess
