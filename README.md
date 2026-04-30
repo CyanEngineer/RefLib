@@ -4,7 +4,7 @@
 
 ## Roadmap
 ### Bugs
-- None! (that I know of)
+- Upload dragboard behaves strange sometimes (at least when running from VSCode on Wayland)
 ### Improvements
 - Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
@@ -13,11 +13,11 @@
 - Look into the stack guard warning
 - Be more dynamic about displayed image size
 ### Home page
-- Links to the other pages I guess??
+- ~~Links to the other pages I guess??~~
 - Funny stats?
 - Idk it's just the home page
 ### Practice page
-- Ensure that terminology is consistent (e.g. practice vs session)
+- Ensure that terminology is consistent (e.g. practice/session, ref/pose/image)
 - Provide helpful filtering options when planning practice
 - ~~Display the total amount of practice time when planning practice~~
 - ~~Display ref images at random~~
@@ -57,13 +57,13 @@
   - ~~Local files~~
   - Browser
 - Check new images against images in library to avoid duplicates
-  - SIFT
+  - ~~SIFT~~
     - Or a faster algorithm if I ever find one that works as well
   - Store SIFT descriptors of images in library (only needs to compute descriptors for new image)
   - Handle the fact that SIFT is not flip-robust
     - Can the descriptors be flipped so they only need to be computed once?
     - Or is it necessary to compute descriptors for the image as well as the double-sided image?
-  - Display 5? most similar images
+  - ~~Display 5? most similar images~~
   - Let user compare and keep the image they prefer (e.g. higer res)
 - Also check duplicate names I guess
 ### Browse page
@@ -76,4 +76,4 @@
   - Location
   - Tags
   - SIFT descriptors
-- Export data
+- Export database
