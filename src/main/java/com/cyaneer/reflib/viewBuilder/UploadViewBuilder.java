@@ -7,11 +7,17 @@ import com.cyaneer.reflib.model.UploadModel;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+
+import static javafx.scene.input.TransferMode.COPY;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -50,36 +56,77 @@ public class UploadViewBuilder implements Builder<Region> {
     }
     
     private Region createRefUploadRegion() {
-        return new VBox(8, createNewImageContainer(), createNewRefControls());
+        VBox vBox = new VBox(8, createNewRefContainer(), createNewRefControls());
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
     }
 
-    private Region createNewImageContainer() {
-        ImageView imageView = new ImageView();
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(450);
-        imageView.setFitWidth(800);
-        
-        ObjectBinding<Image> imageBinding = createImageBinding();
+    private Region createNewRefContainer() {
 
-        imageView.imageProperty().bind(imageBinding);
+        BorderPane container = new BorderPane(createNewRefImageView());
+        container.setMinWidth(600);
+        container.setMinHeight(600);
+        container.setMaxWidth(600);
+        container.setMaxHeight(600);
+        container.setPickOnBounds(true);
 
-        Button clipboardButton = new Button("Upload from clipboard");
-        clipboardButton.setOnAction(e -> {
-            if (clipboard.hasString()) {
-                proposeRefAction.accept(clipboard.getString());
-            } else {
-                System.out.println("Clipboard does not contain a string");
+        container.setOnDragEntered(new EventHandler<DragEvent>() {
+            public void handle(DragEvent dragEvent) {
+                Dragboard db = dragEvent.getDragboard();
+                if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
+                    container.setStyle("-fx-background-color: lightgrey;");
+                }
+            }
+        });
+        container.setOnDragExited(new EventHandler<DragEvent>() {
+            public void handle(DragEvent dragEvent) {
+                container.setStyle("-fx-background-color: transparent;");
+            }
+        });
+        container.setOnDragOver(dragEvent -> {
+            Dragboard db = dragEvent.getDragboard();
+            if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
+                dragEvent.acceptTransferModes(COPY);
+                dragEvent.consume();
+            }
+        });
+        container.setOnDragDropped(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean isDropSuccessful = false;
+                
+                if (db.hasFiles()) {
+                    if (db.getFiles().size() > 0) {
+                        String filePath = db.getFiles().get(0).getAbsolutePath();
+                        proposeRefAction.accept(filePath);
+                        isDropSuccessful = true;
+                    }
+                }
+                event.setDropCompleted(isDropSuccessful);
+                event.consume();
             }
         });
 
-        return new VBox(8, imageView, clipboardButton);
+        return container;
+    }
+
+    private Node createNewRefImageView() {
+        ImageView imageView = new ImageView();
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(400);
+        imageView.setFitWidth(400);
+        
+        ObjectBinding<Image> imageBinding = createImageBinding();
+        imageView.imageProperty().bind(imageBinding);
+
+        return imageView;
     }
 
     private ObjectBinding<Image> createImageBinding() {
         return Bindings.createObjectBinding(() -> {
             return new Image(model.getNewRef() != null ? 
                 new FileInputStream(model.getNewRef().getFile()) :
-                getClass().getResourceAsStream("/com/cyaneer/reflib/noimage.png"));
+                getClass().getResourceAsStream("/com/cyaneer/reflib/upload.png"));
         }, model.newRefProperty());
     }
 

@@ -10,6 +10,8 @@
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
 - Use the term "refs" instead of "images" and "poses"
 - Avoid the dependency on libgtk-x11-2.0.so
+- Look into the stack guard warning
+- Be more dynamic about displayed image size
 ### Home page
 - Links to the other pages I guess??
 - Funny stats?
@@ -51,6 +53,9 @@
   - Option to remind next time RefLib is opened
 - (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting? If so, add this in practice, review and browse
 ### Upload page
+- Upload images from
+  - ~~Local files~~
+  - Browser
 - Check new images against images in library to avoid duplicates
   - SIFT
     - Or a faster algorithm if I ever find one that works as well

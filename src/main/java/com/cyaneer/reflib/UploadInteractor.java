@@ -86,11 +86,9 @@ public class UploadInteractor {
         }
 
         List<Ref> mostSimilarRefs = new java.util.ArrayList<>();
-        System.out.println("------------");
         for (int i = 0; i < model.getNumSimilarRefs(); i++) {
             if (similarRefs.isEmpty()) break;
             MatchedRef matchedRef = similarRefs.poll();
-            System.out.println("Image " + (i+1) + ": " + matchedRef.getNumMatches() + " good matches");
             mostSimilarRefs.add(matchedRef.getRef());
         }
 
