@@ -13,7 +13,7 @@ public class UploadModel {
     
     private final ListProperty<Ref> refList = new SimpleListProperty<Ref>(FXCollections.observableArrayList());
     private final ObjectProperty<Ref> newRef = new SimpleObjectProperty<Ref>(null);
-    private final ListProperty<Ref> mostSimilarRefs = new SimpleListProperty<Ref>(FXCollections.observableArrayList());
+    private final ListProperty<MatchedRef> mostSimilarRefs = new SimpleListProperty<MatchedRef>(FXCollections.observableArrayList());
     private final IntegerProperty numSimilarRefs = new SimpleIntegerProperty(5);
 
     // Getters and setters for refList
@@ -43,15 +43,15 @@ public class UploadModel {
     }
 
     // Getters and setters for similarRefs
-    public ObservableList<Ref> getMostSimilarRefs() {
+    public ObservableList<MatchedRef> getMostSimilarRefs() {
         return mostSimilarRefs.get();
     }
 
-    public void setMostSimilarRefs(ObservableList<Ref> mostSimilarRefs) {
+    public void setMostSimilarRefs(ObservableList<MatchedRef> mostSimilarRefs) {
         this.mostSimilarRefs.set(mostSimilarRefs);
     }
 
-    public ListProperty<Ref> mostSimilarRefsProperty() {
+    public ListProperty<MatchedRef> mostSimilarRefsProperty() {
         return mostSimilarRefs;
     }
 

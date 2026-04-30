@@ -18,6 +18,7 @@ import static org.bytedeco.opencv.global.opencv_imgcodecs.IMREAD_GRAYSCALE;
 import static org.bytedeco.opencv.global.opencv_imgproc.resize;
 import static org.bytedeco.opencv.global.opencv_imgproc.INTER_LINEAR;
 
+import com.cyaneer.reflib.model.MatchedRef;
 import com.cyaneer.reflib.model.Ref;
 import com.cyaneer.reflib.model.UploadModel;
 
@@ -49,7 +50,7 @@ public class UploadInteractor {
 
         model.setNewRef(newRef);
 
-        List<Ref> mostSimilarRefs = findMostSimilarRefs(newRef);
+        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef);
         model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
     }
 
@@ -73,7 +74,7 @@ public class UploadInteractor {
         return preppedImg;
     }
 
-    private List<Ref> findMostSimilarRefs(Ref ref) {
+    private List<MatchedRef> findMostSimilarRefs(Ref ref) {
         PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>();
 
         for (Ref candidate : model.getRefList()) {
@@ -85,11 +86,14 @@ public class UploadInteractor {
             similarRefs.add(new MatchedRef(candidate, numGoodMatches));
         }
 
-        List<Ref> mostSimilarRefs = new java.util.ArrayList<>();
+        List<MatchedRef> mostSimilarRefs = new java.util.ArrayList<>();
         for (int i = 0; i < model.getNumSimilarRefs(); i++) {
             if (similarRefs.isEmpty()) break;
+
             MatchedRef matchedRef = similarRefs.poll();
-            mostSimilarRefs.add(matchedRef.getRef());
+            if (matchedRef.getNumMatches() == 0) break;
+
+            mostSimilarRefs.add(matchedRef);
         }
 
         return mostSimilarRefs;
@@ -115,28 +119,5 @@ public class UploadInteractor {
     public void rejectNewRef() {
         model.setNewRef(null);
         model.setMostSimilarRefs(FXCollections.observableArrayList());
-    }
-}
-
-class MatchedRef implements Comparable<MatchedRef> {
-    private Ref ref;
-    private int numMatches;
-
-    public MatchedRef(Ref ref, int numMatches) {
-        this.ref = ref;
-        this.numMatches = numMatches;
-    }
-
-    public Ref getRef() {
-        return ref;
-    }
-
-    public int getNumMatches() {
-        return numMatches;
-    }
-
-    @Override
-    public int compareTo(MatchedRef other) {
-        return Integer.compare(other.numMatches, this.numMatches); // Sort in descending order
     }
 }

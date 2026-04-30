@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.viewBuilder;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -22,6 +23,7 @@ public class HomeViewBuilder implements Builder<Region>{
         homePage = createHomePage();
 
         homeView = new BorderPane();
+        homeView.setPadding(new Insets(8));
         homeView.setCenter(homePage);
         return homeView;
     }

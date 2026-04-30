@@ -8,9 +8,11 @@ import com.cyaneer.reflib.model.UploadModel;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -64,23 +66,24 @@ public class UploadViewBuilder implements Builder<Region> {
     private Region createNewRefContainer() {
 
         BorderPane container = new BorderPane(createNewRefImageView());
-        container.setMinWidth(600);
-        container.setMinHeight(600);
-        container.setMaxWidth(600);
-        container.setMaxHeight(600);
+        container.setMinWidth(440);
+        container.setMinHeight(440);
+        container.setMaxWidth(440);
+        container.setMaxHeight(440);
+        container.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
         container.setPickOnBounds(true);
 
         container.setOnDragEntered(new EventHandler<DragEvent>() {
             public void handle(DragEvent dragEvent) {
                 Dragboard db = dragEvent.getDragboard();
                 if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
-                    container.setStyle("-fx-background-color: lightgrey;");
+                    container.setStyle("-fx-background-color: lightgrey; -fx-border-width: 1px; -fx-border-color: grey;");
                 }
             }
         });
         container.setOnDragExited(new EventHandler<DragEvent>() {
             public void handle(DragEvent dragEvent) {
-                container.setStyle("-fx-background-color: transparent;");
+                container.setStyle("-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: grey;");
             }
         });
         container.setOnDragOver(dragEvent -> {
@@ -138,29 +141,54 @@ public class UploadViewBuilder implements Builder<Region> {
         rejectButton.setOnAction(e -> rejectRefAction.run());
 
         HBox controls = new HBox(8, acceptButton, rejectButton);
+        controls.setAlignment(Pos.CENTER);
         controls.disableProperty().bind(model.newRefProperty().isNull());
 
         return controls;
     }
 
     private Node createSimilarRefsRegion() {
-        HBox similarRefsArea = new HBox(8);
+        VBox vBox = new VBox(8, createSimilarRefsTitle(), createSimilarRefsContainer());
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
+    }
+
+    private Node createSimilarRefsTitle() {
+        Label title = new Label("Most similar refs (more points means more similar)");
+        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        return title;
+    }
+
+    private Region createSimilarRefsContainer() {
+        HBox hBox = new HBox(8);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setMinHeight(200);
+        hBox.setMinWidth(900);
+        hBox.setMaxHeight(200);
+        hBox.setMaxWidth(900);
+        hBox.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
+
         model.mostSimilarRefsProperty().addListener((obs, oldRefs, newRefs) -> {
-            similarRefsArea.getChildren().clear();
-            newRefs.forEach(ref -> {
+            hBox.getChildren().clear();
+            newRefs.forEach(matchedRef -> {
                 try {
-                    ImageView refImageView = new ImageView(new Image(new FileInputStream(ref.getFile())));
+                    ImageView refImageView = new ImageView(new Image(new FileInputStream(matchedRef.getRef().getFile())));
                     refImageView.setPreserveRatio(true);
-                    refImageView.setFitHeight(100);
-                    refImageView.setFitWidth(100);
-                    similarRefsArea.getChildren().add(refImageView);
+                    refImageView.setFitHeight(150);
+                    refImageView.setFitWidth(150);
+                    Label numMatchesLabel = new Label(String.valueOf(matchedRef.getNumMatches()));
+                    numMatchesLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+                    VBox vBox = new VBox(4, refImageView, numMatchesLabel);
+                    vBox.setPadding(new Insets(4));
+                    vBox.setAlignment(Pos.CENTER);
+                    hBox.getChildren().add(vBox);
                 } catch (Exception e) {
-                    System.out.println("unable to load ref image: " + ref.getFile().getAbsolutePath());
+                    System.out.println("unable to load ref image: " + matchedRef.getRef().getFile().getAbsolutePath());
                     e.printStackTrace();
                 }
             });
         });
 
-        return similarRefsArea;
+        return hBox;
     }
 }
