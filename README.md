@@ -1,21 +1,68 @@
 # RefLib
+A feature-rich application for handling reference images throughout your artistic journey
 
-## About??
+## Features
+### Store reference images while checking for duplicates
+- Drag-and-drop images from the file explorer
+- Using the SIFT algorithm, new reference images are checked against the references that are already stored
+- Accept or reject the new reference image after checking for duplicates
+- Planned: Drag-and-drop from the web
+- Planned: Compare image data (like resolution) when deciding which of the duplicates to keep
+
+![Demo of the upload page](UploadDemo.png)
+
+### Plan practice session
+- Freely plan a practice session using the stored reference images
+- Timed poses: Choose the number of references and the duration of each reference
+- Untimed poses: Choose the number of references
+- Break: Put a break between sections of the practice session
+- Planned: Filter on reference tags to limit which images are included
+- Planned: Save multiple different practice sequences
+
+![Demo of Planning page](PlanningDemo.png)
+
+### Practice session
+- Randomly display references from the stored images
+- Practice session goes through the steps defined during practice planning
+- Remaining time and remaining reference images are always displayed
+- Pause practice session
+- Skip to next image
+
+![Demo of the Practice page](PracticeDemo.png)
+
+### Planned: Browse stored reference images
+- Planned: Browse through all stored reference images
+- Planned: Filter images based on tags
+
+### Planned: Tags
+- Planned: Filter images used in the practice session based on reference tags
+- Planned: Filter images displayed when browsing based on reference tags
+
+### Planned: Pop out reference image
+- Planned: Pop out to a transparent window that can be dragged around freely
+- Planned: Image controls to help compare the artwork with the reference
+  - Image opacity
+  - Image rotation
+  - Edge detection filter (to highlight outer edges of the reference subject)
 
 ## Roadmap
 ### Bugs
 - Upload dragboard behaves strange sometimes (at least when running from VSCode on Wayland)
+  - Sometimes empty dragboard
+  - Sometimes takes image in clipboard instead of dragboard
 ### Improvements
 - Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
+  - Solution could be to listen for change instead of listening for invalidation
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
 - Use the term "refs" instead of "images" and "poses"
 - Avoid the dependency on libgtk-x11-2.0.so
 - Look into the stack guard warning
 - Be more dynamic about displayed image size
+- Take metadata rotations into account
+- Build guide
 ### Home page
-- ~~Links to the other pages I guess??~~
-- Funny stats?
-- Idk it's just the home page
+- ~~Links to the other pages~~
+- Stats?
 ### Practice page
 - Ensure that terminology is consistent (e.g. practice/session, ref/pose/image)
 - Provide helpful filtering options when planning practice

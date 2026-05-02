@@ -66,10 +66,10 @@ public class UploadViewBuilder implements Builder<Region> {
     private Region createNewRefContainer() {
 
         BorderPane container = new BorderPane(createNewRefImageView());
-        container.setMinWidth(440);
-        container.setMinHeight(440);
-        container.setMaxWidth(440);
-        container.setMaxHeight(440);
+        container.setMinWidth(640);
+        container.setMaxWidth(640);
+        container.setMinHeight(640);
+        container.setMaxHeight(640);
         container.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
         container.setPickOnBounds(true);
 
@@ -116,8 +116,8 @@ public class UploadViewBuilder implements Builder<Region> {
     private Node createNewRefImageView() {
         ImageView imageView = new ImageView();
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(400);
-        imageView.setFitWidth(400);
+        imageView.setFitHeight(600);
+        imageView.setFitWidth(600);
         
         ObjectBinding<Image> imageBinding = createImageBinding();
         imageView.imageProperty().bind(imageBinding);
@@ -162,10 +162,10 @@ public class UploadViewBuilder implements Builder<Region> {
     private Region createSimilarRefsContainer() {
         HBox hBox = new HBox(8);
         hBox.setAlignment(Pos.CENTER);
-        hBox.setMinHeight(200);
-        hBox.setMinWidth(900);
-        hBox.setMaxHeight(200);
-        hBox.setMaxWidth(900);
+        hBox.setMinHeight(300);
+        hBox.setMaxHeight(300);
+        hBox.setMinWidth(1300);
+        hBox.setMaxWidth(1300);
         hBox.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
 
         model.mostSimilarRefsProperty().addListener((obs, oldRefs, newRefs) -> {
@@ -174,8 +174,8 @@ public class UploadViewBuilder implements Builder<Region> {
                 try {
                     ImageView refImageView = new ImageView(new Image(new FileInputStream(matchedRef.getRef().getFile())));
                     refImageView.setPreserveRatio(true);
-                    refImageView.setFitHeight(150);
-                    refImageView.setFitWidth(150);
+                    refImageView.setFitHeight(250);
+                    refImageView.setFitWidth(250);
                     Label numMatchesLabel = new Label(String.valueOf(matchedRef.getNumMatches()));
                     numMatchesLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
                     VBox vBox = new VBox(4, refImageView, numMatchesLabel);
