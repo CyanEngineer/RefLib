@@ -44,18 +44,19 @@ public class UploadInteractor {
         
         Ref newRef = service.createNewRef(filepath);
 
-        // Figure out how to handle the flipped version. Is it possible to flip the descriptors instead of the image?
+        //TODO: Figure out how to handle the flipped version. Is it possible to flip the descriptors instead of the image?
+        // Is it faster to compare both the non-flipped and flipped image, or to create a double-sided image and only compare that?
         Mat descriptors = computeDescriptors(newRef.getFile());
         newRef.setSIFTDescriptors(descriptors);
 
         model.setNewRef(newRef);
 
-        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef);
+        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef, model.getRefList(), model.getNumSimilarRefs());
         model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
     }
 
-    private Mat computeDescriptors(File ref) {
-        Mat preppedImg = prepareImage(ref);
+    public Mat computeDescriptors(File ref) {
+        Mat preppedImg = prepareImageForSIFT(ref);
         
         Mat descriptors = new Mat();
         KeyPointVector keypoints = new KeyPointVector();
@@ -64,7 +65,7 @@ public class UploadInteractor {
         return descriptors;
     }
 
-    private Mat prepareImage(File ref) {
+    public Mat prepareImageForSIFT(File ref) {
         Mat grayImg = imread(ref.getAbsolutePath(), IMREAD_GRAYSCALE);
 
         Mat preppedImg = new Mat();
@@ -74,20 +75,15 @@ public class UploadInteractor {
         return preppedImg;
     }
 
-    private List<MatchedRef> findMostSimilarRefs(Ref ref) {
+    public List<MatchedRef> findMostSimilarRefs(Ref ref, List<Ref> refList, int numSimilarRefs) {
         PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>();
 
-        for (Ref candidate : model.getRefList()) {
-            DMatchVectorVector matches = new DMatchVectorVector();
-            matcher.knnMatch(ref.getSIFTDescriptors(), candidate.getSIFTDescriptors(), matches, 2);
-
-            int numGoodMatches = countGoodMatches(matches);
-
-            similarRefs.add(new MatchedRef(candidate, numGoodMatches));
+        for (Ref candidate : refList) {
+            similarRefs.add(matchReferences(ref, candidate));
         }
 
         List<MatchedRef> mostSimilarRefs = new java.util.ArrayList<>();
-        for (int i = 0; i < model.getNumSimilarRefs(); i++) {
+        for (int i = 0; i < numSimilarRefs; i++) {
             if (similarRefs.isEmpty()) break;
 
             MatchedRef matchedRef = similarRefs.poll();
@@ -99,7 +95,15 @@ public class UploadInteractor {
         return mostSimilarRefs;
     }
 
-    private int countGoodMatches(DMatchVectorVector matches) {
+    public MatchedRef matchReferences(Ref newRef, Ref candidate) {
+        DMatchVectorVector matches = new DMatchVectorVector();
+        matcher.knnMatch(newRef.getSIFTDescriptors(), candidate.getSIFTDescriptors(), matches, 2);
+
+        int numGoodMatches = countGoodMatches(matches);
+        return new MatchedRef(candidate, numGoodMatches);
+    }
+
+    public int countGoodMatches(DMatchVectorVector matches) {
         int numGoodMatches = 0;
         for (DMatchVector match : matches.get()) {
             if (match.get(0).distance() < 0.5 * match.get(1).distance()) {

@@ -8,6 +8,7 @@ A feature-rich application for handling reference images throughout your artisti
 - Accept or reject the new reference image after checking for duplicates
 - Planned: Drag-and-drop from the web
 - Planned: Compare image data (like resolution) when deciding which of the duplicates to keep
+- Planned: Set tags on new reference images
 
 ![Demo of the upload page](UploadDemo.png)
 
@@ -42,7 +43,7 @@ A feature-rich application for handling reference images throughout your artisti
 - Planned: Pop out to a transparent window that can be dragged around freely
 - Planned: Image controls to help compare the artwork with the reference
   - Image opacity
-  - Image rotation
+  - Image rotation and scaling
   - Edge detection filter (to highlight outer edges of the reference subject)
 
 ## Roadmap
@@ -60,6 +61,7 @@ A feature-rich application for handling reference images throughout your artisti
 - Be more dynamic about displayed image size
 - Take metadata rotations into account
 - Build guide
+- When ranking similar refs, only store the 5 most similar instead of keeping a whole priorityqueue
 ### Home page
 - ~~Links to the other pages~~
 - Stats?
@@ -82,7 +84,6 @@ A feature-rich application for handling reference images throughout your artisti
   - ~~Allow or disallow duplicates~~
     - ~~Restore list after each session~~
   - Filter on tags
-  - Exclude NSFW
 - Page to review images from session
   - ~~Show drawn images~~
   - ~~Option to copy image~~
@@ -115,8 +116,6 @@ A feature-rich application for handling reference images throughout your artisti
 - Also check duplicate names I guess
 ### Browse page
 - Browse collection based on tags
-### RefLib settings
-- Option to remove all mentions of "NSFW"
 ### Storage
 - Let user define location of images
 - Appdata with info about images
