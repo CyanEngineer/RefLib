@@ -46,7 +46,9 @@ public class UploadInteractor {
 
         //TODO: Figure out how to handle the flipped version. Is it possible to flip the descriptors instead of the image?
         // Is it faster to compare both the non-flipped and flipped image, or to create a double-sided image and only compare that?
-        Mat descriptors = computeDescriptors(newRef.getFile());
+        Mat preppedImg = prepareImageForSIFT(newRef.getFile());
+
+        Mat descriptors = computeDescriptors(preppedImg);
         newRef.setSIFTDescriptors(descriptors);
 
         model.setNewRef(newRef);
@@ -55,12 +57,10 @@ public class UploadInteractor {
         model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
     }
 
-    public Mat computeDescriptors(File ref) {
-        Mat preppedImg = prepareImageForSIFT(ref);
-        
+    public Mat computeDescriptors(Mat img) {
         Mat descriptors = new Mat();
         KeyPointVector keypoints = new KeyPointVector();
-        sift.detectAndCompute(preppedImg, new Mat(), keypoints, descriptors);
+        sift.detectAndCompute(img, new Mat(), keypoints, descriptors);
 
         return descriptors;
     }
