@@ -7,9 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import com.cyaneer.reflib.model.Ref;
-import com.cyaneer.reflib.model.SequenceStep;
-import com.cyaneer.reflib.model.SequenceStepType;
+import com.cyaneer.reflib.practice.SequenceStep;
+import com.cyaneer.reflib.practice.SequenceStepType;
 
 public class PracticeService {
     

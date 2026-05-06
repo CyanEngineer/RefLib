@@ -1,9 +1,6 @@
-package com.cyaneer.reflib.viewBuilder;
+package com.cyaneer.reflib.practice;
 
 import java.io.FileInputStream;
-
-import com.cyaneer.reflib.model.PracticeModel;
-import com.cyaneer.reflib.model.SequenceStepType;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;

@@ -1,10 +1,6 @@
-package com.cyaneer.reflib.viewBuilder;
+package com.cyaneer.reflib.practice;
 
 import java.util.function.Consumer;
-
-import com.cyaneer.reflib.model.PracticeModel;
-import com.cyaneer.reflib.model.SequenceStep;
-import com.cyaneer.reflib.model.SequenceStepType;
 
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;

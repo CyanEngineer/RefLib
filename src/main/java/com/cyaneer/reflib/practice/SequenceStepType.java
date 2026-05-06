@@ -1,4 +1,4 @@
-package com.cyaneer.reflib.model;
+package com.cyaneer.reflib.practice;
 
 public enum SequenceStepType {
     TIMED_POSES,

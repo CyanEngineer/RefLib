@@ -1,10 +1,8 @@
-package com.cyaneer.reflib.viewBuilder;
+package com.cyaneer.reflib.practice;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
-import com.cyaneer.reflib.model.PracticeModel;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;

@@ -1,4 +1,4 @@
-package com.cyaneer.reflib.model;
+package com.cyaneer.reflib.practice;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;

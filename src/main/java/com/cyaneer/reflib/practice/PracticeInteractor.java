@@ -1,11 +1,9 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.practice;
 
 import java.io.File;
 import java.util.List;
 
-import com.cyaneer.reflib.model.PracticeModel;
-import com.cyaneer.reflib.model.SequenceStep;
-import com.cyaneer.reflib.model.SequenceStepType;
+import com.cyaneer.reflib.PracticeService;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

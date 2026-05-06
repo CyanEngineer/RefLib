@@ -1,4 +1,6 @@
-package com.cyaneer.reflib.model;
+package com.cyaneer.reflib.upload;
+
+import com.cyaneer.reflib.Ref;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;

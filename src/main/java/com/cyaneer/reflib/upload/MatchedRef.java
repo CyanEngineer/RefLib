@@ -1,6 +1,6 @@
-package com.cyaneer.reflib.model;
+package com.cyaneer.reflib.upload;
 
-
+import com.cyaneer.reflib.Ref;
 
 public class MatchedRef implements Comparable<MatchedRef> {
     private Ref ref;

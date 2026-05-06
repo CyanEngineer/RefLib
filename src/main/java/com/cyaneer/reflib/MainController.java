@@ -1,17 +1,18 @@
 package com.cyaneer.reflib;
 
-import com.cyaneer.reflib.viewBuilder.HomeViewBuilder;
+import com.cyaneer.reflib.practice.PracticeController;
+import com.cyaneer.reflib.upload.UploadController;
 
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
-public class HomeController {
+public class MainController {
     private Builder<Region> viewBuilder;
-    private HomeInteractor interactor;
+    private MainInteractor interactor;
 
-    public HomeController() {
-        interactor = new HomeInteractor();
-        viewBuilder = new HomeViewBuilder(
+    public MainController() {
+        interactor = new MainInteractor();
+        viewBuilder = new MainViewBuilder(
             new UploadController().getView(),
             new PracticeController().getView()
         );

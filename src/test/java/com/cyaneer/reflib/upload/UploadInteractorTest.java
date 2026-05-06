@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.upload;
 
 import java.io.File;
 import java.util.Arrays;
@@ -8,12 +8,9 @@ import org.bytedeco.opencv.opencv_core.Mat;
 import org.junit.jupiter.api.Test;
 
 import static org.bytedeco.opencv.global.opencv_core.rotate;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.bytedeco.opencv.global.opencv_core.ROTATE_90_CLOCKWISE;
 
-import com.cyaneer.reflib.model.MatchedRef;
-import com.cyaneer.reflib.model.Ref;
-import com.cyaneer.reflib.model.UploadModel;
+import com.cyaneer.reflib.Ref;
 
 public class UploadInteractorTest {
     

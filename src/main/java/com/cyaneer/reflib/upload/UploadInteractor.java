@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.upload;
 
 import java.io.File;
 import java.util.List;
@@ -18,9 +18,8 @@ import static org.bytedeco.opencv.global.opencv_imgcodecs.IMREAD_GRAYSCALE;
 import static org.bytedeco.opencv.global.opencv_imgproc.resize;
 import static org.bytedeco.opencv.global.opencv_imgproc.INTER_LINEAR;
 
-import com.cyaneer.reflib.model.MatchedRef;
-import com.cyaneer.reflib.model.Ref;
-import com.cyaneer.reflib.model.UploadModel;
+import com.cyaneer.reflib.PracticeService;
+import com.cyaneer.reflib.Ref;
 
 import javafx.collections.FXCollections;
 

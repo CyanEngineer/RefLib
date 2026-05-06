@@ -1,9 +1,7 @@
-package com.cyaneer.reflib.viewBuilder;
+package com.cyaneer.reflib.upload;
 
 import java.io.FileInputStream;
 import java.util.function.Consumer;
-
-import com.cyaneer.reflib.model.UploadModel;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;

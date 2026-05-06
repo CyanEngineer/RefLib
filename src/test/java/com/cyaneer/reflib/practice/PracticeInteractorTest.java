@@ -1,13 +1,9 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.practice;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.IndexOutOfBoundsException;
-
-import com.cyaneer.reflib.model.PracticeModel;
-import com.cyaneer.reflib.model.SequenceStepType;
-
 
 public class PracticeInteractorTest {
     

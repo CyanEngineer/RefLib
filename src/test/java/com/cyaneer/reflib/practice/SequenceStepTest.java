@@ -1,6 +1,7 @@
-package com.cyaneer.reflib.model;
+package com.cyaneer.reflib.practice;
 
 import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.Assertions;
 
 public class SequenceStepTest {

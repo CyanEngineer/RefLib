@@ -1,7 +1,4 @@
-package com.cyaneer.reflib;
-
-import com.cyaneer.reflib.model.UploadModel;
-import com.cyaneer.reflib.viewBuilder.UploadViewBuilder;
+package com.cyaneer.reflib.upload;
 
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;

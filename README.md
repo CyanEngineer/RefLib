@@ -62,6 +62,7 @@ A feature-rich application for handling reference images throughout your artisti
 - Take metadata rotations into account
 - Build guide
 - When ranking similar refs, only store the 5 most similar instead of keeping a whole priorityqueue
+- Handle descriptor matching on other threads
 ### Home page
 - ~~Links to the other pages~~
 - Stats?

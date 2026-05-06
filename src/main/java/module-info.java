@@ -8,5 +8,5 @@ module com.cyaneer.reflib {
     requires transitive org.bytedeco.opencv;
 
     exports com.cyaneer.reflib;
-    exports com.cyaneer.reflib.model;
+    exports com.cyaneer.reflib.practice;
 }

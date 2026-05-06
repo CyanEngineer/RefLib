@@ -1,4 +1,4 @@
-package com.cyaneer.reflib.viewBuilder;
+package com.cyaneer.reflib;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,13 +7,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
-public class HomeViewBuilder implements Builder<Region>{
+public class MainViewBuilder implements Builder<Region>{
     BorderPane homeView;
     Region homePage;
     Region uploadPage;
     Region practicePage;
 
-    public HomeViewBuilder(Region uploadPage, Region practicePage) {
+    public MainViewBuilder(Region uploadPage, Region practicePage) {
         this.uploadPage = uploadPage;
         this.practicePage = practicePage;
     }

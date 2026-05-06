@@ -1,8 +1,4 @@
-package com.cyaneer.reflib;
-
-import com.cyaneer.reflib.model.PracticeModel;
-import com.cyaneer.reflib.model.SequenceStepType;
-import com.cyaneer.reflib.viewBuilder.PracticeViewBuilder;
+package com.cyaneer.reflib.practice;
 
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;
