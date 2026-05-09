@@ -13,6 +13,8 @@ import org.bytedeco.opencv.opencv_core.KeyPointVector;
 import org.bytedeco.opencv.opencv_features2d.SIFT;
 import org.bytedeco.opencv.opencv_features2d.BFMatcher;
 
+import static org.bytedeco.opencv.global.opencv_core.flip;
+import static org.bytedeco.opencv.global.opencv_core.hconcat;
 import static org.bytedeco.opencv.global.opencv_imgcodecs.imread;
 import static org.bytedeco.opencv.global.opencv_imgcodecs.IMREAD_GRAYSCALE;
 import static org.bytedeco.opencv.global.opencv_imgproc.resize;
@@ -40,28 +42,22 @@ public class UploadInteractor {
     }
 
     public void proposeNewRef(String filepath) {
-        
+
         Ref newRef = service.createNewRef(filepath);
 
-        //TODO: Figure out how to handle the flipped version. Is it possible to flip the descriptors instead of the image?
-        // Is it faster to compare both the non-flipped and flipped image, or to create a double-sided image and only compare that?
         Mat preppedImg = prepareImageForSIFT(newRef.getFile());
-
         Mat descriptors = computeDescriptors(preppedImg);
         newRef.setSIFTDescriptors(descriptors);
 
         model.setNewRef(newRef);
 
-        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef, model.getRefList(), model.getNumSimilarRefs());
+        // SIFT is not flip-robust, so a workaround is to use a double-image that contains
+        // the image plus a flipped version of the image
+        Ref newRefDouble = new Ref();
+        newRefDouble.setSIFTDescriptors(computeDoubleSidedDescriptors(preppedImg));
+
+        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRefDouble, model.getRefList(), model.getNumSimilarRefs());
         model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
-    }
-
-    public Mat computeDescriptors(Mat img) {
-        Mat descriptors = new Mat();
-        KeyPointVector keypoints = new KeyPointVector();
-        sift.detectAndCompute(img, new Mat(), keypoints, descriptors);
-
-        return descriptors;
     }
 
     public Mat prepareImageForSIFT(File ref) {
@@ -72,6 +68,26 @@ public class UploadInteractor {
         resize(grayImg, preppedImg, new Size(), scale, scale, INTER_LINEAR);
 
         return preppedImg;
+    }
+
+    public Mat computeDescriptors(Mat img) {
+        Mat descriptors = new Mat();
+        KeyPointVector keypoints = new KeyPointVector();
+        sift.detectAndCompute(img, new Mat(), keypoints, descriptors);
+
+        return descriptors;
+    }
+
+    public Mat computeDoubleSidedDescriptors(Mat image) {
+        Mat preppedImgFlipped = new Mat();
+        flip(image, preppedImgFlipped, 1);
+
+        Mat preppedImgDouble = new Mat();
+        hconcat(image, preppedImgFlipped, preppedImgDouble);
+
+        Mat descriptorsDouble = computeDescriptors(preppedImgDouble);
+        
+        return descriptorsDouble;
     }
 
     public List<MatchedRef> findMostSimilarRefs(Ref ref, List<Ref> refList, int numSimilarRefs) {
@@ -97,7 +113,7 @@ public class UploadInteractor {
     public MatchedRef matchReferences(Ref newRef, Ref candidate) {
         DMatchVectorVector matches = new DMatchVectorVector();
         matcher.knnMatch(newRef.getSIFTDescriptors(), candidate.getSIFTDescriptors(), matches, 2);
-
+        
         int numGoodMatches = countGoodMatches(matches);
         return new MatchedRef(candidate, numGoodMatches);
     }

@@ -109,9 +109,9 @@ A feature-rich application for handling reference images throughout your artisti
   - ~~SIFT~~
     - Or a faster algorithm if I ever find one that works as well
   - Store SIFT descriptors of images in library (only needs to compute descriptors for new image)
-  - Handle the fact that SIFT is not flip-robust
-    - Can the descriptors be flipped so they only need to be computed once?
-    - Or is it necessary to compute descriptors for the image as well as the double-sided image?
+  - ~~Handle the fact that SIFT is not flip-robust~~
+    - ~~Can the descriptors be flipped so they only need to be computed once?~~
+    - ~~Or is it necessary to compute descriptors for the image as well as the double-sided image?~~
   - ~~Display 5? most similar images~~
   - Let user compare and keep the image they prefer (e.g. higer res)
 - Also check duplicate names I guess
