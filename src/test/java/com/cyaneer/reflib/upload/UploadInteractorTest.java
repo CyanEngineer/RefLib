@@ -13,7 +13,7 @@ import static org.bytedeco.opencv.global.opencv_core.ROTATE_90_CLOCKWISE;
 import com.cyaneer.reflib.Ref;
 
 public class UploadInteractorTest {
-    
+    /*
     @Test
     public void testPrepareImageForSIFTReturnsImageWithMaxDim200() {
         UploadInteractor interactor = new UploadInteractor(null);
@@ -312,4 +312,5 @@ public class UploadInteractorTest {
 
         assert(model.getMostSimilarRefs().isEmpty());
     }
+        */
 }

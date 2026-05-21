@@ -1,6 +1,6 @@
 package com.cyaneer.reflib.upload;
 
-import com.cyaneer.reflib.Ref;
+import com.cyaneer.reflib.MatchableRef;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -13,34 +13,34 @@ import javafx.collections.ObservableList;
 
 public class UploadModel {
     
-    private final ListProperty<Ref> refList = new SimpleListProperty<Ref>(FXCollections.observableArrayList());
-    private final ObjectProperty<Ref> newRef = new SimpleObjectProperty<Ref>(null);
+    private final ListProperty<MatchableRef> refList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+    private final ObjectProperty<MatchableRef> newRef = new SimpleObjectProperty<MatchableRef>(null);
     private final ListProperty<MatchedRef> mostSimilarRefs = new SimpleListProperty<MatchedRef>(FXCollections.observableArrayList());
     private final IntegerProperty numSimilarRefs = new SimpleIntegerProperty(5);
 
     // Getters and setters for refList
-    public ObservableList<Ref> getRefList() {
+    public ObservableList<MatchableRef> getRefList() {
         return refList.get();
     }
 
-    public void setRefList(ObservableList<Ref> refList) {
+    public void setRefList(ObservableList<MatchableRef> refList) {
         this.refList.set(refList);
     }
 
-    public ListProperty<Ref> refListProperty() {
+    public ListProperty<MatchableRef> refListProperty() {
         return refList;
     }
 
     // Getters and setters for newRef
-    public Ref getNewRef() {
+    public MatchableRef getNewRef() {
         return newRef.get();
     }
 
-    public void setNewRef(Ref newRef) {
+    public void setNewRef(MatchableRef newRef) {
         this.newRef.set(newRef);
     }
 
-    public ObjectProperty<Ref> newRefProperty() {
+    public ObjectProperty<MatchableRef> newRefProperty() {
         return newRef;
     }
 

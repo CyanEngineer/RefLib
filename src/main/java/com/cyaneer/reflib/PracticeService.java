@@ -32,7 +32,7 @@ public class PracticeService {
         }
     }
 
-    public List<Ref> loadRefs() { //TODO: Load images from a config file
+    public List<MatchableRef> loadRefs() { //TODO: Load images from a config file
         return Arrays.asList();
     }
 
@@ -44,10 +44,10 @@ public class PracticeService {
         );
     }
 
-    public Ref createNewRef(String filepath) {
+    public SIFTMatchableRef createNewRef(String filepath) {
         //TODO: Allow internet images
         File file = new File(filepath);
 
-        return new Ref(file);
+        return new SIFTMatchableRef(file);
     }
 }

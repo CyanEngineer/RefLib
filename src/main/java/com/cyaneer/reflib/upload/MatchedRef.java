@@ -1,17 +1,17 @@
 package com.cyaneer.reflib.upload;
 
-import com.cyaneer.reflib.Ref;
+import java.io.File;
 
 public class MatchedRef implements Comparable<MatchedRef> {
-    private Ref ref;
+    private File ref;
     private int numMatches;
 
-    public MatchedRef(Ref ref, int numMatches) {
+    public MatchedRef(File ref, int numMatches) {
         this.ref = ref;
         this.numMatches = numMatches;
     }
 
-    public Ref getRef() {
+    public File getFile() {
         return ref;
     }
 

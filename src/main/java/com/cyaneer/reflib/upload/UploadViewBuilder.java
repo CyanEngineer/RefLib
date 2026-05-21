@@ -170,7 +170,7 @@ public class UploadViewBuilder implements Builder<Region> {
             hBox.getChildren().clear();
             newRefs.forEach(matchedRef -> {
                 try {
-                    ImageView refImageView = new ImageView(new Image(new FileInputStream(matchedRef.getRef().getFile())));
+                    ImageView refImageView = new ImageView(new Image(new FileInputStream(matchedRef.getFile())));
                     refImageView.setPreserveRatio(true);
                     refImageView.setFitHeight(250);
                     refImageView.setFitWidth(250);
@@ -181,7 +181,7 @@ public class UploadViewBuilder implements Builder<Region> {
                     vBox.setAlignment(Pos.CENTER);
                     hBox.getChildren().add(vBox);
                 } catch (Exception e) {
-                    System.out.println("unable to load ref image: " + matchedRef.getRef().getFile().getAbsolutePath());
+                    System.out.println("unable to load ref image: " + matchedRef.getFile().getAbsolutePath());
                     e.printStackTrace();
                 }
             });
