@@ -31,8 +31,9 @@ public class UploadInteractor {
         model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
     }
 
-    public List<MatchedRef> findMostSimilarRefs(MatchableRef ref, List<MatchableRef> refList, int numSimilarRefs) {
-        PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>(refList.size());
+    private List<MatchedRef> findMostSimilarRefs(MatchableRef ref, List<MatchableRef> refList, int numSimilarRefs) {
+        int queueSize = refList.size() > 0 ? refList.size() : 1;
+        PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>(queueSize);
 
         List<Integer> matchesList = ref.computeAllMatches(refList);
         for (int i = 0; i < matchesList.size(); i++) {

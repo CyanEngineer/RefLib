@@ -54,7 +54,6 @@ public class SIFTMatchableRef extends MatchableRef {
             throw new IllegalArgumentException("Cannot compare SIFT with non-SIFT");
         }
         SIFTMatchableRef otherSIFT = (SIFTMatchableRef) other;
-
         
         Mat doubleSidedSIFTDescriptors = computeDescriptors(createDoubleSidedImage(prepareImageForSIFT(file)));
         
@@ -81,7 +80,7 @@ public class SIFTMatchableRef extends MatchableRef {
         return goodMatches;
     }
 
-    public int computeGoodMatches(Mat thisSIFTDescriptors, Mat otherSIFTDescriptors) {
+    private int computeGoodMatches(Mat thisSIFTDescriptors, Mat otherSIFTDescriptors) {
         DMatchVectorVector matches = new DMatchVectorVector();
         matcher.knnMatch(thisSIFTDescriptors, otherSIFTDescriptors, matches, 2);
         
