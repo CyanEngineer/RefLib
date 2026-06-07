@@ -1,19 +1,8 @@
 package com.cyaneer.reflib;
 
-import java.io.File;
 import java.util.List;
 
-public abstract class MatchableRef {
-
-    private File file;
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
+public abstract class MatchableRef extends Ref {
 
     public abstract Integer computeMatch(MatchableRef other);
 

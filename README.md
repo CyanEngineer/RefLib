@@ -56,7 +56,8 @@ A feature-rich application for handling reference images throughout your artisti
   - Solution could be to listen for change instead of listening for invalidation
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
 - Use the term "refs" instead of "images" and "poses"
-- Avoid the dependency on libgtk-x11-2.0.so
+- Avoid the dependency on libgtk-x11-2.0.so if possible
+  - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - Look into the stack guard warning
 - Be more dynamic about displayed image size
 - Take metadata rotations into account
