@@ -2,28 +2,24 @@ package com.cyaneer.reflib.upload;
 
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.function.Function;
 
 import com.cyaneer.reflib.MatchableRef;
-import com.cyaneer.reflib.PracticeService;
 
 import javafx.collections.FXCollections;
 
 public class UploadInteractor {
     private UploadModel model;
-    private PracticeService service = new PracticeService();
+    private Function<String, MatchableRef> createRefAction;
 
-    public UploadInteractor(UploadModel model) {
+    public UploadInteractor(UploadModel model, Function<String, MatchableRef> createRefAction) {
         this.model = model;
-    }
-
-    public void loadRefs() {
-        List<MatchableRef> refList = service.loadRefs();
-        model.setRefList(FXCollections.observableArrayList(refList));
+        this.createRefAction = createRefAction;
     }
 
     public void proposeNewRef(String filepath) {
 
-        MatchableRef newRef = service.createNewRef(filepath);
+        MatchableRef newRef = createRefAction.apply(filepath);
 
         model.setNewRef(newRef);
 
@@ -53,14 +49,7 @@ public class UploadInteractor {
         return mostSimilarRefs;
     }
 
-    //TODO: Integrate into service
-    public void acceptNewRef() {
-        model.getRefList().add(model.getNewRef());
-        model.setNewRef(null);
-        model.setMostSimilarRefs(FXCollections.observableArrayList());
-    }
-
-    public void rejectNewRef() {
+    public void clearNewRef() {
         model.setNewRef(null);
         model.setMostSimilarRefs(FXCollections.observableArrayList());
     }

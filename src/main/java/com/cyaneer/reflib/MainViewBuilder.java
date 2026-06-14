@@ -13,7 +13,7 @@ public class MainViewBuilder implements Builder<Region>{
     Region uploadPage;
     Region practicePage;
 
-    public MainViewBuilder(Region uploadPage, Region practicePage) {
+    public MainViewBuilder(MainModel model, Region uploadPage, Region practicePage) {
         this.uploadPage = uploadPage;
         this.practicePage = practicePage;
     }

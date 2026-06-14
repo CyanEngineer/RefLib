@@ -1,5 +1,9 @@
 package com.cyaneer.reflib.practice;
 
+import com.cyaneer.reflib.MatchableRef;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
@@ -10,10 +14,14 @@ public class PracticeController {
     private Builder<Region> viewBuilder;
     private PracticeInteractor interactor;
 
-    public PracticeController() {
+    public PracticeController(
+        ListProperty<MatchableRef> refList,
+        BooleanProperty isRefListLoaded
+    ) {
         model = new PracticeModel();
-        interactor = new PracticeInteractor(model);
-        loadImages();
+        model.fullPoseListProperty().bind(refList);
+
+        interactor = new PracticeInteractor(model, isRefListLoaded);
         loadSequence();
         viewBuilder = new PracticeViewBuilder(
             model,
@@ -32,19 +40,7 @@ public class PracticeController {
         return viewBuilder.build();
     }
 
-    private void loadImages() {
-        Task<Void> loadImagesTask = new Task<Void>() {
-            @Override
-            protected Void call() {
-                interactor.loadImages();
-                return null;
-            }
-        };
-        Thread loadImagesThread = new Thread(loadImagesTask);
-        loadImagesThread.start();
-    }
-
-    private void loadSequence() {
+    private void loadSequence() { //TODO: Move to repository
         Task<Void> loadSequenceTask = new Task<Void>() {
             @Override
             protected Void call() {

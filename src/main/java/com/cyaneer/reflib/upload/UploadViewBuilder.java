@@ -64,6 +64,7 @@ public class UploadViewBuilder implements Builder<Region> {
     private Region createNewRefContainer() {
 
         BorderPane container = new BorderPane(createNewRefImageView());
+        container.disableProperty().bind(model.isRefListLoadedProperty().not());
         container.setMinWidth(640);
         container.setMaxWidth(640);
         container.setMinHeight(640);

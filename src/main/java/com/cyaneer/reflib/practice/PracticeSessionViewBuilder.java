@@ -76,7 +76,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private ObjectBinding<Image> createImageBinding() {
         return Bindings.createObjectBinding(() -> {
             return new Image(model.getcurrentPose() != null ? 
-                new FileInputStream(model.getcurrentPose()) :
+                new FileInputStream(model.getcurrentPose().getFile()) :
                 getClass().getResourceAsStream("/com/cyaneer/reflib/noimage.png"));
         }, model.currentPoseProperty());
     }

@@ -1,8 +1,9 @@
 package com.cyaneer.reflib.practice;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import com.cyaneer.reflib.MatchableRef;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -64,10 +65,10 @@ public class practiceReviewViewBuilder implements Builder<Region> {
         return new ScrollPane(gridPane);
     }
 
-    private Node createGridNode(File file) {
+    private Node createGridNode(MatchableRef file) {
         Image image;
         try {
-            image = new Image(new FileInputStream(file));
+            image = new Image(new FileInputStream(file.getFile()));
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't load image");//TODO: Decide behaviour if we fail
             image = null;

@@ -1,8 +1,8 @@
 package com.cyaneer.reflib.practice;
 
-import java.io.File;
 import java.util.List;
 
+import com.cyaneer.reflib.MatchableRef;
 import com.cyaneer.reflib.PracticeService;
 
 import javafx.animation.KeyFrame;
@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
 
@@ -18,8 +19,13 @@ public class PracticeInteractor {
     private PracticeService service = new PracticeService();
     private Timeline timer = new Timeline();
 
-    public PracticeInteractor(PracticeModel model) {
+    public PracticeInteractor(PracticeModel model, BooleanProperty isRefListLoaded) {
         this.model = model;
+
+        isRefListLoaded.addListener((obs, oldValue, newValue) -> {
+            if (newValue) resetPractice();
+        });
+
         model.timerStatusProperty().bind(timer.statusProperty());
         //TODO: I can't imagine that it isn't hella inefficient to have a binding that's called every ms...
         ObjectBinding<Integer> currentTimeBinding = Bindings.createObjectBinding(
@@ -27,12 +33,6 @@ public class PracticeInteractor {
             timer.currentTimeProperty()
         );
         model.currentElapsedSecondsProperty().bind(currentTimeBinding);
-    }
-
-    public void loadImages() {
-        List<File> fullPoseList = service.loadImages();
-        model.setFullPoseList(fullPoseList);
-        resetPractice(); //TODO: In the future, do this when practice screen is chosen from main menu
     }
 
     public void loadSequence() {
@@ -88,7 +88,7 @@ public class PracticeInteractor {
     }
 
     private void setNextPose() {
-        File nextPose = getRandomPose();
+        MatchableRef nextPose = getRandomPose();
         model.currentPoseProperty().set(nextPose);
         model.getDrawnPosesList().add(nextPose);
         if (!model.getDuplicatesAllowed()) {
@@ -96,7 +96,7 @@ public class PracticeInteractor {
         }
     }
 
-    private File getRandomPose() {
+    private MatchableRef getRandomPose() {
         return model.getSessionPoseList().get(getRandomPoseNumber());
     }
 
@@ -155,8 +155,8 @@ public class PracticeInteractor {
     public void resetPractice() {
         stopTimer();
         model.getDrawnPosesList().clear();
-        model.getSessionPoseList().clear();
-        model.getSessionPoseList().addAll(model.getFullPoseList());
+        System.out.println("Refs being added in PracticeModel");
+        model.getSessionPoseList().setAll(model.getFullPoseList());
         model.setCurrentPose(null);
         model.setCurrentPoseNumber(0);
         model.setSessionFinished(false);

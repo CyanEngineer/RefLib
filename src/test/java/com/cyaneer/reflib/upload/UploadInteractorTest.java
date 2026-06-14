@@ -38,7 +38,7 @@ public class UploadInteractorTest {
 
         assert(model.getRefList().isEmpty());
 
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(!model.getRefList().isEmpty());
         assert(model.getRefList().get(0).getFile().getAbsolutePath().endsWith("src/test/resources/testimage.png"));
@@ -50,12 +50,12 @@ public class UploadInteractorTest {
         UploadInteractor interactor = new UploadInteractor(model);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getRefList().size() == 1);
 
         interactor.proposeNewRef("src/test/resources/testimagedifferent.jpg");
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getRefList().size() == 2);
 
@@ -71,7 +71,7 @@ public class UploadInteractorTest {
 
         assert(model.getNewRef() != null);
 
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getNewRef() == null);
     }
@@ -82,7 +82,7 @@ public class UploadInteractorTest {
         UploadInteractor interactor = new UploadInteractor(model);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getMostSimilarRefs().isEmpty());
 
@@ -97,7 +97,7 @@ public class UploadInteractorTest {
         UploadInteractor interactor = new UploadInteractor(model);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getRefList().size() == 1);
 
@@ -105,7 +105,7 @@ public class UploadInteractorTest {
 
         assert(!model.getMostSimilarRefs().isEmpty());
 
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getMostSimilarRefs().isEmpty());
     }
@@ -144,7 +144,7 @@ public class UploadInteractorTest {
         UploadInteractor interactor = new UploadInteractor(model);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
-        interactor.acceptNewRef();
+        interactor.clearNewRef();
 
         assert(model.getRefList().size() == 1);
 

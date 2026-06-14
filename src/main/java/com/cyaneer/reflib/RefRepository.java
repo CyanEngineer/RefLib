@@ -1,10 +1,11 @@
 package com.cyaneer.reflib;
 
+import java.io.IOException;
 import java.util.List;
 
-public interface RefRepository {
+public interface RefRepository<T extends Ref> {
     
-    List<Ref> loadRefs();
+    List<T> loadRefs() throws IOException;
 
-    void saveRefs(List<Ref> refs);
+    void saveRefs(List<T> refs) throws IOException;
 }

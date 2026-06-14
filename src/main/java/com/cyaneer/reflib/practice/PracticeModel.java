@@ -1,7 +1,8 @@
 package com.cyaneer.reflib.practice;
 
-import java.io.File;
 import java.util.List;
+
+import com.cyaneer.reflib.MatchableRef;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.property.BooleanProperty;
@@ -18,54 +19,50 @@ import javafx.collections.ObservableList;
 public class PracticeModel {
 
     //TODO: In the future, move the full poselist to the App model
-    private final ListProperty<File> fullPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
-    private final ListProperty<File> sessionPoseList = new SimpleListProperty<File>(FXCollections.observableArrayList());
-    private final ListProperty<File> drawnPosesList = new SimpleListProperty<File>(FXCollections.observableArrayList());
+    private final ListProperty<MatchableRef> fullPoseList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+    private final ListProperty<MatchableRef> sessionPoseList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+    private final ListProperty<MatchableRef> drawnPosesList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<SequenceStep> sequenceStepList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
     private final ObjectProperty<Integer> currentSequenceStepRepetitions = new SimpleObjectProperty<Integer>(0);
     private final ObjectProperty<Integer> currentSequenceStepSecPerRep = new SimpleObjectProperty<Integer>(0);
     private final ObjectProperty<SequenceStepType> currentSequenceStepType = new SimpleObjectProperty<SequenceStepType>(SequenceStepType.TIMED_POSES);
-    private final ObjectProperty<File> currentPose = new SimpleObjectProperty<File>(null);
+    private final ObjectProperty<MatchableRef> currentPose = new SimpleObjectProperty<MatchableRef>(null);
     private final IntegerProperty currentPoseNumber = new SimpleIntegerProperty(0);
     private final ObjectProperty<Integer> elapsedSeconds = new SimpleObjectProperty<Integer>(0);
     private final ObjectProperty<Status> timerStatus = new SimpleObjectProperty<Status>(Status.STOPPED);
     private final BooleanProperty isSessionFinished = new SimpleBooleanProperty(false);
 
-    public ObservableList<File> getFullPoseList() {
+    public ObservableList<MatchableRef> getFullPoseList() {
         return fullPoseList.get();
     }
 
-    public ListProperty<File> fullPoseListProperty() {
+    public ListProperty<MatchableRef> fullPoseListProperty() {
         return fullPoseList;
     }
 
-    public void setFullPoseList(List<File> fullPoseList) {
-        this.fullPoseList.set(FXCollections.observableArrayList(fullPoseList));
-    }
-
-    public ObservableList<File> getSessionPoseList() {
+    public ObservableList<MatchableRef> getSessionPoseList() {
         return sessionPoseList.get();
     }
 
-    public ListProperty<File> sessionPoseListProperty() {
+    public ListProperty<MatchableRef> sessionPoseListProperty() {
         return sessionPoseList;
     }
 
-    public void setSessionPoseList(List<File> sessionPoseList) {
+    public void setSessionPoseList(List<MatchableRef> sessionPoseList) {
         this.sessionPoseList.set(FXCollections.observableArrayList(sessionPoseList));
     }
 
-    public ObservableList<File> getDrawnPosesList() {
+    public ObservableList<MatchableRef> getDrawnPosesList() {
         return drawnPosesList.get();
     }
 
-    public ListProperty<File> drawnPosesListProperty() {
+    public ListProperty<MatchableRef> drawnPosesListProperty() {
         return drawnPosesList;
     }
 
-    public void setDrawnPosesList(List<File> drawnPosesList) {
+    public void setDrawnPosesList(List<MatchableRef> drawnPosesList) {
         this.drawnPosesList.set(FXCollections.observableArrayList(drawnPosesList));
     }
 
@@ -141,15 +138,15 @@ public class PracticeModel {
         this.isDuplicatesAllowed.set(isDuplicatesAllowed);
     }
 
-    public File getcurrentPose() {
+    public MatchableRef getcurrentPose() {
         return currentPose.get();
     }
 
-    public ObjectProperty<File> currentPoseProperty() {
+    public ObjectProperty<MatchableRef> currentPoseProperty() {
         return currentPose;
     }
 
-    public void setCurrentPose(File currentPose) {
+    public void setCurrentPose(MatchableRef currentPose) {
         this.currentPose.set(currentPose);
     }
 

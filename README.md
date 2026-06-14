@@ -64,7 +64,11 @@ A feature-rich application for handling reference images throughout your artisti
 - Build guide
 - When ranking similar refs, only store the 5 most similar instead of keeping a whole priorityqueue
 - Handle descriptor matching on other threads
-- More abstractions
+- ~~More abstractions~~
+- Proper error handling
+  - Descriptive error types
+  - Pop-ups
+  - Code responding to errors
 ### Home page
 - ~~Links to the other pages~~
 - Stats?
@@ -122,7 +126,7 @@ A feature-rich application for handling reference images throughout your artisti
 ### Storage
 - Let user define location of images
 - Appdata with info about images
-  - Location
+  - ~~Location~~
   - Tags
   - SIFT descriptors
 - Allow separately fetching Ref path or descriptors (match on ID)
