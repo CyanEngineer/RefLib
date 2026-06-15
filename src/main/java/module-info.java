@@ -8,7 +8,5 @@ module com.cyaneer.reflib {
     requires transitive org.bytedeco.opencv;
 
     requires com.fasterxml.jackson.databind;
-
-    exports com.cyaneer.reflib;
-    exports com.cyaneer.reflib.practice;
+    opens com.cyaneer.reflib.domain to com.fasterxml.jackson.databind;
 }
