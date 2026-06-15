@@ -1,5 +1,7 @@
 package com.cyaneer.reflib;
 
+import com.cyaneer.reflib.domain.MatchableRef;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;

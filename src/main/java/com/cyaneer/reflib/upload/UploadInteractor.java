@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.Function;
 
-import com.cyaneer.reflib.MatchableRef;
+import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.collections.FXCollections;
 

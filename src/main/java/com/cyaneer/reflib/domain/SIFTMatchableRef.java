@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.domain;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +27,6 @@ public class SIFTMatchableRef extends MatchableRef {
     private static final SIFT sift = SIFT.create();
     private static final BFMatcher matcher = new BFMatcher();
 
-    private File file;
     private Mat SIFTDescriptors;
 
     public SIFTMatchableRef(File file) {
@@ -38,10 +37,6 @@ public class SIFTMatchableRef extends MatchableRef {
     public SIFTMatchableRef(File file, Mat SIFTDescriptors) {
         this.file = file;
         this.SIFTDescriptors = SIFTDescriptors;
-    }
-
-    public File getFile() {
-        return file;
     }
 
     public Mat getSIFTDescriptors() {

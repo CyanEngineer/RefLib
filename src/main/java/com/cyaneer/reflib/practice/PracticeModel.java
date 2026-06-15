@@ -2,7 +2,7 @@ package com.cyaneer.reflib.practice;
 
 import java.util.List;
 
-import com.cyaneer.reflib.MatchableRef;
+import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.property.BooleanProperty;

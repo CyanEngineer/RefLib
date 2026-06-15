@@ -3,7 +3,7 @@ package com.cyaneer.reflib.practice;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import com.cyaneer.reflib.MatchableRef;
+import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;

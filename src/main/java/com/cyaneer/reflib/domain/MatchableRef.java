@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.domain;
 
 import java.util.List;
 

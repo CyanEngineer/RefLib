@@ -2,8 +2,8 @@ package com.cyaneer.reflib.practice;
 
 import java.util.List;
 
-import com.cyaneer.reflib.MatchableRef;
 import com.cyaneer.reflib.PracticeService;
+import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

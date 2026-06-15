@@ -3,7 +3,7 @@ package com.cyaneer.reflib.upload;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import com.cyaneer.reflib.MatchableRef;
+import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;

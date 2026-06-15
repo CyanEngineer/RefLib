@@ -1,10 +1,10 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.domain;
 
 import java.io.File;
 
 public class Ref {
     
-    private File file;
+    protected File file;
 
     public File getFile() {
         return file;

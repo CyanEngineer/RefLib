@@ -1,4 +1,4 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.domain.SIFTRefDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

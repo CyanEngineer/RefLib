@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.domain.SIFTMatchableRef;
+import com.cyaneer.reflib.repository.SIFTRefRepository;
+
 import javafx.collections.FXCollections;
 
 public class MainInteractor {
