@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.domain.SIFTMatchableRef;
+
 public class SIFTMatchableRefTest {
     
     @Test

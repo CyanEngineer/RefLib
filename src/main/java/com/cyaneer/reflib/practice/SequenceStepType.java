@@ -1,7 +1,7 @@
 package com.cyaneer.reflib.practice;
 
 public enum SequenceStepType {
-    TIMED_POSES,
-    UNTIMED_POSES,
+    TIMED_REFS,
+    UNTIMED_REFS,
     BREAK
 }

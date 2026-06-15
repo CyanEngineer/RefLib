@@ -75,10 +75,10 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
 
     private ObjectBinding<Image> createImageBinding() {
         return Bindings.createObjectBinding(() -> {
-            return new Image(model.getcurrentPose() != null ? 
-                new FileInputStream(model.getcurrentPose().getFile()) :
+            return new Image(model.getcurrentRef() != null ? 
+                new FileInputStream(model.getcurrentRef().getFile()) :
                 getClass().getResourceAsStream("/com/cyaneer/reflib/noimage.png"));
-        }, model.currentPoseProperty());
+        }, model.currentRefProperty());
     }
 
     private Node createBreakElement() {
@@ -111,8 +111,8 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private Node createStepProgressElement() {
         Label label = new Label("");
         StringBinding stringBinding = Bindings.createStringBinding(() -> {
-            return model.getCurrentPoseNumber() + "/" + model.getCurrentSequenceStepRepetitions();
-        }, model.currentPoseNumberProperty(), model.currentSequenceStepRepetitionsProperty());
+            return model.getCurrentRefNumber() + "/" + model.getCurrentSequenceStepRepetitions();
+        }, model.currentRefNumberProperty(), model.currentSequenceStepRepetitionsProperty());
         label.textProperty().bind(stringBinding);
         return label;
     }
@@ -120,15 +120,15 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private Node createProgressElement() {
         return new HBox(8, 
             createStepProgressElement(),
-            createPoseProgressElement()
+            createRefProgressElement()
         );
     }
 
-    private Node createPoseProgressElement() {
-        Label untimedLabel = new Label("Untimed poses");
-        untimedLabel.visibleProperty().bind(model.currentSequenceStepTypeProperty().isEqualTo(SequenceStepType.UNTIMED_POSES));
+    private Node createRefProgressElement() {
+        Label untimedLabel = new Label("Untimed refs");
+        untimedLabel.visibleProperty().bind(model.currentSequenceStepTypeProperty().isEqualTo(SequenceStepType.UNTIMED_REFS));
         Node timedProgressBar = createTimedProgressBar();
-        timedProgressBar.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+        timedProgressBar.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_REFS));
         return new StackPane(untimedLabel, timedProgressBar);
     }
 
@@ -161,7 +161,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     private Node createProgressControls() {
 
         Node timerControls = createTimerControls();
-        timerControls.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+        timerControls.visibleProperty().bind(model.currentSequenceStepTypeProperty().isNotEqualTo(SequenceStepType.UNTIMED_REFS));
 
         Button nextButton = new Button("Next");
         nextButton.setOnAction(e -> jumpToNextAction.run());

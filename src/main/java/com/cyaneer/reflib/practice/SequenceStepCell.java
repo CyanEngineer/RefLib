@@ -26,7 +26,7 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
         repetitionsSpinner.managedProperty().bind(repetitionsSpinner.visibleProperty());
         
         Node durationSpinner = boundSpinner(model.secPerRepProperty());
-        durationSpinner.visibleProperty().bind(model.typeProperty().isNotEqualTo(SequenceStepType.UNTIMED_POSES));
+        durationSpinner.visibleProperty().bind(model.typeProperty().isNotEqualTo(SequenceStepType.UNTIMED_REFS));
         durationSpinner.managedProperty().bind(durationSpinner.visibleProperty());
 
         layout = new HBox(4,
@@ -42,10 +42,10 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
 
         label.textProperty().bind(Bindings.createStringBinding(
             () -> {
-                if (model.getType() == SequenceStepType.TIMED_POSES) {
-                    return "poses of";
-                } else if (model.getType() == SequenceStepType.UNTIMED_POSES) {
-                    return "poses without timer";
+                if (model.getType() == SequenceStepType.TIMED_REFS) {
+                    return "refs of";
+                } else if (model.getType() == SequenceStepType.UNTIMED_REFS) {
+                    return "refs without timer";
                 } else {
                     return "Break for";
                 }
@@ -61,7 +61,7 @@ public class SequenceStepCell extends ListCell<SequenceStep> {
 
         label.textProperty().bind(Bindings.createStringBinding(
             () -> {
-                if (model.getType() == SequenceStepType.UNTIMED_POSES) {
+                if (model.getType() == SequenceStepType.UNTIMED_REFS) {
                     return "";
                 } else {
                     return "seconds"; //TODO: Support minutes

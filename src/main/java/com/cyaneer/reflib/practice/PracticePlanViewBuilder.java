@@ -66,11 +66,11 @@ public class PracticePlanViewBuilder implements Builder<Region> {
     }
 
     private Node createSequenceControls(ListView<SequenceStep> listView) {
-        Button addTimedButton = new Button("Add timed poses");
-        addTimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.TIMED_POSES));
+        Button addTimedButton = new Button("Add timed refs");
+        addTimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.TIMED_REFS));
 
-        Button addUntimedButton = new Button("Add untimed poses");
-        addUntimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.UNTIMED_POSES));
+        Button addUntimedButton = new Button("Add untimed refs");
+        addUntimedButton.setOnAction(e -> addStepAction.accept(SequenceStepType.UNTIMED_REFS));
 
         Button addBreakButton = new Button("Add break");
         addBreakButton.setOnAction(e -> addStepAction.accept(SequenceStepType.BREAK));
@@ -99,8 +99,8 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         );
 
         startButton.disableProperty().bind(Bindings.createBooleanBinding(
-                () -> model.getSessionPoseList().size() == 0,
-                model.sessionPoseListProperty()));
+                () -> model.getSessionRefList().size() == 0,
+                model.sessionRefListProperty()));
 
         startButton.setOnAction(e -> startAction.run());
         HBox content = new HBox(8,
@@ -130,7 +130,7 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         int drawingSeconds = 0;
         int breakSeconds = 0;
         for (SequenceStep ss : model.getSequenceStepList()) {
-            if (ss.getType() == SequenceStepType.TIMED_POSES) {
+            if (ss.getType() == SequenceStepType.TIMED_REFS) {
                 drawingSeconds += ss.totalSeconds().get();
             } else if (ss.getType() == SequenceStepType.BREAK) {
                 breakSeconds += ss.totalSeconds().get();

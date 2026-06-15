@@ -13,10 +13,10 @@ public class PracticeInteractorTest {
         PracticeInteractor interactor = new PracticeInteractor(model);
         Assertions.assertEquals(model.getSequenceStepList().size(), 0);
 
-        interactor.addStep(SequenceStepType.TIMED_POSES);
+        interactor.addStep(SequenceStepType.TIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().size(), 1);
 
-        interactor.addStep(SequenceStepType.UNTIMED_POSES);
+        interactor.addStep(SequenceStepType.UNTIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().size(), 2);
 
         interactor.addStep(SequenceStepType.BREAK);
@@ -24,23 +24,23 @@ public class PracticeInteractorTest {
     }
 
     @Test
-    public void testAddTimedPosesStepHasDefaultValues() {
+    public void testAddTimedRefsStepHasDefaultValues() {
         PracticeModel model  = new PracticeModel();
         PracticeInteractor interactor = new PracticeInteractor(model);
-        interactor.addStep(SequenceStepType.TIMED_POSES);
+        interactor.addStep(SequenceStepType.TIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 60);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.TIMED_POSES);
+        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.TIMED_REFS);
     }
 
     @Test
-    public void testAddUntimedPosesStepHasDefaultValues() {
+    public void testAddUntimedRefsStepHasDefaultValues() {
         PracticeModel model  = new PracticeModel();
         PracticeInteractor interactor = new PracticeInteractor(model);
-        interactor.addStep(SequenceStepType.UNTIMED_POSES);
+        interactor.addStep(SequenceStepType.UNTIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 1);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.UNTIMED_POSES);
+        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.UNTIMED_REFS);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class PracticeInteractorTest {
     public void testRemoveStep() {
         PracticeModel model = new PracticeModel();
         PracticeInteractor interactor = new PracticeInteractor(model);
-        interactor.addStep(SequenceStepType.TIMED_POSES);
+        interactor.addStep(SequenceStepType.TIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().size(), 1);
         interactor.removeStep(0);
         Assertions.assertEquals(model.getSequenceStepList().size(), 0);

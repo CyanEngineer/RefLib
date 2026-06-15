@@ -40,9 +40,9 @@ public class PracticeService {
 
     public List<SequenceStep> loadSequence() { // TODO: Use a proper config file and maybe a DTO
         return Arrays.asList(
-            new SequenceStep(15, 60, SequenceStepType.TIMED_POSES),
+            new SequenceStep(15, 60, SequenceStepType.TIMED_REFS),
             new SequenceStep(1, 60, SequenceStepType.BREAK),
-            new SequenceStep(15, 60, SequenceStepType.TIMED_POSES)
+            new SequenceStep(15, 60, SequenceStepType.TIMED_REFS)
         );
     }
 

@@ -47,10 +47,10 @@ public class practiceReviewViewBuilder implements Builder<Region> {
     private Node createCenter() {
         GridPane gridPane = new GridPane(32, 32);
 
-        model.currentPoseProperty().addListener((ob, oldValue, newValue) -> {
+        model.currentRefProperty().addListener((ob, oldValue, newValue) -> {
             if (newValue == null) {
                 // TODO: Not sure if these two if-statements might be a race condition?
-                if (model.getDrawnPosesList().size() == 0) {
+                if (model.getDrawnRefsList().size() == 0) {
                     gridPane.getChildren().clear();
                     gridNodeCount = 0;
                 }

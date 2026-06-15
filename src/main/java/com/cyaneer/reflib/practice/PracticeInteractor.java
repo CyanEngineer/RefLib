@@ -42,7 +42,7 @@ public class PracticeInteractor {
 
     public void addStep(SequenceStepType type) {
         int repetitions = type == SequenceStepType.BREAK ? 1 : 10;
-        int secPerRep = type == SequenceStepType.UNTIMED_POSES ? 1 : 60;
+        int secPerRep = type == SequenceStepType.UNTIMED_REFS ? 1 : 60;
 
         model.sequenceStepListProperty().add(new SequenceStep(repetitions, secPerRep, type));
     }
@@ -64,7 +64,7 @@ public class PracticeInteractor {
             SequenceStep nextStep = model.remainingSequenceStepsListProperty().removeFirst();
             updateModel(nextStep);
 
-            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_POSES) {
+            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_REFS) {
                 createTimer();
             }
             
@@ -73,42 +73,42 @@ public class PracticeInteractor {
     }
 
     public void advanceInCurrentStep() {
-        //TODO: I need to ensure that numberOfPoses is always 1 for BREAK or do something else
-        if (model.getCurrentPoseNumber() < model.getCurrentSequenceStepRepetitions()) {
-            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_POSES) {
+        //TODO: I need to ensure that numberOfRefs is always 1 for BREAK or do something else
+        if (model.getCurrentRefNumber() < model.getCurrentSequenceStepRepetitions()) {
+            if (model.getCurrentSequenceStepType() != SequenceStepType.UNTIMED_REFS) {
                 timer.playFromStart();
             }
             if (model.getCurrentSequenceStepType() != SequenceStepType.BREAK) {
-                setNextPose();
+                setNextRef();
             }
-            model.currentPoseNumberProperty().set(model.getCurrentPoseNumber()+1);
+            model.currentRefNumberProperty().set(model.getCurrentRefNumber()+1);
         } else {
             advanceToNextStep();
         }
     }
 
-    private void setNextPose() {
-        MatchableRef nextPose = getRandomPose();
-        model.currentPoseProperty().set(nextPose);
-        model.getDrawnPosesList().add(nextPose);
+    private void setNextRef() {
+        MatchableRef nextRef = getRandomRef();
+        model.currentRefProperty().set(nextRef);
+        model.getDrawnRefsList().add(nextRef);
         if (!model.getDuplicatesAllowed()) {
-            model.getSessionPoseList().remove(nextPose);
+            model.getSessionRefList().remove(nextRef);
         }
     }
 
-    private MatchableRef getRandomPose() {
-        return model.getSessionPoseList().get(getRandomPoseNumber());
+    private MatchableRef getRandomRef() {
+        return model.getSessionRefList().get(getRandomRefNumber());
     }
 
-    private int getRandomPoseNumber() {
-        return (int) (Math.random() * model.getSessionPoseList().size());
+    private int getRandomRefNumber() {
+        return (int) (Math.random() * model.getSessionRefList().size());
     }
 
     private void updateModel(SequenceStep nextStep) {
         model.setCurrentSequenceStepRepetitions(nextStep.getRepetitions());
         model.setCurrentSequenceStepSecPerRep(nextStep.getSecPerRep());
         model.setCurrentSequenceStepType(nextStep.getType());
-        model.setCurrentPoseNumber(0);
+        model.setCurrentRefNumber(0);
     }
 
     private void createTimer() {
@@ -154,11 +154,10 @@ public class PracticeInteractor {
 
     public void resetPractice() {
         stopTimer();
-        model.getDrawnPosesList().clear();
-        System.out.println("Refs being added in PracticeModel");
-        model.getSessionPoseList().setAll(model.getFullPoseList());
-        model.setCurrentPose(null);
-        model.setCurrentPoseNumber(0);
+        model.getDrawnRefsList().clear();
+        model.getSessionRefList().setAll(model.getFullRefList());
+        model.setCurrentRef(null);
+        model.setCurrentRefNumber(0);
         model.setSessionFinished(false);
     }
 }

@@ -19,7 +19,7 @@ public class PracticeController {
         BooleanProperty isRefListLoaded
     ) {
         model = new PracticeModel();
-        model.fullPoseListProperty().bind(refList);
+        model.fullRefListProperty().bind(refList);
 
         interactor = new PracticeInteractor(model, isRefListLoaded);
         loadSequence();
