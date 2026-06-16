@@ -1,13 +1,10 @@
-package com.cyaneer.reflib;
+package com.cyaneer.reflib.domain;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
-import com.cyaneer.reflib.domain.MatchableRef;
-import com.cyaneer.reflib.domain.SIFTMatchableRef;
 
 public class SIFTMatchableRefTest {
     

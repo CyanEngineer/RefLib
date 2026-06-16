@@ -3,6 +3,8 @@ package com.cyaneer.reflib.practice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.lang.IndexOutOfBoundsException;
 
 public class PracticeInteractorTest {
@@ -10,7 +12,7 @@ public class PracticeInteractorTest {
     @Test
     public void testAddStep() {
         PracticeModel model  = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         Assertions.assertEquals(model.getSequenceStepList().size(), 0);
 
         interactor.addStep(SequenceStepType.TIMED_REFS);
@@ -26,7 +28,7 @@ public class PracticeInteractorTest {
     @Test
     public void testAddTimedRefsStepHasDefaultValues() {
         PracticeModel model  = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         interactor.addStep(SequenceStepType.TIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 60);
@@ -36,7 +38,7 @@ public class PracticeInteractorTest {
     @Test
     public void testAddUntimedRefsStepHasDefaultValues() {
         PracticeModel model  = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         interactor.addStep(SequenceStepType.UNTIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 1);
@@ -46,7 +48,7 @@ public class PracticeInteractorTest {
     @Test
     public void testAddBreakStepHasDefaultValues() {
         PracticeModel model  = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         interactor.addStep(SequenceStepType.BREAK);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 1);
         Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 60);
@@ -56,7 +58,7 @@ public class PracticeInteractorTest {
     @Test
     public void testRemoveStep() {
         PracticeModel model = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         interactor.addStep(SequenceStepType.TIMED_REFS);
         Assertions.assertEquals(model.getSequenceStepList().size(), 1);
         interactor.removeStep(0);
@@ -66,14 +68,14 @@ public class PracticeInteractorTest {
     @Test
     public void testRemoveStepWithInvalidIndex() {
         PracticeModel model = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> interactor.removeStep(0));
     }
 
     @Test
     public void testRemoveStepWithNegativeIndex() {
         PracticeModel model = new PracticeModel();
-        PracticeInteractor interactor = new PracticeInteractor(model);
+        PracticeInteractor interactor = new PracticeInteractor(model, new SimpleBooleanProperty(false));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> interactor.removeStep(-1));
     }
 }
