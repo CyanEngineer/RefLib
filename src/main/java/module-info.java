@@ -1,10 +1,11 @@
 module com.cyaneer.reflib {
     requires java.management;
     
+    requires javafx.base;
     requires javafx.controls;
     requires transitive javafx.graphics;
-    requires javafx.base;
-    
+    opens com.cyaneer.reflib to javafx.graphics;
+
     requires transitive org.bytedeco.opencv;
 
     requires com.fasterxml.jackson.databind;
