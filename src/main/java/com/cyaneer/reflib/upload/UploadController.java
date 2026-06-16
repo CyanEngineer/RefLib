@@ -15,23 +15,21 @@ public class UploadController {
     private UploadModel model;
     private UploadInteractor interactor;
     private Builder<Region> viewBuilder;
-    private BiConsumer<MatchableRef, Runnable> addRefAction;
 
     public UploadController(
-        ListProperty<MatchableRef> refList,
+        ListProperty<MatchableRef> masterRefList,
         BooleanProperty isRefListLoaded, //TODO: When false, diable upload functionality. Consider if it should be turned false between accept and the Ref being added to the list
         Function<String, MatchableRef> createRefAction,
         BiConsumer<MatchableRef, Runnable> addRefAction
     ) {
         model = new UploadModel();
-        model.refListProperty().bind(refList);
-        model.isRefListLoadedProperty().bind(isRefListLoaded);
-
-        this.addRefAction = addRefAction;
 
         interactor = new UploadInteractor(
             model,
-            createRefAction
+            masterRefList,
+            isRefListLoaded,
+            createRefAction,
+            addRefAction
         );
 
         viewBuilder = new UploadViewBuilder(
@@ -51,10 +49,7 @@ public class UploadController {
     }
 
     private void acceptNewRef() {
-        addRefAction.accept(
-            model.getNewRef(),
-            () -> interactor.clearNewRef()
-        );
+        interactor.addNewRef();
     }
 
     private void rejectNewRef() {

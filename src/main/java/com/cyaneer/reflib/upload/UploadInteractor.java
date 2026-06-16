@@ -2,19 +2,32 @@ package com.cyaneer.reflib.upload;
 
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
 
 public class UploadInteractor {
     private UploadModel model;
     private Function<String, MatchableRef> createRefAction;
+    private BiConsumer<MatchableRef, Runnable> addRefAction;
 
-    public UploadInteractor(UploadModel model, Function<String, MatchableRef> createRefAction) {
+    public UploadInteractor(
+        UploadModel model,
+        ListProperty<MatchableRef> masterRefList,
+        BooleanProperty isRefListLoaded,
+        Function<String, MatchableRef> createRefAction,
+        BiConsumer<MatchableRef, Runnable> addRefAction
+    ) {
         this.model = model;
+        model.refListProperty().bind(masterRefList);
+        model.isRefListLoadedProperty().bind(isRefListLoaded);
         this.createRefAction = createRefAction;
+        this.addRefAction = addRefAction;
     }
 
     public void proposeNewRef(String filepath) {
@@ -47,6 +60,13 @@ public class UploadInteractor {
         }
 
         return mostSimilarRefs;
+    }
+
+    public void addNewRef() {
+        addRefAction.accept(
+            model.getNewRef(),
+            () -> clearNewRef()
+        );
     }
 
     public void clearNewRef() {
