@@ -51,10 +51,10 @@ A feature-rich application for handling reference images throughout your artisti
 - Upload dragboard behaves strange sometimes (at least when running from VSCode on Wayland)
   - Sometimes empty dragboard
   - Sometimes takes image in clipboard instead of dragboard
+  - Throws a lot of exceptions
 ### Improvements
-- Is it bad that the timer's `currentTimeProperty` is invalidated every ms?
-  - Solution could be to listen for change instead of listening for invalidation
 - Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
+- Check if there are new things to unit test after the refactor
 - Avoid the dependency on libgtk-x11-2.0.so if possible
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - Look into the stack guard warning

@@ -8,8 +8,6 @@ import com.cyaneer.reflib.domain.MatchableRef;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
@@ -27,12 +25,15 @@ public class PracticeInteractor {
         });
 
         model.timerStatusProperty().bind(timer.statusProperty());
-        //TODO: I can't imagine that it isn't hella inefficient to have a binding that's called every ms...
-        ObjectBinding<Integer> currentTimeBinding = Bindings.createObjectBinding(
-            () -> (int) timer.currentTimeProperty().get().toSeconds(),
-            timer.currentTimeProperty()
-        );
-        model.currentElapsedSecondsProperty().bind(currentTimeBinding);
+        
+        // Only update elapsedSeconds every second
+        timer.currentTimeProperty().addListener((obs, oldValue, newValue) -> {
+            int oldSec = (int) oldValue.toSeconds();
+            int newSec = (int) newValue.toSeconds();
+            if (newSec != oldSec) {
+                model.setElapsedSeconds(newSec);
+            }
+        });
     }
 
     public void loadSequence() {

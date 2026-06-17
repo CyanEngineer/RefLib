@@ -139,7 +139,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
             double elapsedSeconds = Math.floor(model.getElapsedSeconds());
             double totalSeconds = model.getCurrentSequenceStepSecPerRep();
             return elapsedSeconds / (totalSeconds - 1);
-        }, model.currentElapsedSecondsProperty());
+        }, model.elapsedSecondsProperty());
         progressBar.progressProperty().bind(progress);
         return progressBar;
     }

@@ -166,7 +166,11 @@ public class PracticeModel {
         return elapsedSeconds.get();
     }
 
-    public ObjectProperty<Integer> currentElapsedSecondsProperty() {
+    public void setElapsedSeconds(int elapsedSeconds) {
+        this.elapsedSeconds.set(elapsedSeconds);
+    }
+
+    public ObjectProperty<Integer> elapsedSecondsProperty() {
         return elapsedSeconds;
     }
 
