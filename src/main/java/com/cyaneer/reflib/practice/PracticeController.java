@@ -2,8 +2,8 @@ package com.cyaneer.reflib.practice;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
@@ -15,14 +15,19 @@ public class PracticeController {
     private PracticeInteractor interactor;
 
     public PracticeController(
-        ListProperty<MatchableRef> refList,
-        BooleanProperty isRefListLoaded
+        ListProperty<MatchableRef> masterRefList,
+        ObjectProperty<Boolean> isRefListLoaded
     ) {
         model = new PracticeModel();
-        model.fullRefListProperty().bind(refList);
 
-        interactor = new PracticeInteractor(model, isRefListLoaded);
+        interactor = new PracticeInteractor(
+            model,
+            masterRefList,
+            isRefListLoaded
+        );
+
         loadSequence();
+
         viewBuilder = new PracticeViewBuilder(
             model,
             type -> addStep(type),

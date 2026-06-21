@@ -2,16 +2,16 @@ package com.cyaneer.reflib;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MainModel {
     private final ListProperty<MatchableRef> refList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
-    private final BooleanProperty isRefListLoaded = new SimpleBooleanProperty(false);
+    private final ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
 
     public ObservableList<MatchableRef> getRefList() {
         return refList.get();
@@ -37,7 +37,7 @@ public class MainModel {
         this.isRefListLoaded.set(isLoadingComplete);
     }
 
-    public BooleanProperty isRefListLoadedProperty() {
+    public ObjectProperty<Boolean> isRefListLoadedProperty() {
         return isRefListLoaded;
     }
 }

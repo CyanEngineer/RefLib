@@ -8,7 +8,8 @@ import com.cyaneer.reflib.domain.MatchableRef;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.util.Duration;
 
@@ -17,12 +18,20 @@ public class PracticeInteractor {
     private PracticeService service = new PracticeService();
     private Timeline timer = new Timeline();
 
-    public PracticeInteractor(PracticeModel model, BooleanProperty isRefListLoaded) {
+    public PracticeInteractor(
+        PracticeModel model,
+        ListProperty<MatchableRef> masterRefList,
+        ObjectProperty<Boolean> isRefListLoaded
+    ) {
         this.model = model;
+        model.fullRefListProperty().bind(masterRefList);
 
         isRefListLoaded.addListener((obs, oldValue, newValue) -> {
             if (newValue) resetPractice();
         });
+        if (isRefListLoaded.get()) {
+            resetPractice();
+        }
 
         model.timerStatusProperty().bind(timer.statusProperty());
         

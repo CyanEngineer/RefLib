@@ -18,7 +18,6 @@ import javafx.collections.ObservableList;
 
 public class PracticeModel {
 
-    //TODO: In the future, move the full reflist to the App model
     private final ListProperty<MatchableRef> fullRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> sessionRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> drawnRefsList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());

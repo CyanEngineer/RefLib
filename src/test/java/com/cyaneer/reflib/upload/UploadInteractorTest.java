@@ -8,8 +8,8 @@ import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
 
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 
 public class UploadInteractorTest {
@@ -17,7 +17,7 @@ public class UploadInteractorTest {
     @Test
     public void testProposeNewRefSetsNewRefFieldInModel() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         assert(model.getNewRef() == null);
 
@@ -30,7 +30,7 @@ public class UploadInteractorTest {
     @Test
     public void testProposeNewRefSetsNoSimilarRefsWhenFirstRefIsProposed() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         assert(model.getMostSimilarRefs().isEmpty());
 
@@ -42,7 +42,7 @@ public class UploadInteractorTest {
     @Test
     public void testAcceptNewRefAddsRefToEmptyRefListInModel() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
 
@@ -57,7 +57,7 @@ public class UploadInteractorTest {
     @Test
     public void testAcceptNewRefAddsRefToNonemptyRefListInModel() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
         interactor.addNewRef();
@@ -75,7 +75,7 @@ public class UploadInteractorTest {
     @Test
     public void testAcceptNewRefClearsNewRef() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
 
@@ -89,7 +89,7 @@ public class UploadInteractorTest {
     @Test
     public void testProposeNewRefSetsSimilarRefsWhenEditedRefIsProposed() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
         interactor.addNewRef();
@@ -104,7 +104,7 @@ public class UploadInteractorTest {
     @Test
     public void testAcceptNewRefClearsMostSimilarRefs() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
         interactor.addNewRef();
@@ -123,7 +123,7 @@ public class UploadInteractorTest {
     @Test
     public void testClearNewRefDoesNotAddRefToRefListInModel() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
 
@@ -137,7 +137,7 @@ public class UploadInteractorTest {
     @Test
     public void testClearNewRefClearsNewRef() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
 
@@ -151,7 +151,7 @@ public class UploadInteractorTest {
     @Test
     public void testClearNewRefClearsMostSimilarRefs() {
         UploadModel model = new UploadModel();
-        UploadInteractor interactor = createUploadInteracter(model, false);
+        UploadInteractor interactor = createUploadInteractor(model, false);
 
         interactor.proposeNewRef("src/test/resources/testimage.png");
         interactor.addNewRef();
@@ -167,13 +167,13 @@ public class UploadInteractorTest {
         assert(model.getMostSimilarRefs().isEmpty());
     }
 
-    private UploadInteractor createUploadInteracter(UploadModel model, boolean isRefListLoaded) {
+    private UploadInteractor createUploadInteractor(UploadModel model, boolean isRefListLoaded) {
         ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
 
         return new UploadInteractor(
             model,
             masterRefList,
-            new SimpleBooleanProperty(isRefListLoaded),
+            new SimpleObjectProperty<Boolean>(isRefListLoaded),
             path -> new SIFTMatchableRef(new File(path)),
             (ref, cleanupAction) -> {masterRefList.add(ref); cleanupAction.run();}
         );

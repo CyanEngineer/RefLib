@@ -5,8 +5,8 @@ import java.util.function.Function;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
@@ -18,7 +18,7 @@ public class UploadController {
 
     public UploadController(
         ListProperty<MatchableRef> masterRefList,
-        BooleanProperty isRefListLoaded, //TODO: When false, diable upload functionality. Consider if it should be turned false between accept and the Ref being added to the list
+        ObjectProperty<Boolean> isRefListLoaded, //TODO: When false, diable upload functionality. Consider if it should be turned false between accept and the Ref being added to the list
         Function<String, MatchableRef> createRefAction,
         BiConsumer<MatchableRef, Runnable> addRefAction
     ) {

@@ -7,8 +7,8 @@ import java.util.function.Function;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 
 public class UploadInteractor {
@@ -19,7 +19,7 @@ public class UploadInteractor {
     public UploadInteractor(
         UploadModel model,
         ListProperty<MatchableRef> masterRefList,
-        BooleanProperty isRefListLoaded,
+        ObjectProperty<Boolean> isRefListLoaded,
         Function<String, MatchableRef> createRefAction,
         BiConsumer<MatchableRef, Runnable> addRefAction
     ) {
