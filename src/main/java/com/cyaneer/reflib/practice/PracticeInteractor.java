@@ -1,9 +1,8 @@
 package com.cyaneer.reflib.practice;
 
-import java.util.List;
-
 import com.cyaneer.reflib.PracticeService;
 import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStep;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
@@ -48,23 +47,23 @@ public class PracticeInteractor {
     }
 
     public void loadSequence() {
-        List<SequenceStep> sequenceStepList = service.loadSequence();
-        model.setSequenceStepList(sequenceStepList);
+        Sequence sequence = service.loadSequence();
+        model.setCurrentSequence(sequence);
     }
 
     public void addStep(SequenceStepType type) {
         int repetitions = type == SequenceStepType.BREAK ? 1 : 10;
         int secPerRep = type == SequenceStepType.UNTIMED_REFS ? 1 : 60;
 
-        model.sequenceStepListProperty().add(new SequenceStep(repetitions, secPerRep, type));
+        model.getCurrentSequence().addStep(new SequenceStep(repetitions, secPerRep, type));
     }
 
     public void removeStep(int idx) {
-        model.sequenceStepListProperty().remove(idx);
+        model.getCurrentSequence().removeStep(idx);
     }
 
     public void startPractice() {
-        model.setRemainingSequenceStepsList(model.getSequenceStepList());
+        model.setRemainingSequenceStepsList(model.getCurrentSequence().getSteps());
         advanceToNextStep();
     }
 

@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
+import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStep;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
@@ -38,12 +39,13 @@ public class PracticeService {
         return Arrays.asList();
     }
 
-    public List<SequenceStep> loadSequence() { // TODO: Use a proper config file and maybe a DTO
-        return Arrays.asList(
-            new SequenceStep(15, 60, SequenceStepType.TIMED_REFS),
-            new SequenceStep(1, 60, SequenceStepType.BREAK),
-            new SequenceStep(15, 60, SequenceStepType.TIMED_REFS)
-        );
+    public Sequence loadSequence() { // TODO: Use a proper config file and maybe a DTO
+        Sequence sequence = new Sequence();
+        sequence.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
+        sequence.addStep(new SequenceStep(1, 60, SequenceStepType.BREAK));
+        sequence.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
+        
+        return sequence;
     }
 
     public SIFTMatchableRef createNewRef(String filepath) {

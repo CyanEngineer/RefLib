@@ -3,6 +3,7 @@ package com.cyaneer.reflib.practice;
 import java.util.List;
 
 import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStep;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
@@ -23,7 +24,8 @@ public class PracticeModel {
     private final ListProperty<MatchableRef> fullRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> sessionRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> drawnRefsList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
-    private final ListProperty<SequenceStep> sequenceStepList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
+    private final ObjectProperty<Sequence> currentSequence = new SimpleObjectProperty<Sequence>(new Sequence());
+    private final IntegerProperty currentSequenceTotalSeconds = new SimpleIntegerProperty(0);
     private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
     private final BooleanProperty isDuplicatesAllowed = new SimpleBooleanProperty(false);
     private final ObjectProperty<Integer> currentSequenceStepRepetitions = new SimpleObjectProperty<Integer>(0);
@@ -34,6 +36,15 @@ public class PracticeModel {
     private final ObjectProperty<Integer> elapsedSeconds = new SimpleObjectProperty<Integer>(0);
     private final ObjectProperty<Status> timerStatus = new SimpleObjectProperty<Status>(Status.STOPPED);
     private final BooleanProperty isSessionFinished = new SimpleBooleanProperty(false);
+
+    public PracticeModel() {
+        currentSequence.addListener((obs, oldVal, newVal) -> {
+            if (oldVal != null) currentSequenceTotalSeconds.unbind();
+
+            if (newVal != null) currentSequenceTotalSeconds.bind(newVal.totalSeconds());
+            else currentSequenceTotalSeconds.set(0);
+        });
+    }
 
     public ObservableList<MatchableRef> getFullRefList() {
         return fullRefList.get();
@@ -67,16 +78,20 @@ public class PracticeModel {
         this.drawnRefsList.set(FXCollections.observableArrayList(drawnRefsList));
     }
 
-    public ObservableList<SequenceStep> getSequenceStepList() {
-        return sequenceStepList.get();
+    public Sequence getCurrentSequence() {
+        return currentSequence.get();
     }
 
-    public ListProperty<SequenceStep> sequenceStepListProperty() {
-        return sequenceStepList;
+    public ObjectProperty<Sequence> currentSequenceProperty() {
+        return currentSequence;
     }
 
-    public void setSequenceStepList(List<SequenceStep> sequenceStepList) {
-        this.sequenceStepList.set(FXCollections.observableArrayList(sequenceStepList));
+    public void setCurrentSequence(Sequence sequence) {
+        this.currentSequence.set(sequence);
+    }
+
+    public IntegerProperty currentSequenceTotalSecondsProperty() {
+        return currentSequenceTotalSeconds;
     }
 
     public ObservableList<SequenceStep> getRemainingSequenceStepsList() {

@@ -65,16 +65,16 @@ public class PracticeInteractorTest {
 
         PracticeInteractor interactor = new PracticeInteractor(model, masterRefList, isRefListLoaded);
 
-        Assertions.assertEquals(model.getSequenceStepList().size(), 0);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 0);
 
         interactor.addStep(SequenceStepType.TIMED_REFS);
-        Assertions.assertEquals(model.getSequenceStepList().size(), 1);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 1);
 
         interactor.addStep(SequenceStepType.UNTIMED_REFS);
-        Assertions.assertEquals(model.getSequenceStepList().size(), 2);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 2);
 
         interactor.addStep(SequenceStepType.BREAK);
-        Assertions.assertEquals(model.getSequenceStepList().size(), 3);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 3);
     }
 
     @Test
@@ -86,9 +86,9 @@ public class PracticeInteractorTest {
         PracticeInteractor interactor = new PracticeInteractor(model, masterRefList, isRefListLoaded);
 
         interactor.addStep(SequenceStepType.TIMED_REFS);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 60);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.TIMED_REFS);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getRepetitions(), 10);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getSecPerRep(), 60);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getType(), SequenceStepType.TIMED_REFS);
     }
 
     @Test
@@ -100,9 +100,9 @@ public class PracticeInteractorTest {
         PracticeInteractor interactor = new PracticeInteractor(model, masterRefList, isRefListLoaded);
 
         interactor.addStep(SequenceStepType.UNTIMED_REFS);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 10);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 1);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.UNTIMED_REFS);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getRepetitions(), 10);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getSecPerRep(), 1);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getType(), SequenceStepType.UNTIMED_REFS);
     }
 
     @Test
@@ -114,9 +114,9 @@ public class PracticeInteractorTest {
         PracticeInteractor interactor = new PracticeInteractor(model, masterRefList, isRefListLoaded);
 
         interactor.addStep(SequenceStepType.BREAK);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getRepetitions(), 1);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getSecPerRep(), 60);
-        Assertions.assertEquals(model.getSequenceStepList().get(0).getType(), SequenceStepType.BREAK);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getRepetitions(), 1);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getSecPerRep(), 60);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().get(0).getType(), SequenceStepType.BREAK);
     }
 
     @Test
@@ -128,9 +128,9 @@ public class PracticeInteractorTest {
         PracticeInteractor interactor = new PracticeInteractor(model, masterRefList, isRefListLoaded);
 
         interactor.addStep(SequenceStepType.TIMED_REFS);
-        Assertions.assertEquals(model.getSequenceStepList().size(), 1);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 1);
         interactor.removeStep(0);
-        Assertions.assertEquals(model.getSequenceStepList().size(), 0);
+        Assertions.assertEquals(model.getCurrentSequence().getSteps().size(), 0);
     }
 
     @Test
