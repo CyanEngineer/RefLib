@@ -62,6 +62,7 @@ A feature-rich application for handling reference images throughout your artisti
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake
 - Look into the stack guard warning
 - Be more dynamic about displayed image size
+- Make the app prettier 
 - Take metadata rotations into account
 - Build guide
 - When ranking similar refs, only store the 5 most similar instead of keeping a whole priorityqueue

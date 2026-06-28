@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;

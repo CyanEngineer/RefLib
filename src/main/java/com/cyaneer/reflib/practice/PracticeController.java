@@ -1,6 +1,7 @@
 package com.cyaneer.reflib.practice;
 
 import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;

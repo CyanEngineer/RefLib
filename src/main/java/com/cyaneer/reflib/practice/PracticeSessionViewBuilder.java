@@ -2,6 +2,8 @@ package com.cyaneer.reflib.practice;
 
 import java.io.FileInputStream;
 
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
+
 import javafx.animation.Animation.Status;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;

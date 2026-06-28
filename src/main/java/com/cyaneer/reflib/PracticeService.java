@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
-import com.cyaneer.reflib.practice.SequenceStep;
-import com.cyaneer.reflib.practice.SequenceStepType;
+import com.cyaneer.reflib.practice.domain.SequenceStep;
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 public class PracticeService {
     

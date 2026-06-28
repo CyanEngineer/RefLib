@@ -2,6 +2,10 @@ package com.cyaneer.reflib.practice;
 
 import java.util.function.Consumer;
 
+import com.cyaneer.reflib.practice.domain.SequenceStep;
+import com.cyaneer.reflib.practice.domain.SequenceStepCell;
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
+
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;

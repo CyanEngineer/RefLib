@@ -1,4 +1,4 @@
-package com.cyaneer.reflib.practice;
+package com.cyaneer.reflib.practice.domain;
 
 public enum SequenceStepType {
     TIMED_REFS,

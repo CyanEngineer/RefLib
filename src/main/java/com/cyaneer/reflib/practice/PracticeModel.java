@@ -3,6 +3,8 @@ package com.cyaneer.reflib.practice;
 import java.util.List;
 
 import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.practice.domain.SequenceStep;
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.property.BooleanProperty;

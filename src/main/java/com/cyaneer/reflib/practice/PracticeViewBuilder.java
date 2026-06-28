@@ -2,6 +2,8 @@ package com.cyaneer.reflib.practice;
 
 import java.util.function.Consumer;
 
+import com.cyaneer.reflib.practice.domain.SequenceStepType;
+
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
