@@ -55,8 +55,7 @@ A feature-rich application for handling reference images throughout your artisti
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app
-- Find a way to compute total practice time without changing `timeLabel`'s dependencies all the time
-- Check if there are new things to unit test after the refactor
+- Find a good way to test the session part of Practice
 - Avoid the dependency on libgtk-x11-2.0.so if possible
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake

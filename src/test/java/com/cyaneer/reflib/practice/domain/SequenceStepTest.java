@@ -1,9 +1,6 @@
-package com.cyaneer.reflib.practice;
+package com.cyaneer.reflib.practice.domain;
 
 import org.junit.jupiter.api.Test;
-
-import com.cyaneer.reflib.practice.domain.SequenceStep;
-import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import org.junit.jupiter.api.Assertions;
 
