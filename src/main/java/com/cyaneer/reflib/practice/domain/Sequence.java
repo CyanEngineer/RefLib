@@ -67,4 +67,9 @@ public class Sequence {
     public IntegerBinding totalSeconds() {
         return totalSeconds;
     }
+
+    @Override
+    public String toString() {
+        return name.get();
+    }
 }

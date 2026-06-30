@@ -39,13 +39,20 @@ public class PracticeService {
         return Arrays.asList();
     }
 
-    public Sequence loadSequence() { // TODO: Use a proper config file and maybe a DTO
-        Sequence sequence = new Sequence();
-        sequence.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
-        sequence.addStep(new SequenceStep(1, 60, SequenceStepType.BREAK));
-        sequence.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
+    public List<Sequence> loadSequences() { // TODO: Use a proper config file and maybe a DTO
+        Sequence standard = new Sequence();
+        standard.setName("Standard");
+        standard.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
+        standard.addStep(new SequenceStep(1, 60, SequenceStepType.BREAK));
+        standard.addStep(new SequenceStep(15, 60, SequenceStepType.TIMED_REFS));
+
+        Sequence test = new Sequence();
+        test.setName("test");
+        test.addStep(new SequenceStep(5, 5, SequenceStepType.TIMED_REFS));
+        test.addStep(new SequenceStep(2, 0, SequenceStepType.UNTIMED_REFS));
+        test.addStep(new SequenceStep(1, 10, SequenceStepType.BREAK));
         
-        return sequence;
+        return Arrays.asList(standard, test);
     }
 
     public SIFTMatchableRef createNewRef(String filepath) {

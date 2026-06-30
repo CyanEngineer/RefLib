@@ -1,5 +1,7 @@
 package com.cyaneer.reflib.practice;
 
+import java.util.List;
+
 import com.cyaneer.reflib.PracticeService;
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.practice.domain.Sequence;
@@ -47,7 +49,12 @@ public class PracticeInteractor {
     }
 
     public void loadSequence() {
-        Sequence sequence = service.loadSequence();
+        List<Sequence> sequences = service.loadSequences();
+        model.setSequenceList(sequences);
+        model.setCurrentSequence(sequences.get(0));
+    }
+
+    public void setCurrentSequence(Sequence sequence) {
         model.setCurrentSequence(sequence);
     }
 

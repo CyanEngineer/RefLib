@@ -24,6 +24,7 @@ public class PracticeModel {
     private final ListProperty<MatchableRef> fullRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> sessionRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ListProperty<MatchableRef> drawnRefsList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+    private final ListProperty<Sequence> sequenceList = new SimpleListProperty<Sequence>(FXCollections.observableArrayList());
     private final ObjectProperty<Sequence> currentSequence = new SimpleObjectProperty<Sequence>(new Sequence());
     private final IntegerProperty currentSequenceTotalSeconds = new SimpleIntegerProperty(0);
     private final ListProperty<SequenceStep> remainingSequenceStepsList = new SimpleListProperty<SequenceStep>(FXCollections.observableArrayList());
@@ -76,6 +77,18 @@ public class PracticeModel {
 
     public void setDrawnRefsList(List<MatchableRef> drawnRefsList) {
         this.drawnRefsList.set(FXCollections.observableArrayList(drawnRefsList));
+    }
+
+    public ObservableList<Sequence> getSequenceList() {
+        return sequenceList.get();
+    }
+
+    public ListProperty<Sequence> sequenceListProperty() {
+        return sequenceList;
+    }
+
+    public void setSequenceList(List<Sequence> sequenceList) {
+        this.sequenceList.set(FXCollections.observableArrayList(sequenceList));
     }
 
     public Sequence getCurrentSequence() {

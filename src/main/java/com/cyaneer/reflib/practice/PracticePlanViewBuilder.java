@@ -2,14 +2,17 @@ package com.cyaneer.reflib.practice;
 
 import java.util.function.Consumer;
 
+import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStep;
 import com.cyaneer.reflib.practice.domain.SequenceStepCell;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
@@ -52,11 +55,17 @@ public class PracticePlanViewBuilder implements Builder<Region> {
     private Region createCenter() {
         ListView<SequenceStep> listView = new ListView<>();
         listView.setCellFactory(lv -> createCell());
-        listView.setItems(model.getCurrentSequence().getSteps());
+        listView.itemsProperty().bind(Bindings.createObjectBinding(
+            () -> {
+                Sequence s = model.getCurrentSequence();
+                return s == null ? FXCollections.<SequenceStep>observableArrayList() : s.getSteps();
+            },
+            model.currentSequenceProperty()
+        ));
 
         return new BorderPane(
             listView,
-            null,
+            createSequenceSelector(),
             null,
             createSequenceControls(listView),
             null
@@ -65,6 +74,15 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
     private SequenceStepCell createCell() {
         return new SequenceStepCell();
+    }
+
+    private Node createSequenceSelector() {
+        ComboBox<Sequence> comboBox = new ComboBox<Sequence>();
+
+        comboBox.itemsProperty().bind(model.sequenceListProperty());
+        comboBox.valueProperty().bindBidirectional(model.currentSequenceProperty());
+
+        return comboBox;
     }
 
     private Node createSequenceControls(ListView<SequenceStep> listView) {
