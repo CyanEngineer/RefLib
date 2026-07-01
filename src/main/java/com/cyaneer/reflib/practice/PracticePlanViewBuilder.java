@@ -80,7 +80,10 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         ComboBox<Sequence> comboBox = new ComboBox<Sequence>();
 
         comboBox.itemsProperty().bind(model.sequenceListProperty());
-        comboBox.valueProperty().bindBidirectional(model.currentSequenceProperty());
+        comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != oldVal) model.setCurrentSequence(newVal.createDeepCopy());
+        });
+        comboBox.setValue(model.getCurrentSequence());
 
         return comboBox;
     }

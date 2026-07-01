@@ -36,6 +36,15 @@ public class Sequence {
         return steps.remove(i);
     }
 
+    public Sequence createDeepCopy() {
+        Sequence copy = new Sequence();
+
+        copy.setName(getName());
+        copy.setSteps(getSteps().stream().map(step -> new SequenceStep(step.getRepetitions(), step.getSecPerRep(), step.getType())).toList());
+
+        return copy;
+    }
+
     public String getName() {
         return name.get();
     }
