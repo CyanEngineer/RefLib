@@ -10,4 +10,5 @@ module com.cyaneer.reflib {
 
     requires com.fasterxml.jackson.databind;
     opens com.cyaneer.reflib.domain to com.fasterxml.jackson.databind;
+    opens com.cyaneer.reflib.practice.domain to com.fasterxml.jackson.databind;
 }

@@ -40,9 +40,15 @@ public class Sequence {
         Sequence copy = new Sequence();
 
         copy.setName(getName());
-        copy.setSteps(getSteps().stream().map(step -> new SequenceStep(step.getRepetitions(), step.getSecPerRep(), step.getType())).toList());
+        copy.setSteps(deepCopySteps());
 
         return copy;
+    }
+
+    public List<SequenceStep> deepCopySteps() {
+        return getSteps().stream().map(step -> 
+            new SequenceStep(step.getRepetitions(), step.getSecPerRep(), step.getType())
+        ).toList();
     }
 
     public String getName() {

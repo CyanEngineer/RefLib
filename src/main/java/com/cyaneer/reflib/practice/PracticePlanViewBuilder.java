@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.practice;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.cyaneer.reflib.practice.domain.Sequence;
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -25,17 +27,29 @@ public class PracticePlanViewBuilder implements Builder<Region> {
     private final PracticeModel model;
     private final Consumer<SequenceStepType> addStepAction;
     private final Consumer<Integer> removeStepAction;
+    private final Consumer<Sequence> setCurrentSequence;
+    private final Consumer<Integer> saveCurrentSequenceAction;
+    private final BiConsumer<Integer, Consumer<Sequence>> deleteCurrentSequenceAction;
+    private final BiConsumer<String, Consumer<Sequence>> newSequenceAction;
     private final Runnable startAction;
     
     public PracticePlanViewBuilder(
         PracticeModel model,
         Consumer<SequenceStepType> addStepAction,
         Consumer<Integer> removeStepAction,
+        Consumer<Sequence> setCurrentSequence,
+        Consumer<Integer> saveCurrentSequenceAction,
+        BiConsumer<Integer, Consumer<Sequence>> deleteCurrentSequenceAction,
+        BiConsumer<String, Consumer<Sequence>> newSequenceAction,
         Runnable startAction
     ) {
         this.model = model;
         this.addStepAction = addStepAction;
         this.removeStepAction = removeStepAction;
+        this.setCurrentSequence = setCurrentSequence;
+        this.saveCurrentSequenceAction = saveCurrentSequenceAction;
+        this.deleteCurrentSequenceAction = deleteCurrentSequenceAction;
+        this.newSequenceAction = newSequenceAction;
         this.startAction = startAction;
     }
 
@@ -81,11 +95,44 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
         comboBox.itemsProperty().bind(model.sequenceListProperty());
         comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != oldVal) model.setCurrentSequence(newVal.createDeepCopy());
+            if (newVal != null && newVal != oldVal) {
+                setCurrentSequence.accept(newVal);
+                //model.setCurrentSequence(newVal.createDeepCopy());
+            }
         });
         comboBox.setValue(model.getCurrentSequence());
 
-        return comboBox;
+        Button saveSequenceButton = new Button("Save sequence");
+        saveSequenceButton.onActionProperty().set(e -> 
+            saveCurrentSequenceAction.accept(comboBox.getSelectionModel().getSelectedIndex())
+        );
+
+        Button deleteSequenceButton = new Button("Delete sequence");
+        deleteSequenceButton.onActionProperty().set(e ->
+            deleteCurrentSequenceAction.accept(
+                comboBox.getSelectionModel().getSelectedIndex(),
+                (Sequence newSequence) -> comboBox.setValue(newSequence)
+            )
+        );
+
+        TextField textField = new TextField();
+        textField.setPromptText("New sequence name");
+
+        Button newSequenceButton = new Button("New sequence");
+        newSequenceButton.onActionProperty().set(e ->
+            newSequenceAction.accept(
+                textField.getText(),
+                (Sequence newSequence) -> comboBox.setValue(newSequence)
+            )
+        );
+
+        return new HBox(8,
+            comboBox,
+            saveSequenceButton,
+            deleteSequenceButton,
+            newSequenceButton,
+            textField
+        );
     }
 
     private Node createSequenceControls(ListView<SequenceStep> listView) {

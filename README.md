@@ -52,10 +52,12 @@ A feature-rich application for handling reference images throughout your artisti
   - Sometimes empty dragboard
   - Sometimes takes image in clipboard instead of dragboard
   - Throws a lot of exceptions
+- TimeLabel isn't updated when currentSequence changes
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app
 - Find a good way to test the session part of Practice
+- Make RefRepository a dependency injection from MainController
 - Avoid the dependency on libgtk-x11-2.0.so if possible
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake
@@ -87,8 +89,8 @@ A feature-rich application for handling reference images throughout your artisti
       - ~~breaks~~
     - Add a minutes field to duration
     - ~~Edit practice sequence~~
-    - Save multiple different practice sequences
-    - Delete a practice sequence
+    - ~~Save multiple different practice sequences~~
+    - ~~Delete a practice sequence~~
   - ~~Allow or disallow duplicates~~
     - ~~Restore list after each session~~
   - Filter on tags

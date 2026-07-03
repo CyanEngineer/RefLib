@@ -83,7 +83,7 @@ public class MainController {
             }
         };
         loadRefsTask.setOnSucceeded(event -> {
-            System.out.println("Loading complete"); //TODO: Display loading status in view
+            System.out.println("Refs loaded"); //TODO: Display loading status in view
             model.setIsRefListLoaded(true);
         });
 

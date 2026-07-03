@@ -1,7 +1,9 @@
 package com.cyaneer.reflib.practice;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
 
 import javafx.scene.Node;
@@ -18,6 +20,10 @@ public class PracticeViewBuilder implements Builder<Region>{
     private final PracticeModel model;
     private final Consumer<SequenceStepType> addStepAction;
     private final Consumer<Integer> removeStepAction;
+    private final Consumer<Sequence> setCurrentSequence;
+    private final Consumer<Integer> saveCurrentSequenceAction;
+    private final BiConsumer<Integer, Consumer<Sequence>> deleteCurrentSequenceAction;
+    private final BiConsumer<String, Consumer<Sequence>> newSequenceAction;
     private final Runnable startPracticeAction;
     private final Runnable startTimerAction;
     private final Runnable pauseTimerAction;
@@ -33,6 +39,10 @@ public class PracticeViewBuilder implements Builder<Region>{
         PracticeModel model,
         Consumer<SequenceStepType> addStepAction,
         Consumer<Integer> removeStepAction,
+        Consumer<Sequence> setCurrentSequence,
+        Consumer<Integer> saveCurrentSequenceAction,
+        BiConsumer<Integer, Consumer<Sequence>> deleteCurrentSequenceAction,
+        BiConsumer<String, Consumer<Sequence>> newSequenceAction,
         Runnable startPracticeAction,
         Runnable startTimerAction,
         Runnable pauseTimerAction,
@@ -43,6 +53,10 @@ public class PracticeViewBuilder implements Builder<Region>{
         this.model = model;
         this.addStepAction = addStepAction;
         this.removeStepAction = removeStepAction;
+        this.setCurrentSequence = setCurrentSequence;
+        this.saveCurrentSequenceAction = saveCurrentSequenceAction;
+        this.deleteCurrentSequenceAction = deleteCurrentSequenceAction;
+        this.newSequenceAction = newSequenceAction;
         this.startPracticeAction = startPracticeAction;
         this.startTimerAction = startTimerAction;
         this.pauseTimerAction = pauseTimerAction;
@@ -59,6 +73,10 @@ public class PracticeViewBuilder implements Builder<Region>{
             model,
             addStepAction,
             removeStepAction,
+            setCurrentSequence,
+            saveCurrentSequenceAction,
+            deleteCurrentSequenceAction,
+            newSequenceAction,
             planViewStartAction()
         ).build();
 

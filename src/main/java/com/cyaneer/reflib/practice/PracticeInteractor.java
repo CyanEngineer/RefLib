@@ -1,12 +1,14 @@
 package com.cyaneer.reflib.practice;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
-import com.cyaneer.reflib.PracticeService;
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.practice.domain.Sequence;
 import com.cyaneer.reflib.practice.domain.SequenceStep;
 import com.cyaneer.reflib.practice.domain.SequenceStepType;
+import com.cyaneer.reflib.practice.repository.SequenceRepository;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,16 +20,19 @@ import javafx.util.Duration;
 
 public class PracticeInteractor {
     private PracticeModel model;
-    private PracticeService service = new PracticeService();
+    private SequenceRepository repository;
     private Timeline timer = new Timeline();
 
-    public PracticeInteractor(
+    public PracticeInteractor (
         PracticeModel model,
+        SequenceRepository repository,
         ListProperty<MatchableRef> masterRefList,
         ObjectProperty<Boolean> isRefListLoaded
     ) {
         this.model = model;
         model.fullRefListProperty().bind(masterRefList);
+
+        this.repository = repository;
 
         isRefListLoaded.addListener((obs, oldValue, newValue) -> {
             if (newValue) resetPractice();
@@ -48,14 +53,51 @@ public class PracticeInteractor {
         });
     }
 
-    public void loadSequence() {
-        List<Sequence> sequences = service.loadSequences();
+    public void loadSequences() throws IOException {
+        List<Sequence> sequences = repository.loadSequences();
         model.setSequenceList(sequences);
         model.setCurrentSequence(sequences.get(0));
     }
 
+    public void saveCurrentSequence(int i) {
+        if (i >= 0 && i < model.getSequenceList().size()) {
+            Sequence modelSequence = model.getSequenceList().get(i);
+            modelSequence.setName(model.getCurrentSequence().getName());
+            modelSequence.setSteps(model.getCurrentSequence().deepCopySteps());
+        } else if (i == model.getSequenceList().size()) {
+            model.getSequenceList().add(model.getCurrentSequence());
+        } else { //TODO: Handle
+            System.out.println("Index " + i + " is out of bounds");
+        }
+    }
+
+    public void deleteCurrentSequence(int i, Consumer<Sequence> callback) {
+        if (i >= 0 && i < model.getSequenceList().size()) {
+            model.getSequenceList().remove(i);
+
+            if (model.getSequenceList().size() > 0) {
+                callback.accept(model.getSequenceList().get(0));
+            } else {
+                callback.accept(new Sequence());
+            }
+        } else { //TODO: Handle
+            System.out.println("Index " + i + " is out of bounds");
+        }
+    }
+
+    public void saveSequences() throws IOException {
+        repository.saveSequences(model.getSequenceList());
+    }
+
+    public void createNewSequence(String name, Consumer<Sequence> callback) {
+        Sequence sequence = new Sequence();
+        sequence.setName(name);
+        model.getSequenceList().add(sequence);
+        callback.accept(sequence);
+    }
+
     public void setCurrentSequence(Sequence sequence) {
-        model.setCurrentSequence(sequence);
+        model.setCurrentSequence(sequence.createDeepCopy());
     }
 
     public void addStep(SequenceStepType type) {
