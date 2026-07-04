@@ -17,7 +17,6 @@ public class JSONSequenceRepository implements SequenceRepository {
     private final ObjectMapper objectMapper = new ObjectMapper();
     
     public JSONSequenceRepository() throws IOException {
-        System.out.println("Hello??");
         Path appDir = Path.of(System.getProperty("user.home"), ".reflib");
         Files.createDirectories(appDir);
         file = appDir.resolve("sequencesFile.json").toFile();

@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.practice.PracticeController;
+import com.cyaneer.reflib.practice.repository.JSONSequenceRepository;
+import com.cyaneer.reflib.practice.repository.SequenceRepository;
+import com.cyaneer.reflib.repository.RefRepository;
+import com.cyaneer.reflib.repository.SIFTRefRepository;
 import com.cyaneer.reflib.upload.UploadController;
 
 import javafx.concurrent.Task;
@@ -19,12 +23,15 @@ public class MainController {
         
         model = new MainModel();
 
-        try { // Error setting up Repository
-            interactor = new MainInteractor(model);
-            loadRefs();
+        RefRepository<MatchableRef> repository = null;
+        try { // TODO: Handle
+            repository = new SIFTRefRepository();
         } catch (IOException e) {
-            e.printStackTrace(); //TODO: Proper error handling
+            e.printStackTrace();
         }
+
+        interactor = new MainInteractor(model, repository);
+        loadRefs();
 
         UploadController uploadController = new UploadController(
             model.refListProperty(),

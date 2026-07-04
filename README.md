@@ -56,7 +56,6 @@ A feature-rich application for handling reference images throughout your artisti
 - Adress TODOs
 - Properly implement navigation in the app
 - Find a good way to test the session part of Practice
-- Make RefRepository a dependency injection from MainController
 - Avoid the dependency on libgtk-x11-2.0.so if possible
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake

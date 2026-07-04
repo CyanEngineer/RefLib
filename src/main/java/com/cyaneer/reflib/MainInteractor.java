@@ -6,17 +6,17 @@ import java.util.List;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
-import com.cyaneer.reflib.repository.SIFTRefRepository;
+import com.cyaneer.reflib.repository.RefRepository;
 
 import javafx.collections.FXCollections;
 
 public class MainInteractor {
     private final MainModel model;
-    private SIFTRefRepository repository;
+    private final RefRepository<MatchableRef> repository;
 
-    public MainInteractor(MainModel model) throws IOException {
+    public MainInteractor(MainModel model, RefRepository<MatchableRef> repository) {
         this.model = model;
-        repository = new SIFTRefRepository();
+        this.repository = repository;
     }
 
     public MatchableRef createRef(String filepath) {
