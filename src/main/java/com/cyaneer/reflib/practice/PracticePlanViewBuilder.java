@@ -97,7 +97,6 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && newVal != oldVal) {
                 setCurrentSequence.accept(newVal);
-                //model.setCurrentSequence(newVal.createDeepCopy());
             }
         });
         comboBox.setValue(model.getCurrentSequence());
@@ -163,8 +162,8 @@ public class PracticePlanViewBuilder implements Builder<Region> {
 
         Label timeLabel = new Label("");
         timeLabel.textProperty().bind(Bindings.createStringBinding(
-            () -> "Practice duration: " + model.getCurrentSequence().getTotalSeconds() + " seconds",
-            model.getCurrentSequence().totalSeconds())
+            () -> "Practice duration: " + model.currentSequenceTotalSecondsProperty().intValue() + " seconds",
+            model.currentSequenceTotalSecondsProperty())
         );
 
         startButton.disableProperty().bind(Bindings.createBooleanBinding(

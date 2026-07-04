@@ -52,7 +52,6 @@ A feature-rich application for handling reference images throughout your artisti
   - Sometimes empty dragboard
   - Sometimes takes image in clipboard instead of dragboard
   - Throws a lot of exceptions
-- TimeLabel isn't updated when currentSequence changes
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app
