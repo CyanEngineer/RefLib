@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cyaneer.reflib</groupId>
     <artifactId>app</artifactId>
-    <version>0.7.2</version>
+    <version>0.7.3</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>21</java.version>

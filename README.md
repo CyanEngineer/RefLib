@@ -64,7 +64,6 @@ A feature-rich application for handling reference images throughout your artisti
 - Make the app prettier 
 - Take metadata rotations into account
 - Build guide
-- When ranking similar refs, only store the 5 most similar instead of keeping a whole priorityqueue
 - Handle descriptor matching on other threads
 - Proper error handling
   - Descriptive error types
@@ -87,6 +86,8 @@ A feature-rich application for handling reference images throughout your artisti
       - ~~breaks~~
     - Add a minutes field to duration
     - ~~Edit practice sequence~~
+    - Rename sequence
+    - Reorder sequences
     - ~~Save multiple different practice sequences~~
     - ~~Delete a practice sequence~~
   - ~~Allow or disallow duplicates~~

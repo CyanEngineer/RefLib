@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.upload;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
@@ -41,23 +42,27 @@ public class UploadInteractor {
     }
 
     private List<MatchedRef> findMostSimilarRefs(MatchableRef ref, List<MatchableRef> refList, int numSimilarRefs) {
-        int queueSize = refList.size() > 0 ? refList.size() : 1;
-        PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>(queueSize);
+        PriorityQueue<MatchedRef> similarRefs = new PriorityQueue<>(
+            numSimilarRefs,
+            Comparator.comparingInt(MatchedRef::getNumMatches)
+        );
 
         List<Integer> matchesList = ref.computeAllMatches(refList);
         for (int i = 0; i < matchesList.size(); i++) {
-            similarRefs.add(new MatchedRef(refList.get(i).getFile(), matchesList.get(i)));
+            if (matchesList.get(i) > 0) {
+                MatchedRef candidate = new MatchedRef(refList.get(i).getFile(), matchesList.get(i));
+
+                if (similarRefs.size() < numSimilarRefs) {
+                    similarRefs.offer(candidate);
+                } else if (candidate.getNumMatches() > similarRefs.peek().getNumMatches()) {
+                    similarRefs.poll();
+                    similarRefs.offer(candidate);
+                }
+            }
         }
 
-        List<MatchedRef> mostSimilarRefs = new java.util.ArrayList<>();
-        for (int i = 0; i < numSimilarRefs; i++) {
-            if (similarRefs.isEmpty()) break;
-
-            MatchedRef matchedRef = similarRefs.poll();
-            if (matchedRef.getNumMatches() == 0) break;
-
-            mostSimilarRefs.add(matchedRef);
-        }
+        List<MatchedRef> mostSimilarRefs = new java.util.ArrayList<>(similarRefs);
+        mostSimilarRefs.sort(Comparator.comparingInt(MatchedRef::getNumMatches).reversed());
 
         return mostSimilarRefs;
     }
