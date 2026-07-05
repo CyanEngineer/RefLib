@@ -39,12 +39,12 @@ A feature-rich application for handling reference images throughout your artisti
 - Planned: Filter images used in the practice session based on reference tags
 - Planned: Filter images displayed when browsing based on reference tags
 
-### Planned: Pop out reference image
-- Planned: Pop out to a transparent window that can be dragged around freely
-- Planned: Image controls to help compare the artwork with the reference
+### Pop out reference image
+- Pop out to a transparent window that can be dragged around freely
+- Image controls to help compare the artwork with the reference
   - Image opacity
   - Image rotation and scaling
-  - Edge detection filter (to highlight outer edges of the reference subject)
+  - Planned: Edge detection filter (to highlight outer edges of the reference subject)
 
 ## Roadmap
 ### Bugs
@@ -60,8 +60,9 @@ A feature-rich application for handling reference images throughout your artisti
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake
 - Look into the stack guard warning
+- RefViewer rotation by dragging instead of slider
 - Be more dynamic about displayed image size
-- Make the app prettier 
+- Make the app prettier (proper JavaFX css)
 - Take metadata rotations into account
 - Build guide
 - Handle descriptor matching on other threads
@@ -103,12 +104,16 @@ A feature-rich application for handling reference images throughout your artisti
 - ~~Pause session~~
 - ~~Skip image~~
 - Mark image (for later deleting / editing / etc.)
-- (Maybe) One-handed viewing tools (for the traditional people to hold the paper against the screen)
-  - Quick access to filters like edge detection and threshold (easier to see ref through paper)
-  - One handed transformations (zoom, rotation, panning)
+- Pop-out image viewing tool for overlaying other programs (e.g. drawing program)
+  - ~~Transparent except for image~~
+  - ~~Resize~~
+  - ~~Rotate~~
+  - Zoom
+  - Pan
+  - ~~Opacity~~
+  - Filters (e.g. edge detection + threshold)
 - In case an image has disappeared, warn user
   - Option to remind next time RefLib is opened
-- (Maybe) would it be possible to "pop out" a ref in a transparent window to let user drag ref on top of drawing program without copy-pasting? If so, add this in practice, review and browse
 ### Upload page
 - Upload images from
   - ~~Local files~~

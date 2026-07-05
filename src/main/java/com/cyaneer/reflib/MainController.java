@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.practice.PracticeController;
-import com.cyaneer.reflib.practice.repository.JSONSequenceRepository;
-import com.cyaneer.reflib.practice.repository.SequenceRepository;
 import com.cyaneer.reflib.repository.RefRepository;
 import com.cyaneer.reflib.repository.SIFTRefRepository;
 import com.cyaneer.reflib.upload.UploadController;

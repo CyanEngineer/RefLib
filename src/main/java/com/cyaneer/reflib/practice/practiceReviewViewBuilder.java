@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.cyaneer.reflib.domain.MatchableRef;
+import com.cyaneer.reflib.widgets.PopoutRef;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.BorderPane;
@@ -74,28 +74,18 @@ public class practiceReviewViewBuilder implements Builder<Region> {
             image = null;
         }
 
+        PopoutRef popoutRef = new PopoutRef(file);
+        popoutRef.setMaxSize(200, 200);
+        popoutRef.setMinSize(200, 200);
+
         VBox vBox = new VBox(8, 
-            createNodeImage(image),
+            popoutRef,
             createNodeControls(image)
         );
-        vBox.setPrefSize(200, 240);
+        vBox.setMaxSize(200, 240);
+        vBox.setMinSize(200, 240);
         vBox.setAlignment(Pos.CENTER);
         return vBox;
-    }
-
-    private Node createNodeImage(Image image) {
-        int imageSize = 200;
-        ImageView imageView = new ImageView();
-        imageView.setFitHeight(imageSize);
-        imageView.setFitWidth(imageSize);
-        imageView.setPreserveRatio(true);
-        imageView.setImage(image);
-
-        HBox hBox = new HBox(imageView);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.setPrefSize(imageSize, imageSize);
-        
-        return hBox;
     }
 
     private Node createNodeControls(Image image) {
