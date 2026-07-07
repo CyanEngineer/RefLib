@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 
 import static javafx.scene.input.TransferMode.COPY;
@@ -31,7 +28,8 @@ public class UploadViewBuilder implements Builder<Region> {
     private final Runnable acceptRefAction;
     private final Runnable rejectRefAction;
     BorderPane uploadView;
-    Clipboard clipboard = Clipboard.getSystemClipboard();
+    
+    private boolean isDragActive = false;
 
     public UploadViewBuilder(
         UploadModel model,
@@ -69,44 +67,41 @@ public class UploadViewBuilder implements Builder<Region> {
         container.setMaxWidth(640);
         container.setMinHeight(640);
         container.setMaxHeight(640);
-        container.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
         container.setPickOnBounds(true);
+        container.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
 
-        container.setOnDragEntered(new EventHandler<DragEvent>() {
-            public void handle(DragEvent dragEvent) {
-                Dragboard db = dragEvent.getDragboard();
-                if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
-                    container.setStyle("-fx-background-color: lightgrey; -fx-border-width: 1px; -fx-border-color: grey;");
-                }
-            }
-        });
-        container.setOnDragExited(new EventHandler<DragEvent>() {
-            public void handle(DragEvent dragEvent) {
-                container.setStyle("-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: grey;");
-            }
-        });
         container.setOnDragOver(dragEvent -> {
             Dragboard db = dragEvent.getDragboard();
             if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
                 dragEvent.acceptTransferModes(COPY);
-                dragEvent.consume();
-            }
-        });
-        container.setOnDragDropped(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                boolean isDropSuccessful = false;
-                
-                if (db.hasFiles()) {
-                    if (db.getFiles().size() > 0) {
-                        String filePath = db.getFiles().get(0).getAbsolutePath();
-                        proposeRefAction.accept(filePath);
-                        isDropSuccessful = true;
-                    }
+
+                if (!isDragActive) {
+                    isDragActive = true;
+                    container.setStyle("-fx-background-color: lightgrey; -fx-border-width: 1px; -fx-border-color: grey;");
                 }
-                event.setDropCompleted(isDropSuccessful);
-                event.consume();
             }
+            dragEvent.consume();
+        });
+        container.setOnDragExited(dragEvent -> {
+            if (isDragActive) {
+                isDragActive = false;
+                container.setStyle("-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: grey;");
+            }
+            dragEvent.consume();
+        });
+        container.setOnDragDropped(dragEvent -> {
+            Dragboard db = dragEvent.getDragboard();
+            boolean isDropSuccessful = false;
+            
+            if (db.hasFiles()) {
+                if (db.getFiles().size() > 0) {
+                    String filePath = db.getFiles().get(0).getAbsolutePath();
+                    proposeRefAction.accept(filePath);
+                    isDropSuccessful = true;
+                }
+            }
+            dragEvent.setDropCompleted(isDropSuccessful);
+            dragEvent.consume();
         });
 
         return container;

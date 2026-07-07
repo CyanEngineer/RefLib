@@ -51,7 +51,6 @@ A feature-rich application for handling reference images throughout your artisti
 - Upload dragboard behaves strange sometimes (at least when running from VSCode on Wayland)
   - Sometimes empty dragboard
   - Sometimes takes image in clipboard instead of dragboard
-  - Throws a lot of exceptions
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app
@@ -88,7 +87,7 @@ A feature-rich application for handling reference images throughout your artisti
     - Add a minutes field to duration
     - ~~Edit practice sequence~~
     - Rename sequence
-    - Reorder sequences
+    - Reorder sequences (or make list ordered)
     - ~~Save multiple different practice sequences~~
     - ~~Delete a practice sequence~~
   - ~~Allow or disallow duplicates~~
