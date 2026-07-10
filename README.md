@@ -48,9 +48,8 @@ A feature-rich application for handling reference images throughout your artisti
 
 ## Roadmap
 ### Bugs
-- Upload dragboard behaves strange sometimes (at least when running from VSCode on Wayland)
-  - Sometimes empty dragboard
-  - Sometimes takes image in clipboard instead of dragboard
+- Upload dragboard behaves strange on Hyprland
+  - Often the image won't be present in DragBoard, and DragBoard will fallback to ClipBoard instead
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app

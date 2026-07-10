@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.upload;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.function.Consumer;
 
@@ -18,7 +19,10 @@ import static javafx.scene.input.TransferMode.COPY;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Builder;
 
 public class UploadViewBuilder implements Builder<Region> {
@@ -61,14 +65,19 @@ public class UploadViewBuilder implements Builder<Region> {
 
     private Region createNewRefContainer() {
 
-        BorderPane container = new BorderPane(createNewRefImageView());
+        Node newRefArea = createNewRefImageView();
+        newRefArea.visibleProperty().bind(model.newRefProperty().isNotNull());
+        Node uploadRefArea = createUploadRefArea();
+        uploadRefArea.visibleProperty().bind(model.newRefProperty().isNull());
+
+        StackPane container = new StackPane(newRefArea, uploadRefArea);
         container.disableProperty().bind(model.isRefListLoadedProperty().not());
         container.setMinWidth(640);
         container.setMaxWidth(640);
         container.setMinHeight(640);
         container.setMaxHeight(640);
         container.setPickOnBounds(true);
-        container.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
+        container.setStyle("-fx-border-width: 2px; -fx-border-style: segments(8); -fx-border-color: grey;");
 
         container.setOnDragOver(dragEvent -> {
             Dragboard db = dragEvent.getDragboard();
@@ -77,7 +86,7 @@ public class UploadViewBuilder implements Builder<Region> {
 
                 if (!isDragActive) {
                     isDragActive = true;
-                    container.setStyle("-fx-background-color: lightgrey; -fx-border-width: 1px; -fx-border-color: grey;");
+                    container.setStyle("-fx-background-color: lightgrey; -fx-border-width: 2px; -fx-border-style: segments(8); -fx-border-color: grey;");
                 }
             }
             dragEvent.consume();
@@ -85,7 +94,7 @@ public class UploadViewBuilder implements Builder<Region> {
         container.setOnDragExited(dragEvent -> {
             if (isDragActive) {
                 isDragActive = false;
-                container.setStyle("-fx-background-color: transparent; -fx-border-width: 1px; -fx-border-color: grey;");
+                container.setStyle("-fx-background-color: transparent; -fx-border-width: 2px; -fx-border-style: segments(8); -fx-border-color: grey;");
             }
             dragEvent.consume();
         });
@@ -119,11 +128,32 @@ public class UploadViewBuilder implements Builder<Region> {
         return imageView;
     }
 
+    private Node createUploadRefArea() {
+        Label label = new Label("Drag or browse images");
+
+        ImageView uploadIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/cyaneer/reflib/add_photo_48.png")));
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a ref");
+        fileChooser.getExtensionFilters().add(
+            new ExtensionFilter("Image files", "*.png", "*.jpg")
+        );
+        Button browseButton = new Button("Browse...");
+        browseButton.setOnAction(e -> {
+            File selectedRef = fileChooser.showOpenDialog(null);
+            proposeRefAction.accept(selectedRef.getAbsolutePath());
+        });
+
+        VBox vBox = new VBox(8, label, uploadIcon, browseButton);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
+    }
+
     private ObjectBinding<Image> createImageBinding() {
         return Bindings.createObjectBinding(() -> {
             return new Image(model.getNewRef() != null ? 
                 new FileInputStream(model.getNewRef().getFile()) :
-                getClass().getResourceAsStream("/com/cyaneer/reflib/upload.png"));
+                getClass().getResourceAsStream("/com/cyaneer/reflib/broken_image_48.png"));
         }, model.newRefProperty());
     }
 
