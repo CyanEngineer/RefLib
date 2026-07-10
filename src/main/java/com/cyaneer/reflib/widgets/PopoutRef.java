@@ -1,7 +1,5 @@
 package com.cyaneer.reflib.widgets;
 
-import java.io.File;
-
 import com.cyaneer.reflib.domain.Ref;
 import com.cyaneer.reflib.refViewer.RefViewerController;
 
@@ -43,7 +41,7 @@ public class PopoutRef extends Region {
         imageView.fitWidthProperty().bind(widthProperty());
         imageView.fitHeightProperty().bind(heightProperty());
         
-        Button button = new Button("", new ImageView(new File("src/main/resources/com/cyaneer/reflib/open_in_new.png").toURI().toString()));
+        Button button = new Button("", new ImageView(new Image(getClass().getResourceAsStream("/com/cyaneer/reflib/open_in_new_24.png"))));
         button.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;");
         button.setOnAction(e -> popOut());
 
