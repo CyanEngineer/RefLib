@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.upload;
 
+import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -14,14 +15,14 @@ import javafx.collections.FXCollections;
 
 public class UploadInteractor {
     private UploadModel model;
-    private Function<String, MatchableRef> createRefAction;
+    private Function<URI, MatchableRef> createRefAction;
     private BiConsumer<MatchableRef, Runnable> addRefAction;
 
     public UploadInteractor(
         UploadModel model,
         ListProperty<MatchableRef> masterRefList,
         ObjectProperty<Boolean> isRefListLoaded,
-        Function<String, MatchableRef> createRefAction,
+        Function<URI, MatchableRef> createRefAction,
         BiConsumer<MatchableRef, Runnable> addRefAction
     ) {
         this.model = model;
@@ -31,9 +32,9 @@ public class UploadInteractor {
         this.addRefAction = addRefAction;
     }
 
-    public void proposeNewRef(String filepath) {
+    public void proposeNewRef(URI uri) {
 
-        MatchableRef newRef = createRefAction.apply(filepath);
+        MatchableRef newRef = createRefAction.apply(uri);
 
         model.setNewRef(newRef);
 

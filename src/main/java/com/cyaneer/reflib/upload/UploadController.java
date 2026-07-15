@@ -1,5 +1,6 @@
 package com.cyaneer.reflib.upload;
 
+import java.net.URI;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -19,7 +20,7 @@ public class UploadController {
     public UploadController(
         ListProperty<MatchableRef> masterRefList,
         ObjectProperty<Boolean> isRefListLoaded, //TODO: When false, diable upload functionality. Consider if it should be turned false between accept and the Ref being added to the list
-        Function<String, MatchableRef> createRefAction,
+        Function<URI, MatchableRef> createRefAction,
         BiConsumer<MatchableRef, Runnable> addRefAction
     ) {
         model = new UploadModel();
@@ -34,7 +35,7 @@ public class UploadController {
 
         viewBuilder = new UploadViewBuilder(
             model,
-            path -> proposeNewRef(path),
+            uri -> proposeNewRef(uri),
             () -> acceptNewRef(),
             () -> rejectNewRef()
         );
@@ -44,8 +45,8 @@ public class UploadController {
         return viewBuilder.build();
     }
 
-    private void proposeNewRef(String path) {
-        interactor.proposeNewRef(path);
+    private void proposeNewRef(URI uri) {
+        interactor.proposeNewRef(uri);
     }
 
     private void acceptNewRef() {

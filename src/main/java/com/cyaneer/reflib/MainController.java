@@ -1,6 +1,7 @@
 package com.cyaneer.reflib;
 
 import java.io.IOException;
+import java.net.URI;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.practice.PracticeController;
@@ -34,7 +35,7 @@ public class MainController {
         UploadController uploadController = new UploadController(
             model.refListProperty(),
             model.isRefListLoadedProperty(),
-            (filepath) -> createRef(filepath),
+            (uri) -> createRef(uri),
             (ref, cleanupAction) -> addRef(ref, cleanupAction)
         );
 
@@ -54,8 +55,8 @@ public class MainController {
         return viewBuilder.build();
     }
 
-    private MatchableRef createRef(String filepath) {
-        return interactor.createRef(filepath);
+    private MatchableRef createRef(URI uri) {
+        return interactor.createRef(uri);
     }
 
     private void addRef(MatchableRef ref, Runnable cleanupAction) {

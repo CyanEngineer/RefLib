@@ -2,6 +2,8 @@ package com.cyaneer.reflib.upload;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.function.Consumer;
 
 import javafx.beans.binding.Bindings;
@@ -28,7 +30,7 @@ import javafx.util.Builder;
 public class UploadViewBuilder implements Builder<Region> {
     
     private final UploadModel model;
-    private final Consumer<String> proposeRefAction;
+    private final Consumer<URI> proposeRefAction;
     private final Runnable acceptRefAction;
     private final Runnable rejectRefAction;
     BorderPane uploadView;
@@ -37,7 +39,7 @@ public class UploadViewBuilder implements Builder<Region> {
 
     public UploadViewBuilder(
         UploadModel model,
-        Consumer<String> proposeNewRefAction,
+        Consumer<URI> proposeNewRefAction,
         Runnable acceptNewRefAction,
         Runnable rejectNewRefAction
     ){
@@ -81,7 +83,7 @@ public class UploadViewBuilder implements Builder<Region> {
 
         container.setOnDragOver(dragEvent -> {
             Dragboard db = dragEvent.getDragboard();
-            if (db.hasFiles() || db.hasImage()) { //TODO: Handle all relevant types
+            if (db.hasFiles() || (db.hasUrl() && db.hasImage())) {
                 dragEvent.acceptTransferModes(COPY);
 
                 if (!isDragActive) {
@@ -102,11 +104,18 @@ public class UploadViewBuilder implements Builder<Region> {
             Dragboard db = dragEvent.getDragboard();
             boolean isDropSuccessful = false;
             
-            if (db.hasFiles()) {
-                if (db.getFiles().size() > 0) {
-                    String filePath = db.getFiles().get(0).getAbsolutePath();
-                    proposeRefAction.accept(filePath);
+            if (db.hasFiles() && db.getFiles().size() > 0) {
+                URI uri = db.getFiles().get(0).toURI();
+                proposeRefAction.accept(uri);
+                isDropSuccessful = true;
+            }
+            else if (db.hasUrl() && db.hasImage()) {
+                try {
+                    URI uri = new URI(db.getUrl());
+                    proposeRefAction.accept(uri);
                     isDropSuccessful = true;
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
             }
             dragEvent.setDropCompleted(isDropSuccessful);
@@ -141,7 +150,7 @@ public class UploadViewBuilder implements Builder<Region> {
         Button browseButton = new Button("Browse...");
         browseButton.setOnAction(e -> {
             File selectedRef = fileChooser.showOpenDialog(null);
-            proposeRefAction.accept(selectedRef.getAbsolutePath());
+            proposeRefAction.accept(selectedRef.toURI());
         });
 
         VBox vBox = new VBox(8, label, uploadIcon, browseButton);

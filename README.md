@@ -62,6 +62,9 @@ A feature-rich application for handling reference images throughout your artisti
 - Be more dynamic about displayed image size
 - Make the app prettier (proper JavaFX css)
 - Take metadata rotations into account
+- Persist SIFT descriptors
+- Turn images in Upload into PopoutRefs
+- Create an abstract ImageSource object to enable extension
 - Build guide
 - Handle descriptor matching on other threads
 - Proper error handling
@@ -113,9 +116,9 @@ A feature-rich application for handling reference images throughout your artisti
 - In case an image has disappeared, warn user
   - Option to remind next time RefLib is opened
 ### Upload page
-- Upload images from
+- ~~Upload images from~~
   - ~~Local files~~
-  - Browser
+  - ~~Browser~~
 - Check new images against images in library to avoid duplicates
   - ~~SIFT~~
     - Or a faster algorithm if I ever find one that works as well
@@ -125,7 +128,9 @@ A feature-rich application for handling reference images throughout your artisti
     - ~~Or is it necessary to compute descriptors for the image as well as the double-sided image?~~
   - ~~Display 5? most similar images~~
   - Let user compare and keep the image they prefer (e.g. higer res)
-- Also check duplicate names I guess
+- Also check duplicate names I guess (or add random characters until unique)
+- Let user decide where to download web images to
+- Let user decide whether to copy local images to a refDir or just reference the local image directly
 ### Browse page
 - Browse collection based on tags
 ### Storage

@@ -1,5 +1,7 @@
 package com.cyaneer.reflib;
 
+import java.io.File;
+
 import com.cyaneer.reflib.domain.MatchableRef;
 
 import javafx.beans.property.ListProperty;
@@ -12,6 +14,7 @@ import javafx.collections.ObservableList;
 public class MainModel {
     private final ListProperty<MatchableRef> refList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
     private final ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
+    private final ObjectProperty<File> tmpFile = new SimpleObjectProperty<File>(null);
 
     public ObservableList<MatchableRef> getRefList() {
         return refList.get();
@@ -39,5 +42,17 @@ public class MainModel {
 
     public ObjectProperty<Boolean> isRefListLoadedProperty() {
         return isRefListLoaded;
+    }
+
+    public File getTmpFile() {
+        return tmpFile.get();
+    }
+
+    public void setTmpFile(File tmpFile) {
+        this.tmpFile.set(tmpFile);
+    }
+
+    public ObjectProperty<File> tmpFileProperty() {
+        return tmpFile;
     }
 }
