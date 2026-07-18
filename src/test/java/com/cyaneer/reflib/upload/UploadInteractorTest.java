@@ -3,6 +3,8 @@ package com.cyaneer.reflib.upload;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.net.URI;
+import java.nio.file.Paths;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
@@ -21,7 +23,8 @@ public class UploadInteractorTest {
 
         assert(model.getNewRef() == null);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getNewRef() != null);
         assert(model.getNewRef().getFile().getAbsolutePath().endsWith("src/test/resources/testimage.png"));
@@ -34,7 +37,8 @@ public class UploadInteractorTest {
 
         assert(model.getMostSimilarRefs().isEmpty());
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getMostSimilarRefs().isEmpty());
     }
@@ -44,7 +48,8 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getRefList().isEmpty());
 
@@ -59,12 +64,14 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri1 = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri1);
         interactor.addNewRef();
 
         assert(model.getRefList().size() == 1);
 
-        interactor.proposeNewRef("src/test/resources/testimagedifferent.jpg");
+        URI uri2 = Paths.get("src/test/resources/testimagedifferent.jpg").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri2);
         interactor.addNewRef();
 
         assert(model.getRefList().size() == 2);
@@ -77,7 +84,8 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getNewRef() != null);
 
@@ -91,12 +99,14 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri1 = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri1);
         interactor.addNewRef();
 
         assert(model.getMostSimilarRefs().isEmpty());
 
-        interactor.proposeNewRef("src/test/resources/testimageedited.png");
+        URI uri2 = Paths.get("src/test/resources/testimageedited.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri2);
 
         assert(!model.getMostSimilarRefs().isEmpty());
     }
@@ -106,12 +116,14 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri1 = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri1);
         interactor.addNewRef();
 
         assert(model.getRefList().size() == 1);
 
-        interactor.proposeNewRef("src/test/resources/testimageedited.png");
+        URI uri2 = Paths.get("src/test/resources/testimageedited.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri2);
 
         assert(!model.getMostSimilarRefs().isEmpty());
 
@@ -125,7 +137,8 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getRefList().isEmpty());
 
@@ -139,7 +152,8 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri);
 
         assert(model.getNewRef() != null);
 
@@ -153,12 +167,14 @@ public class UploadInteractorTest {
         UploadModel model = new UploadModel();
         UploadInteractor interactor = createUploadInteractor(model, false);
 
-        interactor.proposeNewRef("src/test/resources/testimage.png");
+        URI uri1 = Paths.get("src/test/resources/testimage.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri1);
         interactor.addNewRef();
 
         assert(model.getRefList().size() == 1);
 
-        interactor.proposeNewRef("src/test/resources/testimageedited.png");
+        URI uri2 = Paths.get("src/test/resources/testimageedited.png").toAbsolutePath().toUri();
+        interactor.proposeNewRef(uri2);
 
         assert(!model.getMostSimilarRefs().isEmpty());
 
