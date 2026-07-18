@@ -1,4 +1,5 @@
 module com.cyaneer.reflib {
+    requires java.desktop;
     requires java.management;
     
     requires javafx.base;

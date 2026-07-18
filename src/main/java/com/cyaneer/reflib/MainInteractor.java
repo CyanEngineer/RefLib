@@ -9,8 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import com.cyaneer.reflib.domain.MatchableRef;
 import com.cyaneer.reflib.domain.SIFTMatchableRef;
@@ -38,7 +43,7 @@ public class MainInteractor {
             }
             return null; //TODO: Show error (suggest to use open image in new tab)
         } else {
-            if (isValidFilepath(uri)) {
+            if (isValidImageFile(uri)) {
                 return new SIFTMatchableRef(new File(uri));
             } else {
                 System.out.println("uriScheme: " + uriScheme + ". Make sure to display an error");
@@ -59,14 +64,20 @@ public class MainInteractor {
         }
     }
 
-    private boolean isValidFilepath(URI filepath) {
+    private boolean isValidImageFile(URI filepath) {
         try {
-            String contentType = Files.probeContentType(Paths.get(filepath));
-            return contentType.toLowerCase().startsWith("image/");
+            ImageInputStream iis = ImageIO.createImageInputStream(new File(filepath));
+            if (iis == null) {
+                return false;
+            }
+
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+            boolean isValid = readers.hasNext();
+            iis.close();
+            return isValid;            
         } catch (IOException e) {
             return false;
         }
-        //TODO: May need to test with ImageIO.read also
     }
 
     private URI createTempFile(URI uri) {
