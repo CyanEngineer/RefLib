@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
@@ -138,10 +139,16 @@ public class UploadViewBuilder implements Builder<Region> {
     }
 
     private Node createUploadRefArea() {
-        Label label = new Label("Drag or browse images");
+        Label label = new Label("Drag-drop, browse or paste link to an image");
 
         ImageView uploadIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/cyaneer/reflib/add_photo_48.png")));
 
+        VBox vBox = new VBox(8, label, uploadIcon, createFileChooser(), createURLInput());
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
+    }
+
+    private Node createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a ref");
         fileChooser.getExtensionFilters().add(
@@ -153,9 +160,26 @@ public class UploadViewBuilder implements Builder<Region> {
             proposeRefAction.accept(selectedRef.toURI());
         });
 
-        VBox vBox = new VBox(8, label, uploadIcon, browseButton);
-        vBox.setAlignment(Pos.CENTER);
-        return vBox;
+        return browseButton;
+    }
+
+    private Node createURLInput() {
+        TextField textField = new TextField();
+        textField.setPromptText("Paste image URL");
+        textField.setPrefWidth(300);
+
+        Button button = new Button("", new ImageView(new Image(getClass().getResourceAsStream("/com/cyaneer/reflib/download_24.png"))));
+        button.setOnAction(e -> {
+            try {
+                proposeRefAction.accept(new URI(textField.getText()));
+            } catch (URISyntaxException error) {
+                //TODO: Print error
+            }
+        });
+
+        HBox hBox = new HBox(8, textField, button);
+        hBox.setAlignment(Pos.CENTER);
+        return hBox;
     }
 
     private ObjectBinding<Image> createImageBinding() {

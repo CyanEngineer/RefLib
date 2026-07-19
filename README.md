@@ -48,8 +48,10 @@ A feature-rich application for handling reference images throughout your artisti
 
 ## Roadmap
 ### Bugs
-- Upload dragboard behaves strange on Hyprland
-  - Often the image won't be present in DragBoard, and DragBoard will fallback to ClipBoard instead
+- Upload drag and drop on Hyprland (seems to be an XWayland issue specific to Hyprland)
+  - From local file: https://github.com/hyprwm/Hyprland/discussions/14838
+  - From browser: https://github.com/hyprwm/Hyprland/discussions/15484
+  - Until drag and drop is fixes on Hyprland, file browsing and link pasting works reliably
 ### Improvements
 - Adress TODOs
 - Properly implement navigation in the app
@@ -57,7 +59,6 @@ A feature-rich application for handling reference images throughout your artisti
 - Avoid the dependency on libgtk-x11-2.0.so if possible
   - Can be done by manually building javacv-platform with the env var HEADLESS="yes"
 - I would ideally like Practice to rely on Ref instead of MatchableRef. Just for abstraction's sake
-- Look into the stack guard warning
 - RefViewer rotation by dragging instead of slider
 - Be more dynamic about displayed image size
 - Make the app prettier (proper JavaFX css)
@@ -132,7 +133,11 @@ A feature-rich application for handling reference images throughout your artisti
 - Let user decide where to download web images to
 - Let user decide whether to copy local images to a refDir or just reference the local image directly
 ### Browse page
-- Browse collection based on tags
+- Browse all images
+- Filter based on tags
+- Sorting
+- View ref
+- Delete ref
 ### Storage
 - Let user define location of images
 - Appdata with info about images
