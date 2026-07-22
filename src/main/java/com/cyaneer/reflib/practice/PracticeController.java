@@ -23,7 +23,8 @@ public class PracticeController {
 
     public PracticeController(
         ListProperty<MatchableRef> masterRefList,
-        ObjectProperty<Boolean> isRefListLoaded
+        ObjectProperty<Boolean> isRefListLoaded,
+        Runnable returnAction
     ) {
         model = new PracticeModel();
 
@@ -45,6 +46,7 @@ public class PracticeController {
 
         viewBuilder = new PracticeViewBuilder(
             model,
+            returnAction,
             type -> addStep(type),
             idx -> removeStep(idx),
             sequence -> setCurrentSequence(sequence),

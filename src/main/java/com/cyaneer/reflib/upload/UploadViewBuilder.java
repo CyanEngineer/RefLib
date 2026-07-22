@@ -31,6 +31,7 @@ import javafx.util.Builder;
 public class UploadViewBuilder implements Builder<Region> {
     
     private final UploadModel model;
+    private final Runnable backAction;
     private final Consumer<URI> proposeRefAction;
     private final Runnable acceptRefAction;
     private final Runnable rejectRefAction;
@@ -40,11 +41,13 @@ public class UploadViewBuilder implements Builder<Region> {
 
     public UploadViewBuilder(
         UploadModel model,
+        Runnable backAction,
         Consumer<URI> proposeNewRefAction,
         Runnable acceptNewRefAction,
         Runnable rejectNewRefAction
     ){
         this.model = model;
+        this.backAction = backAction;
         this.proposeRefAction = proposeNewRefAction;
         this.acceptRefAction = acceptNewRefAction;
         this.rejectRefAction = rejectNewRefAction;
@@ -54,10 +57,17 @@ public class UploadViewBuilder implements Builder<Region> {
     public Region build() {
         uploadView = new BorderPane();
 
-        uploadView.setCenter(createRefUploadRegion());
-        uploadView.setBottom(createSimilarRefsRegion());
+        uploadView.setCenter(createContentRegion());
+        uploadView.setBottom(createNavigationRegion());
 
         return uploadView;
+    }
+
+    private Region createContentRegion() {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(createRefUploadRegion());
+        borderPane.setBottom(createSimilarRefsRegion());
+        return borderPane;
     }
     
     private Region createRefUploadRegion() {
@@ -75,10 +85,10 @@ public class UploadViewBuilder implements Builder<Region> {
 
         StackPane container = new StackPane(newRefArea, uploadRefArea);
         container.disableProperty().bind(model.isRefListLoadedProperty().not());
-        container.setMinWidth(640);
-        container.setMaxWidth(640);
-        container.setMinHeight(640);
-        container.setMaxHeight(640);
+        container.setMinWidth(540);
+        container.setMaxWidth(540);
+        container.setMinHeight(540);
+        container.setMaxHeight(540);
         container.setPickOnBounds(true);
         container.setStyle("-fx-border-width: 2px; -fx-border-style: segments(8); -fx-border-color: grey;");
 
@@ -129,8 +139,8 @@ public class UploadViewBuilder implements Builder<Region> {
     private Node createNewRefImageView() {
         ImageView imageView = new ImageView();
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(600);
-        imageView.setFitWidth(600);
+        imageView.setFitHeight(500);
+        imageView.setFitWidth(500);
         
         ObjectBinding<Image> imageBinding = createImageBinding();
         imageView.imageProperty().bind(imageBinding);
@@ -219,8 +229,8 @@ public class UploadViewBuilder implements Builder<Region> {
     private Region createSimilarRefsContainer() {
         HBox hBox = new HBox(8);
         hBox.setAlignment(Pos.CENTER);
-        hBox.setMinHeight(300);
-        hBox.setMaxHeight(300);
+        hBox.setMinHeight(250);
+        hBox.setMaxHeight(250);
         hBox.setMinWidth(1300);
         hBox.setMaxWidth(1300);
         hBox.setStyle("-fx-border-width: 1px; -fx-border-color: grey;");
@@ -231,8 +241,8 @@ public class UploadViewBuilder implements Builder<Region> {
                 try {
                     ImageView refImageView = new ImageView(new Image(new FileInputStream(matchedRef.getFile())));
                     refImageView.setPreserveRatio(true);
-                    refImageView.setFitHeight(250);
-                    refImageView.setFitWidth(250);
+                    refImageView.setFitHeight(200);
+                    refImageView.setFitWidth(200);
                     Label numMatchesLabel = new Label(String.valueOf(matchedRef.getNumMatches()));
                     numMatchesLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
                     VBox vBox = new VBox(4, refImageView, numMatchesLabel);
@@ -247,5 +257,12 @@ public class UploadViewBuilder implements Builder<Region> {
         });
 
         return hBox;
+    }
+
+    Region createNavigationRegion() {
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> backAction.run());
+
+        return new HBox(backButton);
     }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 public class PracticeViewBuilder implements Builder<Region>{
 
     private final PracticeModel model;
+    private final Runnable returnAction;
     private final Consumer<SequenceStepType> addStepAction;
     private final Consumer<Integer> removeStepAction;
     private final Consumer<Sequence> setCurrentSequence;
@@ -37,6 +38,7 @@ public class PracticeViewBuilder implements Builder<Region>{
 
     public PracticeViewBuilder(
         PracticeModel model,
+        Runnable returnAction,
         Consumer<SequenceStepType> addStepAction,
         Consumer<Integer> removeStepAction,
         Consumer<Sequence> setCurrentSequence,
@@ -51,6 +53,7 @@ public class PracticeViewBuilder implements Builder<Region>{
         Runnable resetPracticeAction
     ) {
         this.model = model;
+        this.returnAction = returnAction;
         this.addStepAction = addStepAction;
         this.removeStepAction = removeStepAction;
         this.setCurrentSequence = setCurrentSequence;
@@ -71,6 +74,7 @@ public class PracticeViewBuilder implements Builder<Region>{
 
         practicePlanView = new PracticePlanViewBuilder(
             model,
+            returnAction,
             addStepAction,
             removeStepAction,
             setCurrentSequence,

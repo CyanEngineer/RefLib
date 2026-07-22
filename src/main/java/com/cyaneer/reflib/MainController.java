@@ -11,11 +11,10 @@ import com.cyaneer.reflib.upload.UploadController;
 
 import javafx.concurrent.Task;
 import javafx.scene.layout.Region;
-import javafx.util.Builder;
 
 public class MainController {
     private MainModel model;
-    private Builder<Region> viewBuilder;
+    private MainViewBuilder viewBuilder;
     private MainInteractor interactor;
 
     public MainController() {
@@ -35,13 +34,15 @@ public class MainController {
         UploadController uploadController = new UploadController(
             model.refListProperty(),
             model.isRefListLoadedProperty(),
+            () -> showHomePage(),
             (uri) -> createRef(uri),
             (ref, cleanupAction) -> addRef(ref, cleanupAction)
         );
 
         PracticeController practiceController = new PracticeController(
             model.refListProperty(),
-            model.isRefListLoadedProperty()
+            model.isRefListLoadedProperty(),
+            () -> showHomePage()
         );
 
         viewBuilder = new MainViewBuilder(
@@ -53,6 +54,10 @@ public class MainController {
 
     public Region getView() {
         return viewBuilder.build();
+    }
+
+    private void showHomePage() {
+        viewBuilder.showHomePage();
     }
 
     private MatchableRef createRef(URI uri) {

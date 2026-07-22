@@ -51,7 +51,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
     public Region build() {
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(createCenter());
-        borderPane.setBottom(createBottom());
+        borderPane.setBottom(createNavigationRegion());
         return borderPane;
     }
 
@@ -93,7 +93,7 @@ public class PracticeSessionViewBuilder implements Builder<Region>{
         return imageView;
     }
 
-    private Node createBottom() {
+    private Node createNavigationRegion() {
         
         HBox hBox = new HBox(64,
             createActionButton("Back", backButtonAction),

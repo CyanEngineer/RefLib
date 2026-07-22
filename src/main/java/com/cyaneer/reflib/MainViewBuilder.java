@@ -41,4 +41,8 @@ public class MainViewBuilder implements Builder<Region>{
             practicePageButton
         );
     }
+
+    public void showHomePage() {
+        homeView.setCenter(homePage);
+    }
 }

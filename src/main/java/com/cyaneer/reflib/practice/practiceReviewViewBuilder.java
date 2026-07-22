@@ -40,7 +40,7 @@ public class practiceReviewViewBuilder implements Builder<Region> {
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(createCenter());
         borderPane.setRight(createRight());
-        borderPane.setBottom(createBottom());
+        borderPane.setBottom(createNavigationRegion());
         return borderPane;
     }
 
@@ -101,7 +101,7 @@ public class practiceReviewViewBuilder implements Builder<Region> {
         return new Label("Put image data here");
     }
 
-    private Node createBottom() {
+    private Node createNavigationRegion() {
         Button button = new Button("Back");
         button.setOnAction(e -> {
             backButtonAction.run();

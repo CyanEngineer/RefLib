@@ -25,6 +25,7 @@ import javafx.util.Builder;
 public class PracticePlanViewBuilder implements Builder<Region> {
 
     private final PracticeModel model;
+    private final Runnable returnAction;
     private final Consumer<SequenceStepType> addStepAction;
     private final Consumer<Integer> removeStepAction;
     private final Consumer<Sequence> setCurrentSequence;
@@ -35,6 +36,7 @@ public class PracticePlanViewBuilder implements Builder<Region> {
     
     public PracticePlanViewBuilder(
         PracticeModel model,
+        Runnable returnAction,
         Consumer<SequenceStepType> addStepAction,
         Consumer<Integer> removeStepAction,
         Consumer<Sequence> setCurrentSequence,
@@ -44,6 +46,7 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         Runnable startAction
     ) {
         this.model = model;
+        this.returnAction = returnAction;
         this.addStepAction = addStepAction;
         this.removeStepAction = removeStepAction;
         this.setCurrentSequence = setCurrentSequence;
@@ -58,7 +61,7 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(createHeadingLabel("Plan your practice"));
         borderPane.setCenter(createCenter());
-        borderPane.setBottom(createButtons());
+        borderPane.setBottom(createNavigationRegion());
         return borderPane;
     }
 
@@ -157,8 +160,9 @@ public class PracticePlanViewBuilder implements Builder<Region> {
         );
     }
 
-    private Node createButtons() {
-        Button startButton = new Button("Start");
+    private Node createNavigationRegion() {
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> returnAction.run());
 
         Label timeLabel = new Label("");
         timeLabel.textProperty().bind(Bindings.createStringBinding(
@@ -166,13 +170,15 @@ public class PracticePlanViewBuilder implements Builder<Region> {
             model.currentSequenceTotalSecondsProperty())
         );
 
+        Button startButton = new Button("Start");
+        startButton.setOnAction(e -> startAction.run());
+
         startButton.disableProperty().bind(Bindings.createBooleanBinding(
                 () -> model.getSessionRefList().size() == 0,
                 model.sessionRefListProperty()));
 
-        startButton.setOnAction(e -> startAction.run());
         HBox content = new HBox(8,
-                new Button("Back"),
+                backButton,
                 timeLabel,
                 startButton);
         content.setAlignment(Pos.CENTER);
