@@ -183,7 +183,7 @@ public class UploadViewBuilder implements Builder<Region> {
             try {
                 proposeRefAction.accept(new URI(textField.getText()));
             } catch (URISyntaxException error) {
-                //TODO: Print error
+                //TODO: Show error in UI
             }
         });
 

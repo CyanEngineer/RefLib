@@ -66,8 +66,10 @@ public class PracticeInteractor {
             modelSequence.setSteps(model.getCurrentSequence().deepCopySteps());
         } else if (i == model.getSequenceList().size()) {
             model.getSequenceList().add(model.getCurrentSequence());
-        } else { //TODO: Handle
-            System.out.println("Index " + i + " is out of bounds");
+        } else { //TODO: Test
+            throw new IndexOutOfBoundsException("Sequence index i=" + i + 
+                "is out of bounds i=[0," + (model.getSequenceList().size()-1) +
+                "] or i=" + model.getSequenceList().size() + " for adding a new sequence");
         }
     }
 
@@ -80,8 +82,9 @@ public class PracticeInteractor {
             } else {
                 callback.accept(new Sequence());
             }
-        } else { //TODO: Handle
-            System.out.println("Index " + i + " is out of bounds");
+        } else { //TODO: Test
+            throw new IndexOutOfBoundsException("Sequence index i=" + i + 
+                "is out of bounds i=[0," + (model.getSequenceList().size()-1) + "]");
         }
     }
 
@@ -118,7 +121,7 @@ public class PracticeInteractor {
 
     private void advanceToNextStep() {
         if (model.getRemainingSequenceStepsList().isEmpty()) {
-            timer.jumpTo("end"); //TODO: Verify that this doesn't break anything
+            timer.jumpTo("end");
             model.setSessionFinished(true);
         } else {
             SequenceStep nextStep = model.remainingSequenceStepsListProperty().removeFirst();

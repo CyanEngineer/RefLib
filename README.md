@@ -64,15 +64,12 @@ A feature-rich application for handling reference images throughout your artisti
 - Make the app prettier (proper JavaFX css)
 - Take metadata rotations into account
 - Persist SIFT descriptors
+- Have a consistent way of creating ImageViews
 - Turn images in Upload into PopoutRefs
 - Create an abstract ImageSource object to enable extension?
 - Show ref loading progress in main view
 - Build guide
 - Handle descriptor matching on other threads
-- Proper error handling
-  - Descriptive error types
-  - Pop-ups
-  - Code responding to errors
 ### Home page
 - ~~Links to the other pages~~
 - Stats?

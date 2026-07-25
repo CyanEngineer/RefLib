@@ -31,23 +31,20 @@ public class MainInteractor {
         this.repository = repository;
     }
 
-    public MatchableRef createRef(URI uri) {
-
-        //TODO: Show some errors when things don't work out
+    public MatchableRef createRef(URI uri) throws IOException {
         String uriScheme = uri.getScheme();
         if (uriScheme.equals("http") || uriScheme.equals("https")) {
             if (isValidLink(uri)) {
                 URI tempUri = createTempFile(uri);
                 return new SIFTMatchableRef(new File(tempUri));
+            } else {
+                throw new IOException(uri.toString() + " is not a valid image link"); //TODO: Test
             }
-            System.out.println("Invalid link. Make sure to display an error");
-            return null; //TODO: Show error (suggest to use open image in new tab)
         } else {
             if (isValidImageFile(uri)) {
                 return new SIFTMatchableRef(new File(uri));
             } else {
-                System.out.println("uriScheme: " + uriScheme + ". Make sure to display an error");
-                return null; //TODO: Show error
+                throw new IOException(uri.toString() + " is not a valid image file"); //TODO: Test
             }
         }
     }
@@ -80,22 +77,19 @@ public class MainInteractor {
         }
     }
 
-    private URI createTempFile(URI uri) {
+    private URI createTempFile(URI uri) throws IOException {
         String[] uriSplit = uri.toString().split("\\.");
         String ext = uriSplit[uriSplit.length-1];
-        try {
-            Path tmpPath = Files.createTempFile("", "." + ext);
-            InputStream is = uri.toURL().openStream();
-            Files.copy(is, tmpPath, StandardCopyOption.REPLACE_EXISTING);
-            
-            File tmpFile = tmpPath.toFile();
-            model.setTmpFile(tmpFile);
-            tmpFile.deleteOnExit();
+        
+        Path tmpPath = Files.createTempFile("", "." + ext);
+        InputStream is = uri.toURL().openStream();
+        Files.copy(is, tmpPath, StandardCopyOption.REPLACE_EXISTING);
+        
+        File tmpFile = tmpPath.toFile();
+        model.setTmpFile(tmpFile);
+        tmpFile.deleteOnExit();
 
-            return tmpPath.toUri();
-        } catch (IOException e) {
-            return null;
-        }
+        return tmpPath.toUri();
     }
 
     private File saveTempFile(File tempFile) throws IOException {

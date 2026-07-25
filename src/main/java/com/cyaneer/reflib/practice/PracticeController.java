@@ -17,22 +17,27 @@ import javafx.util.Builder;
 
 public class PracticeController {
 
+    private final Consumer<Exception> errorHandler;
+
     private PracticeModel model;
     private Builder<Region> viewBuilder;
     private PracticeInteractor interactor;
 
     public PracticeController(
+        Consumer<Exception> errorHandler,
         ListProperty<MatchableRef> masterRefList,
         ObjectProperty<Boolean> isRefListLoaded,
         Runnable returnAction
-    ) {
+    ) throws IOException {
+        this.errorHandler = errorHandler;
+
         model = new PracticeModel();
 
         SequenceRepository repository = null;
-        try { // TODO: Handle
+        try {
             repository = new JSONSequenceRepository();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Failed to initialize sequence repository");
         }
 
         interactor = new PracticeInteractor(
@@ -69,15 +74,12 @@ public class PracticeController {
     private void loadSequences() {
         Task<Void> loadSequenceTask = new Task<Void>() {
             @Override
-            protected Void call() {
-                try { // TODO: Handle
-                    interactor.loadSequences();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            protected Void call() throws IOException {
+                interactor.loadSequences();
                 return null;
             }
         };
+        loadSequenceTask.setOnFailed(e -> errorHandler.accept((Exception) loadSequenceTask.getException()));
         Thread loadSequenceThread = new Thread(loadSequenceTask);
         loadSequenceThread.start();
     }

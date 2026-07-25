@@ -36,10 +36,12 @@ public class UploadInteractor {
 
         MatchableRef newRef = createRefAction.apply(uri);
 
-        model.setNewRef(newRef);
+        if (newRef != null) {
+            model.setNewRef(newRef);
 
-        List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef, model.getRefList(), model.getNumSimilarRefs());
-        model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
+            List<MatchedRef> mostSimilarRefs = findMostSimilarRefs(newRef, model.getRefList(), model.getNumSimilarRefs());
+            model.setMostSimilarRefs(FXCollections.observableArrayList(mostSimilarRefs));
+        }
     }
 
     private List<MatchedRef> findMostSimilarRefs(MatchableRef ref, List<MatchableRef> refList, int numSimilarRefs) {
