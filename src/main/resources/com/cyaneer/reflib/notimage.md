@@ -1,0 +1,1 @@
+This is just a file used for testing behaviours when the program expects an image file but gets a file in a different file format.

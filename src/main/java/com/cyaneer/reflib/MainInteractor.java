@@ -38,13 +38,13 @@ public class MainInteractor {
                 URI tempUri = createTempFile(uri);
                 return new SIFTMatchableRef(new File(tempUri));
             } else {
-                throw new IOException(uri.toString() + " is not a valid image link"); //TODO: Test
+                throw new IOException(uri.toString() + " is not a valid image link");
             }
         } else {
             if (isValidImageFile(uri)) {
                 return new SIFTMatchableRef(new File(uri));
             } else {
-                throw new IOException(uri.toString() + " is not a valid image file"); //TODO: Test
+                throw new IOException(uri.toString() + " is not a valid image file");
             }
         }
     }
@@ -99,7 +99,7 @@ public class MainInteractor {
         File dest = appDir.resolve(destFilename).toFile();
 
         while (dest.exists()) {
-            destFilename = "1" + destFilename;
+            destFilename = "1" + destFilename; //TODO: Add random character instead?
             dest = appDir.resolve(destFilename).toFile();
         }
 
