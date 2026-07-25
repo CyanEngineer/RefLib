@@ -16,6 +16,8 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.IndexOutOfBoundsException;
@@ -120,7 +122,7 @@ public class PracticeInteractorTest {
     }
 
     @Test
-    public void testSaveSequenceOverwritesOriginalSequence() {
+    public void testSaveCurrentSequenceOverwritesOriginalSequence() {
         PracticeModel model = new PracticeModel();
         ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
         ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
@@ -159,7 +161,109 @@ public class PracticeInteractorTest {
     }
 
     @Test
-    public void testDeleteSequenceDeletesSequence() {
+    public void testCurrentSequenceAddsSequenceIfIndexEqualsLengthOfSequenceList() {
+        PracticeModel model = new PracticeModel();
+        ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+        ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
+
+        SequenceRepository repository = new SequenceRepository() {
+            @Override
+            public void saveSequences(List<Sequence> sequences) throws IOException {}
+
+            @Override
+            public List<Sequence> loadSequences() throws IOException {
+                return new ArrayList<>();
+            }
+        };
+
+        PracticeInteractor interactor = new PracticeInteractor(model, repository, masterRefList, isRefListLoaded);
+
+        Sequence sequence1 = new Sequence();
+        sequence1.setName("Test1");
+        sequence1.addStep(new SequenceStep(10, 60, SequenceStepType.TIMED_REFS));
+
+        interactor.setCurrentSequence(sequence1);
+        
+        assert(model.getSequenceList().size() == 0);
+        
+        interactor.saveCurrentSequence(0);
+        assert(model.getSequenceList().size() == 1);
+
+        Sequence sequence2 = new Sequence();
+        sequence2.setName("Test2");
+        sequence2.addStep(new SequenceStep(20, 30, SequenceStepType.TIMED_REFS));
+
+        assert(model.getSequenceList().size() == 1);
+        
+        interactor.saveCurrentSequence(1);
+        assert(model.getSequenceList().size() == 2);
+    }
+
+    @Test
+    public void testSaveCurrentSequenceCreatesADeepCopyOfCurrentSequence() {
+        PracticeModel model = new PracticeModel();
+        ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+        ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
+
+        SequenceRepository repository = new SequenceRepository() {
+            @Override
+            public void saveSequences(List<Sequence> sequences) throws IOException {}
+
+            @Override
+            public List<Sequence> loadSequences() throws IOException {
+                return new ArrayList<>();
+            }
+        };
+
+        PracticeInteractor interactor = new PracticeInteractor(model, repository, masterRefList, isRefListLoaded);
+
+        Sequence sequence = new Sequence();
+        sequence.setName("Test");
+        sequence.addStep(new SequenceStep(10, 60, SequenceStepType.TIMED_REFS));
+
+        interactor.setCurrentSequence(sequence);
+        
+        interactor.saveCurrentSequence(0);
+        assert(model.getSequenceList().get(0) != sequence);
+
+        assert(model.getSequenceList().get(0).getName().equals(sequence.getName()));
+        assert(model.getSequenceList().get(0).getSteps().get(0).getRepetitions() == sequence.getSteps().get(0).getRepetitions());
+        assert(model.getSequenceList().get(0).getSteps().get(0).getSecPerRep() == sequence.getSteps().get(0).getSecPerRep());
+        assert(model.getSequenceList().get(0).getSteps().get(0).getType() == sequence.getSteps().get(0).getType());
+    }
+
+    @Test
+    public void testSaveCurrentSequenceThrowsExceptionWhenOutOfBounds() {
+        PracticeModel model = new PracticeModel();
+        ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+        ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
+
+        SequenceRepository repository = new SequenceRepository() {
+            @Override
+            public void saveSequences(List<Sequence> sequences) throws IOException {}
+
+            @Override
+            public List<Sequence> loadSequences() throws IOException {
+                return new ArrayList<>();
+            }
+        };
+
+        PracticeInteractor interactor = new PracticeInteractor(model, repository, masterRefList, isRefListLoaded);
+
+        Sequence sequence1 = new Sequence();
+        sequence1.setName("Test1");
+        sequence1.addStep(new SequenceStep(10, 60, SequenceStepType.TIMED_REFS));
+
+        interactor.setCurrentSequence(sequence1);
+        
+        interactor.saveCurrentSequence(0);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> interactor.saveCurrentSequence(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> interactor.saveCurrentSequence(2));
+    }
+
+    @Test
+    public void testDeleteCurrentSequenceDeletesSequence() {
         PracticeModel model = new PracticeModel();
         ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
         ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
@@ -189,6 +293,36 @@ public class PracticeInteractorTest {
         assert(model.getSequenceList().size() == 1);
         assert(model.getSequenceList().get(0).getName().equals(blank.getName()));
         assert(model.getSequenceList().get(0).getSteps().size() == blank.getSteps().size());
+    }
+
+    @Test
+    public void testDeleteCurrentSequenceThrowsExceptionWhenOutOfBounds() {
+        PracticeModel model = new PracticeModel();
+        ListProperty<MatchableRef> masterRefList = new SimpleListProperty<MatchableRef>(FXCollections.observableArrayList());
+        ObjectProperty<Boolean> isRefListLoaded = new SimpleObjectProperty<Boolean>(false);
+
+        SequenceRepository repository = new SequenceRepository() {
+            @Override
+            public void saveSequences(List<Sequence> sequences) throws IOException {}
+
+            @Override
+            public List<Sequence> loadSequences() throws IOException {
+                return new ArrayList<>();
+            }
+        };
+
+        PracticeInteractor interactor = new PracticeInteractor(model, repository, masterRefList, isRefListLoaded);
+
+        Sequence sequence1 = new Sequence();
+        sequence1.setName("Test1");
+        sequence1.addStep(new SequenceStep(10, 60, SequenceStepType.TIMED_REFS));
+
+        interactor.setCurrentSequence(sequence1);
+        
+        interactor.saveCurrentSequence(0);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> interactor.deleteCurrentSequence(-1, (seq) -> {}));
+        assertThrows(IndexOutOfBoundsException.class, () -> interactor.deleteCurrentSequence(1, (seq) -> {}));
     }
 
     @Test
